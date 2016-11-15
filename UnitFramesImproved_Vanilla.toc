@@ -1,0 +1,12 @@
+## Interface: 11210
+## Title: UnitFramesImproved_Vanilla
+## Notes: Extends the Blizzard unitframes for better visuals, with a minimal footprint.
+## Version: 0.1
+## Author: Ko0z (Richard Bertilsson) for Vanilla Backport Originally by: Althalla (Kim Forsberg)
+## SavedVariables: globalSettings
+## SavedVariablesPerCharacter: characterSettings
+
+## X-License: Public Domain
+## X-Category: Unit Frames
+
+UnitFramesImproved_Vanilla.lua
