@@ -1,10 +1,65 @@
+UNITFRAMESIMPROVED_UI_COLOR                = {r = .4, g = .4, b = .4}
+
+-- Dark borders and UI, code from modUI
+for _, v in pairs({
+        -- MINIMAP CLUSTER
+    MinimapBorder,
+    MiniMapMailBorder,
+    MiniMapTrackingBorder,
+    MiniMapMeetingStoneBorder,
+    MiniMapMailBorder,
+    MiniMapBattlefieldBorder,
+        -- UNIT & CASTBAR
+    PlayerFrameTexture,
+    TargetFrameTexture,
+    PetFrameTexture,
+    PartyMemberFrame1Texture,
+    PartyMemberFrame2Texture,
+    PartyMemberFrame3Texture,
+    PartyMemberFrame4Texture,
+    PartyMemberFrame1PetFrameTexture,
+    PartyMemberFrame2PetFrameTexture,
+    PartyMemberFrame3PetFrameTexture,
+    PartyMemberFrame4PetFrameTexture,
+    TargetofTargetTexture,
+    CastingBarBorder,
+        -- MAIN MENU BAR
+    MainMenuBarTexture0,
+    MainMenuBarTexture1,
+    MainMenuBarTexture2,
+    MainMenuBarTexture3,
+    MainMenuMaxLevelBar0,
+    MainMenuMaxLevelBar1,
+    MainMenuMaxLevelBar2,
+    MainMenuMaxLevelBar3,
+    MainMenuXPBarTextureLeftCap,
+    MainMenuXPBarTextureRightCap,
+    MainMenuXPBarTextureMid,
+    BonusActionBarTexture0,
+    BonusActionBarTexture1,
+    ReputationWatchBarTexture0,
+    ReputationWatchBarTexture1,
+    ReputationWatchBarTexture2,
+    ReputationWatchBarTexture3,
+    ReputationXPBarTexture0,
+    ReputationXPBarTexture1,
+    ReputationXPBarTexture2,
+    ReputationXPBarTexture3,
+    SlidingActionBarTexture0,
+    SlidingActionBarTexture1,
+    MainMenuBarLeftEndCap,
+    MainMenuBarRightEndCap,
+    ExhaustionTick:GetNormalTexture(),
+})	do 
+		v:SetVertexColor(UNITFRAMESIMPROVED_UI_COLOR.r, UNITFRAMESIMPROVED_UI_COLOR.g, UNITFRAMESIMPROVED_UI_COLOR.b)
+	end
 
 -- Create the addon main instance
 local UnitFramesImproved = CreateFrame('Button', 'UnitFramesImproved');
 
 function EnableUnitFramesImproved()
 	-- Generic status text hook
-	PlayerFrame_OnUpdate = UnitFramesImproved_Style_PlayerFrame
+	UnitFrame_OnEvent = UnitFramesImproved_ColorUpdate
 
 	TextStatusBar_UpdateTextString = UnitFramesImproved_TextStatusBar_UpdateTextString
 
@@ -21,6 +76,7 @@ function EnableUnitFramesImproved()
 	-- Update some values
 	TextStatusBar_UpdateTextString(PlayerFrame.healthbar);
 	TextStatusBar_UpdateTextString(PlayerFrame.manabar);
+	
 end
 
 function UnitFramesImproved_Style_TargetOfTargetFrame()
@@ -39,9 +95,16 @@ function UnitFramesImproved_Style_PlayerFrame()
 	PlayerStatusTexture:SetTexture("Interface\\Addons\\UnitFramesImproved_Vanilla\\Textures\\UI-Player-Status");
 	
 	PlayerFrameHealthBar:SetStatusBarColor(UnitColor("player"));
-
+	
 	PlayerFrame:SetScale(1.0);
 	TargetFrame:SetScale(1.0);
+
+	
+	
+end
+
+function UnitFramesImproved_ColorUpdate()
+	PlayerFrameHealthBar:SetStatusBarColor(UnitColor("player"));
 end
 
 function UnitFramesImproved_Style_TargetFrame(unit)
@@ -65,6 +128,7 @@ function UnitFramesImproved_Style_TargetFrame(unit)
 end
 
 function UnitFramesImproved_TextStatusBar_UpdateTextString(textStatusBar)
+	
 	if ( not textStatusBar ) then
 		textStatusBar = this;
 	end
@@ -102,6 +166,7 @@ end
 function UnitFramesImproved_TargetFrame_Update()
 	-- Set back color of health bar
 	TargetofTarget_Update();
+	
 	if ( UnitIsTapped("target") and not UnitIsTappedByPlayer("target") ) then
 		-- Gray if npc is tapped by other player
 		this.healthbar:SetStatusBarColor(0.5, 0.5, 0.5);
@@ -157,7 +222,11 @@ function UnitColor(unit)
 	elseif ( UnitIsPlayer(unit) ) then
 		--Try to color it by class.
 		if ( classColor ) then
+			if ( UnitClass(unit) == "Shaman" ) then
+				r, g, b = 0, 0.44, 0.87;
+			else
 			r, g, b = classColor.r, classColor.g, classColor.b;
+			end
 		else
 			if ( UnitIsFriend("player", unit) ) then
 				r, g, b = 0.0, 1.0, 0.0;
@@ -173,4 +242,3 @@ function UnitColor(unit)
 end
 
 EnableUnitFramesImproved();
-
