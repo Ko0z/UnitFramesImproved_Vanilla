@@ -1,10 +1,8 @@
 ## Interface: 11200
 ## Title: UnitFramesImproved_Vanilla
-## Notes: Extends the Blizzard unitframes for better visuals, with a minimal footprint.
-## Version: 0.5
-## Author: Ko0z (Richard Bertilsson) for Vanilla Backport, Originally by: Althalla (Kim Forsberg)
-## X-License: Public Domain
-## X-Category: Unit Frames
+## Notes: UnitFramesImproved Backported from Legion with a few changes
+## Version: 0.6
+## Author: Ko0z (Richard Bertilsson) for Vanilla Backport Originally by: Althalla (Kim Forsberg)
+## SavedVariables: UnitFramesImprovedConfig
 
 UnitFramesImproved_Vanilla.lua
-ClassPortraits.lua
