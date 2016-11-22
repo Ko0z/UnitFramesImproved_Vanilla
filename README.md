@@ -9,4 +9,14 @@ This backport is in Beta State and I would appreciate if you report any bugs you
 
 <b>Dont forget to remove "-master" at the end of the filename when you add it to your interface folder.</b>
 
-If you dont want to use dark mode you can simply delete line 1-55 in UnitFramesImproved_Vanilla.lua. I will add an option for this at a later point.
+<b>COMMANDS: </b>
+
+<b>"/ufi text" to toggle player StatusBar text ON/OFF.</b>
+
+<b>"/ufi class" to toggle ClassPortraits ON/OFF.</b>
+
+<b>"/ufi dark" to toggle DarkMode ON/OFF.</b>
+
+<b>"/ufi help" for help.</b>
+
+<b>"/ufi status" to see active settings.</b>
