@@ -24,7 +24,7 @@ function UnitFramesImproved_Vanilla_OnLoad()
 	TargetFrame_CheckFaction = UnitFramesImproved_TargetFrame_CheckFaction;
 	TargetFrame_CheckClassification = UnitFramesImproved_TargetFrame_CheckClassification;
 
-	ufi_chattext( fontLightGreen..'UnitFramesImproved_Vanilla Loaded.' .. fontLightRed .. 'Type ' ..fontLightGreen.. '/ufi ' ..fontLightRed.. 'for commands' );
+	ufi_chattext( fontLightGreen..'UnitFramesImproved_Vanilla Loaded. ' .. fontLightRed .. 'Type ' ..fontOrange.. '/ufi ' ..fontLightRed.. 'for options' );
 	
 	class_active = false;
 	dark_active = false;
@@ -89,6 +89,13 @@ function UnitFramesImproved_Style_TargetFrame(unit)
 		TargetFrameHealthBar.lockColor = true;
 end
 
+PlayerFrameHealthBarText:SetFont("Fonts\\FRIZQT__.TTF", 10);
+PlayerFrameHealthBarText:SetShadowColor(0, 0, 0, 1)
+PlayerFrameHealthBarText:SetShadowOffset(1, -1)
+
+PlayerFrameManaBarText:SetFont("Fonts\\FRIZQT__.TTF", 10);
+PlayerFrameManaBarText:SetShadowColor(0, 0, 0, 1)
+PlayerFrameManaBarText:SetShadowOffset(1, -1)
 
 function UnitFramesImproved_TextStatusBar_UpdateTextString(textStatusBar)
 	if class_active == false then			--just to make sure it doesnt load it more than once
@@ -99,10 +106,14 @@ function UnitFramesImproved_TextStatusBar_UpdateTextString(textStatusBar)
 		UnitFramesImproved_DarkMode();
 	end
 
+	--local string = PlayerFrame:CreateFontString("MyFont_", "ARTWORK", "GameFontNormalSmall");
+
 	if ( not textStatusBar ) then
 		textStatusBar = this;
 	end
 	local string = textStatusBar.TextString;
+	
+	
 	if(string) then
 		local value = textStatusBar:GetValue();
 		local valueMin, valueMax = textStatusBar:GetMinMaxValues();
@@ -116,12 +127,12 @@ function UnitFramesImproved_TextStatusBar_UpdateTextString(textStatusBar)
 				textStatusBar.isZero = nil;
 				if ( textStatusBar.prefix ) then
 					if UnitFramesImprovedConfig.StatusBarText then
-						string:SetText(textStatusBar.prefix.." "..value.." / "..valueMax);
+						string:SetText(textStatusBar.prefix.." "..value.."/"..valueMax);
 					else
-						string:SetText(value.." / "..valueMax);
+						string:SetText(value.."/"..valueMax);
 					end
 				else
-					string:SetText(value.." / "..valueMax);
+					string:SetText(value.."/"..valueMax);
 				end
 				if ( GetCVar("statusBarText") == "1" and textStatusBar.textLockable ) then
 					string:Show();
@@ -403,6 +414,8 @@ local function UFI_Slash(msg, editbox)
 	-- extract option name and option argument from message string
 	-- handle show/hide of options dialog first of all
 	-- handle all simple commands that dont require parsing right here
+	
+	
 	if  msg == 'text'  then
 		if UnitFramesImprovedConfig.StatusBarText == true then
 			UnitFramesImprovedConfig.StatusBarText = false;
@@ -445,33 +458,37 @@ local function UFI_Slash(msg, editbox)
 
 	elseif  msg == 'status'  then
 		if UnitFramesImprovedConfig.DarkMode == true then
-			ufi_chattext( fontLightGreen .. ' DarkMode ON ' );
+			ufi_chattext( fontOrange .. ' DarkMode ' .. fontLightGreen ..  'ON' );
 		else
 			ufi_chattext( fontOrange .. ' DarkMode ' .. fontRed ..  'OFF ' );
 		end
 		if UnitFramesImprovedConfig.ClassPortrait == true then
-			ufi_chattext( fontLightGreen .. ' ClassPortrait ON ' );
+			ufi_chattext( fontOrange .. ' ClassPortrait ' .. fontLightGreen ..  'ON' );
 		else
 			ufi_chattext( fontOrange .. ' ClassPortrait ' .. fontRed ..  'OFF ' );
 		end
 		if UnitFramesImprovedConfig.StatusBarText == true then
-			ufi_chattext( fontLightGreen .. ' StatusBarText ON ' );
+			ufi_chattext( fontOrange .. ' StatusBarText ' .. fontLightGreen ..  'ON' );
 		else
 			ufi_chattext( fontOrange .. ' StatusBarText ' .. fontRed ..  'OFF' );
 		end
 		return
 
 	elseif  msg == 'help'  then
-		ufi_chattext( ' Usage: enter /ufi or /unitframesimproved for commands' );
+		ufi_chattext( ' Usage: enter /ufi or /unitframesimproved for options' );
 		ufi_chattext( ' for AddOn help go to '..fontLightGreen..'https://github.com/Ko0z/UnitFramesImproved_Vanilla' );
 		return
 
+	elseif  msg == 'rl'  then
+		ReloadUI();
+		return
+
 	else
-		ufi_chattext( fontWhite .. ' Usage: ' .. fontOrange .. '/ufi text ' ..fontWhite..  'toggle Player StatusBar text ON/OFF' );
-		ufi_chattext( fontWhite .. ' Usage: ' .. fontOrange .. '/ufi class ' ..fontWhite..  'toggle ClassPortraits ON/OFF' );
-		ufi_chattext( fontWhite .. ' Usage: ' .. fontOrange .. '/ufi dark ' ..fontWhite..  'toggle DarkMode ON/OFF' );
-		ufi_chattext( fontWhite .. ' Usage: ' .. fontLightGreen .. '/ufi status ' ..fontWhite..  ' to see active settings' );
-		ufi_chattext( fontWhite .. ' Usage: ' .. fontLightGreen .. '/ufi help ' ..fontWhite..  ' for help' );
+		ufi_chattext( fontOrange .. '/ufi text ' ..fontWhite..  '-- ' .. fontLightGreen .. '(toggle) ' ..fontWhite.. 'Player StatusBar Text' );
+		ufi_chattext( fontOrange .. '/ufi class ' ..fontWhite..  '-- ' .. fontLightGreen .. '(toggle) ' ..fontWhite.. 'ClassPortraits' );
+		ufi_chattext( fontOrange .. '/ufi dark ' ..fontWhite..  '-- ' .. fontLightGreen .. '(toggle) ' ..fontWhite.. 'DarkMode' );
+		ufi_chattext( fontOrange .. '/ufi status ' ..fontWhite..  '-- to see active settings' );
+		ufi_chattext( fontOrange .. '/ufi help ' ..fontWhite..  '-- for help' );
 	end
 end 
 SlashCmdList["UNITFRAMESIMPROVED"] = UFI_Slash;
