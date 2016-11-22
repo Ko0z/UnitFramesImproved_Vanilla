@@ -209,7 +209,11 @@ function UnitColor(unit)
 			end
 		end
 	else
-		r, g, b = classColor.r, classColor.g, classColor.b;
+		if ( classColor ) then
+			r, g, b = classColor.r, classColor.g, classColor.b;
+		else 
+			r, g, b = 0, 1, 0;
+		end
 	end
 	
 	return r, g, b;
