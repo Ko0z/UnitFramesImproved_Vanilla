@@ -5,7 +5,11 @@ This backport is in Beta State and I would appreciate if you report any bugs you
 
 <b>I recommend using MobInfo2 to be able to see mobs health/mana etc.</b>
 
-<a href="http://imgur.com/mESAngy"><img src="http://i.imgur.com/mESAngy.png" title="source: imgur.com" /></a>
+<a href="http://imgur.com/hhThw0u"><img src="http://i.imgur.com/hhThw0u.png" title="source: imgur.com" /></a>
+
+<a href="http://imgur.com/0HYVS2s"><img src="http://i.imgur.com/0HYVS2s.png" title="source: imgur.com" /></a>
+
+<a href="http://imgur.com/ldyjqfG"><img src="http://i.imgur.com/ldyjqfG.png" title="source: imgur.com" /></a>
 
 <b>Dont forget to remove "-master" at the end of the filename when you add it to your interface folder.</b>
 
