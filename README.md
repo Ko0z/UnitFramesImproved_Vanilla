@@ -21,6 +21,10 @@ This backport is in Beta State and I would appreciate if you report any bugs you
 
 <b>"/ufi dark" to toggle DarkMode ON/OFF.</b>
 
+<b>"/ufi unlock" to Move Frames.</b>
+
+<b>"/ufi lock" to Lock Frames.</b>
+
 <b>"/ufi help" for help.</b>
 
 <b>"/ufi status" to see active settings.</b>
