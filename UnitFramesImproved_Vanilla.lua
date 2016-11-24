@@ -14,22 +14,21 @@ function UnitFramesImproved_Default_Options()
 	if not UnitFramesImprovedConfig.StatusBarText		then	UnitFramesImprovedConfig.StatusBarText = false end
 	if not UnitFramesImprovedConfig.ClassPortrait		then	UnitFramesImprovedConfig.ClassPortrait = false end
 	if not UnitFramesImprovedConfig.DarkMode			then	UnitFramesImprovedConfig.DarkMode = false end
+	if not UnitFramesImprovedConfig.ModUI				then	UnitFramesImprovedConfig.ModUI = false end
 end
 
 
 function UnitFramesImproved_Vanilla_OnLoad()
+	UnitFramesImproved_Default_Options();
 	-- Generic status text hook
 	HealthBar_OnValueChanged = UnitFramesImproved_ColorUpdate;
-
-	TextStatusBar_UpdateTextString = UnitFramesImproved_TextStatusBar_UpdateTextString;
-
+	------------------------
 	TargetFrame_OnUpdate = UnitFramesImproved_TargetFrame_Update;
 	TargetFrame_CheckFaction = UnitFramesImproved_TargetFrame_CheckFaction;
 	TargetFrame_CheckClassification = UnitFramesImproved_TargetFrame_CheckClassification;
 
 	ufi_chattext( fontLightGreen..'UnitFramesImproved_Vanilla Loaded. ' .. fontLightRed .. 'Type ' ..fontOrange.. '/ufi ' ..fontLightRed.. 'for options' );
 	-------------------------------------------------------------------------------------
-	UnitFramesImproved_Default_Options();
 	-- Check Saved Configs and apply
 	if UnitFramesImprovedConfig.ClassPortrait == true then
 		UnitFramesImproved_ClassPortraits();
@@ -38,7 +37,21 @@ function UnitFramesImproved_Vanilla_OnLoad()
 	if UnitFramesImprovedConfig.DarkMode == true then
 		UnitFramesImproved_DarkMode();
 	end
+	-----------------------
+	-- FOR MODUI COMPATIBILITY
+	if (UnitFramesImprovedConfig.ModUI == false or UnitFramesImprovedConfig.ModUI == nil) then
+		TextStatusBar_UpdateTextString = UnitFramesImproved_TextStatusBar_UpdateTextString;
 
+		PlayerFrameHealthBarText:SetFont("Fonts\\FRIZQT__.TTF", 10);
+		PlayerFrameHealthBarText:SetShadowColor(0, 0, 0, 1)
+		PlayerFrameHealthBarText:SetShadowOffset(1, -1)
+
+		PlayerFrameManaBarText:SetFont("Fonts\\FRIZQT__.TTF", 10);
+		PlayerFrameManaBarText:SetShadowColor(0, 0, 0, 1)
+		PlayerFrameManaBarText:SetShadowOffset(1, -1)
+	else
+		PlayerFrameBackground.bg:Hide();
+	end
 			-- Set up some stylings
 	UnitFramesImproved_Style_PlayerFrame();
 	UnitFramesImproved_TargetFrame_CheckClassification();
@@ -62,21 +75,15 @@ function UnitFramesImproved_Style_PlayerFrame()
 	PlayerFrameHealthBar:SetPoint("TOPLEFT",106,-22);
 	PlayerFrameHealthBarText:SetPoint("CENTER",50,6);
 
-	PlayerFrameHealthBarText:SetFont("Fonts\\FRIZQT__.TTF", 10);
-	PlayerFrameHealthBarText:SetShadowColor(0, 0, 0, 1)
-	PlayerFrameHealthBarText:SetShadowOffset(1, -1)
-
-	PlayerFrameManaBarText:SetFont("Fonts\\FRIZQT__.TTF", 10);
-	PlayerFrameManaBarText:SetShadowColor(0, 0, 0, 1)
-	PlayerFrameManaBarText:SetShadowOffset(1, -1)
+	
 
 	PlayerFrameTexture:SetTexture("Interface\\Addons\\UnitFramesImproved_Vanilla\\Textures\\UI-TargetingFrame");
 	PlayerStatusTexture:SetTexture("Interface\\Addons\\UnitFramesImproved_Vanilla\\Textures\\UI-Player-Status");
 	
 	PlayerFrameHealthBar:SetStatusBarColor(UnitColor("player"));
 	
-	PlayerFrame:SetScale(1.0);
-	TargetFrame:SetScale(1.0);
+	--PlayerFrame:SetScale(1.0);
+	--TargetFrame:SetScale(1.0);
 	----------------------------------------------------------
 	--TEST
 	--PlayerFrame:SetClampedToScreen(true)
@@ -88,11 +95,13 @@ function UnitFramesImproved_ColorUpdate()
 end
 
 function UnitFramesImproved_Style_TargetFrame(unit)
+		
 		local classification = UnitClassification("target");
 		if (classification == "minus") then
 			TargetFrameHealthBar:SetHeight(12);
 			TargetFrameHealthBar:SetPoint("TOPLEFT",7,-41);
 			TargetDeadText:SetPoint("CENTER",-50,4);
+			TargetFrameNameBackground:Hide()
 			TargetFrameNameBackground:SetPoint("TOPLEFT",7,-41);
 		else
 			TargetFrameHealthBar:SetHeight(29);
@@ -406,7 +415,7 @@ end
 --Popup Dialogs 
 
 StaticPopupDialogs["CLASS_RELOAD"] = {
-	text = "A reload is required to apply this setting.",
+	text = "A reload is required to toggle this setting.",
 	button1 = "Reload",
 	button2 = "Ignore",
 	OnAccept = function()
@@ -424,7 +433,7 @@ StaticPopupDialogs["CLASS_RELOAD"] = {
 }
 
 StaticPopupDialogs["DARK_RELOAD"] = {
-	text = "A reload is required to apply this setting.",
+	text = "A reload is required to toggle this setting.",
 	button1 = "Reload",
 	button2 = "Ignore",
 	OnAccept = function()
@@ -433,6 +442,26 @@ StaticPopupDialogs["DARK_RELOAD"] = {
 			ReloadUI();
 		else
 			UnitFramesImprovedConfig.DarkMode = true;
+			ReloadUI();
+		end
+	end,
+	timeout = 0,
+	whileDead = true,
+	hideOnEscape = true
+}
+--ModUI Compatible with slash command
+StaticPopupDialogs["MODUI_RELOAD"] = {
+	text = "Reload UI to toggle ModUI Compatibility",
+	button1 = "Reload",
+	button2 = "Ignore",
+	OnAccept = function()
+		if	UnitFramesImprovedConfig.ModUI == false then
+			UnitFramesImprovedConfig.ModUI = true;
+			UnitFramesImprovedConfig.DarkMode = false;
+			UnitFramesImprovedConfig.ClassPortrait = false;
+			ReloadUI();
+		else
+			UnitFramesImprovedConfig.ModUI = false;
 			ReloadUI();
 		end
 	end,
@@ -527,6 +556,10 @@ local function UFI_Slash(msg, editbox)
 			StaticPopup_Show("DARK_RELOAD");
 		return
 
+	elseif ( msg == 'modui' or msg == 'modUI' or msg =='ModUI' ) then
+			StaticPopup_Show("MODUI_RELOAD");
+		return
+
 	elseif  msg == 'status'  then
 		if UnitFramesImprovedConfig.DarkMode == true then
 			ufi_chattext( fontOrange .. ' DarkMode ' .. fontLightGreen ..  'ON' );
@@ -543,6 +576,11 @@ local function UFI_Slash(msg, editbox)
 		else
 			ufi_chattext( fontOrange .. ' StatusBarText ' .. fontRed ..  'OFF' );
 		end
+		if UnitFramesImprovedConfig.ModUI == true then
+			ufi_chattext( fontOrange .. ' ModUI Compatibility ' .. fontLightGreen ..  'ON' );
+		else
+			ufi_chattext( fontOrange .. ' ModUI Compatibility ' .. fontRed ..  'OFF' );
+		end
 		return
 
 	elseif  msg == 'help'  then
@@ -555,6 +593,7 @@ local function UFI_Slash(msg, editbox)
 		return
 
 	else
+		ufi_chattext( fontOrange .. '/ufi modui ' ..fontWhite..  '-- ' .. fontLightGreen .. '(toggle) ' ..fontWhite.. 'ModUI compatibility' );
 		ufi_chattext( fontOrange .. '/ufi text ' ..fontWhite..  '-- ' .. fontLightGreen .. '(toggle) ' ..fontWhite.. 'Player StatusBar Text' );
 		ufi_chattext( fontOrange .. '/ufi class ' ..fontWhite..  '-- ' .. fontLightGreen .. '(toggle) ' ..fontWhite.. 'ClassPortraits' );
 		ufi_chattext( fontOrange .. '/ufi dark ' ..fontWhite..  '-- ' .. fontLightGreen .. '(toggle) ' ..fontWhite.. 'DarkMode' );
