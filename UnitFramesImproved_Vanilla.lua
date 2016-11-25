@@ -5,6 +5,8 @@ _G = getfenv(0)
 UNITFRAMESIMPROVED_UI_COLOR = {r = .4, g = .4, b = .4}
 
 local UnitFramesImproved = CreateFrame('Button', 'UnitFramesImproved');
+local ADDON_NAME = "UnitFramesImproved_Vanilla";
+local ufi_modui = false;
 
 function UnitFramesImproved_Default_Options()
 	if not UnitFramesImprovedConfig then
@@ -14,7 +16,7 @@ function UnitFramesImproved_Default_Options()
 	if not UnitFramesImprovedConfig.StatusBarText		then	UnitFramesImprovedConfig.StatusBarText = false end
 	if not UnitFramesImprovedConfig.ClassPortrait		then	UnitFramesImprovedConfig.ClassPortrait = false end
 	if not UnitFramesImprovedConfig.DarkMode			then	UnitFramesImprovedConfig.DarkMode = false end
-	if not UnitFramesImprovedConfig.ModUI				then	UnitFramesImprovedConfig.ModUI = false end
+	--if not ufi_modui				then	ufi_modui = false end
 end
 
 
@@ -39,7 +41,7 @@ function UnitFramesImproved_Vanilla_OnLoad()
 	end
 	-----------------------
 	-- FOR MODUI COMPATIBILITY
-	if (UnitFramesImprovedConfig.ModUI == false or UnitFramesImprovedConfig.ModUI == nil) then
+	if (ufi_modui == false or ufi_modui == nil) then
 		TextStatusBar_UpdateTextString = UnitFramesImproved_TextStatusBar_UpdateTextString;
 
 		PlayerFrameHealthBarText:SetFont("Fonts\\FRIZQT__.TTF", 10);
@@ -49,18 +51,21 @@ function UnitFramesImproved_Vanilla_OnLoad()
 		PlayerFrameManaBarText:SetFont("Fonts\\FRIZQT__.TTF", 10);
 		PlayerFrameManaBarText:SetShadowColor(0, 0, 0, 1)
 		PlayerFrameManaBarText:SetShadowOffset(1, -1)
+		--ufi_chattext( fontOrange.. 'modUI ' ..fontLightRed.. 'not detected.' );
+		-- Update some values
+		TextStatusBar_UpdateTextString(PlayerFrame.healthbar);
+		TextStatusBar_UpdateTextString(PlayerFrame.manabar);
 	else
+		ufi_chattext( fontOrange.. 'modUI ' ..fontLightGreen.. 'detected.' );
 		PlayerFrameBackground.bg:Hide();
+		UnitFramesImprovedConfig.DarkMode = false;
+
 	end
 			-- Set up some stylings
 	UnitFramesImproved_Style_PlayerFrame();
 	UnitFramesImproved_TargetFrame_CheckClassification();
 	UnitFramesImproved_Style_TargetFrame(TargetFrame);
 	UnitFramesImproved_Style_TargetFrame(FocusFrame);
-
-	-- Update some values
-	TextStatusBar_UpdateTextString(PlayerFrame.healthbar);
-	TextStatusBar_UpdateTextString(PlayerFrame.manabar);
 end
 
 function UnitFramesImproved_Style_TargetOfTargetFrame()
@@ -80,7 +85,7 @@ function UnitFramesImproved_Style_PlayerFrame()
 	PlayerFrameTexture:SetTexture("Interface\\Addons\\UnitFramesImproved_Vanilla\\Textures\\UI-TargetingFrame");
 	PlayerStatusTexture:SetTexture("Interface\\Addons\\UnitFramesImproved_Vanilla\\Textures\\UI-Player-Status");
 	
-	PlayerFrameHealthBar:SetStatusBarColor(UnitColor("player"));
+	--PlayerFrameHealthBar:SetStatusBarColor(UnitColor("player"));
 	
 	--PlayerFrame:SetScale(1.0);
 	--TargetFrame:SetScale(1.0);
@@ -449,19 +454,21 @@ StaticPopupDialogs["DARK_RELOAD"] = {
 	whileDead = true,
 	hideOnEscape = true
 }
+
+--[[
 --ModUI Compatible with slash command
 StaticPopupDialogs["MODUI_RELOAD"] = {
 	text = "Reload UI to toggle ModUI Compatibility",
 	button1 = "Reload",
 	button2 = "Ignore",
 	OnAccept = function()
-		if	UnitFramesImprovedConfig.ModUI == false then
-			UnitFramesImprovedConfig.ModUI = true;
+		if	ufi_modui == false then
+			ufi_modui = true;
 			UnitFramesImprovedConfig.DarkMode = false;
 			UnitFramesImprovedConfig.ClassPortrait = false;
 			ReloadUI();
 		else
-			UnitFramesImprovedConfig.ModUI = false;
+			ufi_modui = false;
 			ReloadUI();
 		end
 	end,
@@ -469,7 +476,7 @@ StaticPopupDialogs["MODUI_RELOAD"] = {
 	whileDead = true,
 	hideOnEscape = true
 }
-
+--]]
 -----------------------------------------------------------------------------
 -- Add all Slash Commands
 
@@ -556,10 +563,6 @@ local function UFI_Slash(msg, editbox)
 			StaticPopup_Show("DARK_RELOAD");
 		return
 
-	elseif ( msg == 'modui' or msg == 'modUI' or msg =='ModUI' ) then
-			StaticPopup_Show("MODUI_RELOAD");
-		return
-
 	elseif  msg == 'status'  then
 		if UnitFramesImprovedConfig.DarkMode == true then
 			ufi_chattext( fontOrange .. ' DarkMode ' .. fontLightGreen ..  'ON' );
@@ -576,10 +579,8 @@ local function UFI_Slash(msg, editbox)
 		else
 			ufi_chattext( fontOrange .. ' StatusBarText ' .. fontRed ..  'OFF' );
 		end
-		if UnitFramesImprovedConfig.ModUI == true then
-			ufi_chattext( fontOrange .. ' ModUI Compatibility ' .. fontLightGreen ..  'ON' );
-		else
-			ufi_chattext( fontOrange .. ' ModUI Compatibility ' .. fontRed ..  'OFF' );
+		if ufi_modui == true then
+			ufi_chattext( fontOrange .. ' ModUI ' .. fontLightGreen ..  'ON' );
 		end
 		return
 
@@ -593,7 +594,6 @@ local function UFI_Slash(msg, editbox)
 		return
 
 	else
-		ufi_chattext( fontOrange .. '/ufi modui ' ..fontWhite..  '-- ' .. fontLightGreen .. '(toggle) ' ..fontWhite.. 'ModUI compatibility' );
 		ufi_chattext( fontOrange .. '/ufi text ' ..fontWhite..  '-- ' .. fontLightGreen .. '(toggle) ' ..fontWhite.. 'Player StatusBar Text' );
 		ufi_chattext( fontOrange .. '/ufi class ' ..fontWhite..  '-- ' .. fontLightGreen .. '(toggle) ' ..fontWhite.. 'ClassPortraits' );
 		ufi_chattext( fontOrange .. '/ufi dark ' ..fontWhite..  '-- ' .. fontLightGreen .. '(toggle) ' ..fontWhite.. 'DarkMode' );
@@ -603,6 +603,7 @@ local function UFI_Slash(msg, editbox)
 		ufi_chattext( fontOrange .. '/ufi help ' ..fontWhite..  '-- for help' );
 	end
 end 
+
 SlashCmdList["UNITFRAMESIMPROVED"] = UFI_Slash;
 
 fontLightBlue = "|cff00e0ff"
@@ -623,9 +624,11 @@ function UnitFramesImproved_OnLoad()
 	UnitFramesImproved:RegisterEvent('ADDON_LOADED');
 end
 
-local ADDON_NAME = "UnitFramesImproved_Vanilla";
-
 function UnitFramesImproved_OnEvent() 	
+	if IsAddOnLoaded'modui' then                   -- modUI
+    	ufi_modui = true;
+    end
+
 	if (event == "ADDON_LOADED") then	--makes sure it doesnt fire more than once.
 		if (arg1 == ADDON_NAME) then 
 			UnitFramesImproved_Vanilla_OnLoad(); 
