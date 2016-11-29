@@ -11,14 +11,12 @@ This backport is in Beta State and I would appreciate if you report any bugs you
 
 <a href="http://imgur.com/hhThw0u"><img src="http://i.imgur.com/hhThw0u.png" title="source: imgur.com" /></a>
 
-<b>modUI compatible with slash command /ufi modui.</b>
-<a href="http://imgur.com/2Ag7W2v"><img src="http://i.imgur.com/2Ag7W2v.png" title="source: imgur.com" /></a>
+<b>modUI compatible.</b>
+<a href="http://imgur.com/nwbY55L"><img src="http://i.imgur.com/nwbY55L.png" title="source: imgur.com" /></a>
 
 <b>Dont forget to remove "-master" at the end of the filename when you add it to your interface folder.</b>
 
 <b>COMMANDS: </b>
-
-
 
 <b>"/ufi text" to toggle player StatusBar text ON/OFF.</b>
 
