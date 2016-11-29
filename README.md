@@ -18,7 +18,7 @@ This backport is in Beta State and I would appreciate if you report any bugs you
 
 <b>COMMANDS: </b>
 
-<b>"/ufi modui" to toggle modUI compatibility ON/OFF.</b>
+
 
 <b>"/ufi text" to toggle player StatusBar text ON/OFF.</b>
 
