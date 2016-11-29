@@ -59,6 +59,10 @@ function UnitFramesImproved_Vanilla_OnLoad()
 		ufi_chattext( fontOrange.. 'modUI ' ..fontLightGreen.. 'detected.' );
 		PlayerFrameBackground.bg:Hide();
 		UnitFramesImprovedConfig.DarkMode = false;
+		
+		local NAME_TEXTURE   = [[Interface\AddOns\modui\statusbar\texture\name.tga]]
+		PlayerFrameHealthBar:SetStatusBarTexture(NAME_TEXTURE)
+		TargetFrameHealthBar:SetStatusBarTexture(NAME_TEXTURE)
 
 	end
 			-- Set up some stylings
