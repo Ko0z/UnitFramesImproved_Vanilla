@@ -13,10 +13,10 @@ function UnitFramesImproved_Default_Options()
 		UnitFramesImprovedConfig = { }
 	end
 	
-	if not UnitFramesImprovedConfig.StatusBarText		then	UnitFramesImprovedConfig.StatusBarText = false end
-	if not UnitFramesImprovedConfig.ClassPortrait		then	UnitFramesImprovedConfig.ClassPortrait = false end
-	if not UnitFramesImprovedConfig.DarkMode			then	UnitFramesImprovedConfig.DarkMode = false end
-	--if not ufi_modui				then	ufi_modui = false end
+	if not UnitFramesImprovedConfig.StatusBarText		then	UnitFramesImprovedConfig.StatusBarText		= false end
+	if not UnitFramesImprovedConfig.ClassPortrait		then	UnitFramesImprovedConfig.ClassPortrait		= false end
+	if not UnitFramesImprovedConfig.DarkMode			then	UnitFramesImprovedConfig.DarkMode			= false end
+	if not UnitFramesImprovedConfig.NameTextOutside		then	UnitFramesImprovedConfig.NameTextOutside	= false end
 end
 
 
@@ -38,6 +38,13 @@ function UnitFramesImproved_Vanilla_OnLoad()
 
 	if UnitFramesImprovedConfig.DarkMode == true then
 		UnitFramesImproved_DarkMode();
+	end
+
+	if UnitFramesImprovedConfig.NameTextOutside == true then
+		PlayerName:SetPoint("CENTER", PlayerFrameHealthBar, "Center", 0, 20);
+		PlayerName:SetFont("Fonts\\FRIZQT__.TTF", 12, "OUTLINE");
+		TargetName:SetPoint("CENTER", TargetFrameHealthBar, "Center", 0, 20); 
+		TargetName:SetFont("Fonts\\FRIZQT__.TTF", 12, "OUTLINE");
 	end
 	-----------------------
 	-- FOR MODUI COMPATIBILITY
@@ -84,19 +91,8 @@ function UnitFramesImproved_Style_PlayerFrame()
 	PlayerFrameHealthBar:SetPoint("TOPLEFT",106,-22);
 	PlayerFrameHealthBarText:SetPoint("CENTER",50,6);
 
-	
-
 	PlayerFrameTexture:SetTexture("Interface\\Addons\\UnitFramesImproved_Vanilla\\Textures\\UI-TargetingFrame");
-	PlayerStatusTexture:SetTexture("Interface\\Addons\\UnitFramesImproved_Vanilla\\Textures\\UI-Player-Status");
-	
-	--PlayerFrameHealthBar:SetStatusBarColor(UnitColor("player"));
-	
-	--PlayerFrame:SetScale(1.0);
-	--TargetFrame:SetScale(1.0);
-	----------------------------------------------------------
-	--TEST
-	--PlayerFrame:SetClampedToScreen(true)
-	--TargetFrame:SetClampedToScreen(true)	
+	PlayerStatusTexture:SetTexture("Interface\\Addons\\UnitFramesImproved_Vanilla\\Textures\\UI-Player-Status");	
 end
 
 function UnitFramesImproved_ColorUpdate()
@@ -104,17 +100,16 @@ function UnitFramesImproved_ColorUpdate()
 end
 
 function UnitFramesImproved_Style_TargetFrame(unit)
-		
 		local classification = UnitClassification("target");
 		if (classification == "minus") then
 			TargetFrameHealthBar:SetHeight(12);
-			TargetFrameHealthBar:SetPoint("TOPLEFT",7,-41);
+			TargetFrameHealthBar:SetPoint("TOPLEFT",6,-41);
 			TargetDeadText:SetPoint("CENTER",-50,4);
 			TargetFrameNameBackground:Hide()
 			TargetFrameNameBackground:SetPoint("TOPLEFT",7,-41);
 		else
 			TargetFrameHealthBar:SetHeight(29);
-			TargetFrameHealthBar:SetPoint("TOPLEFT",7,-22);
+			TargetFrameHealthBar:SetPoint("TOPLEFT",6,-22);
 			TargetDeadText:SetPoint("CENTER",-50,6);
 			TargetFrameNameBackground:Hide();
 			TargetFrameNameBackground:SetPoint("TOPLEFT",7,-22);
@@ -123,16 +118,12 @@ function UnitFramesImproved_Style_TargetFrame(unit)
 		TargetFrameHealthBar.lockColor = true;
 end
 
-
-
-function UnitFramesImproved_TextStatusBar_UpdateTextString(textStatusBar)
-	
+function UnitFramesImproved_TextStatusBar_UpdateTextString(textStatusBar)	
 	if ( not textStatusBar ) then
 		textStatusBar = this;
 	end
 	local string = textStatusBar.TextString;
-	
-	
+		
 	if(string) then
 		local value = textStatusBar:GetValue();
 		local valueMin, valueMax = textStatusBar:GetMinMaxValues();
@@ -170,12 +161,9 @@ end
 function UnitFramesImproved_TargetFrame_Update()
 	-- Set back color of health bar
 	TargetofTarget_Update();
-	
 	if ( UnitIsTapped("target") and not UnitIsTappedByPlayer("target") ) then
 		-- Gray if npc is tapped by other player
 		this.healthbar:SetStatusBarColor(0.5, 0.5, 0.5);
-		--TargetFrameNameBackground:SetVertexColor(0.5, 0.5, 0.5);
-		--TargetPortrait:SetVertexColor(0.5, 0.5, 0.5);
 	else
 		-- Standard by class etc if not
 		this.healthbar:SetStatusBarColor(UnitColor(this.healthbar.unit));	
@@ -459,28 +447,19 @@ StaticPopupDialogs["DARK_RELOAD"] = {
 	hideOnEscape = true
 }
 
---[[
---ModUI Compatible with slash command
-StaticPopupDialogs["MODUI_RELOAD"] = {
-	text = "Reload UI to toggle ModUI Compatibility",
+StaticPopupDialogs["TEXT_RELOAD"] = {
+	text = "A reload is required to toggle this setting.",
 	button1 = "Reload",
 	button2 = "Ignore",
 	OnAccept = function()
-		if	ufi_modui == false then
-			ufi_modui = true;
-			UnitFramesImprovedConfig.DarkMode = false;
-			UnitFramesImprovedConfig.ClassPortrait = false;
-			ReloadUI();
-		else
-			ufi_modui = false;
-			ReloadUI();
-		end
+		UnitFramesImprovedConfig.NameTextOutside = false;
+		ReloadUI();
 	end,
 	timeout = 0,
 	whileDead = true,
 	hideOnEscape = true
 }
---]]
+
 -----------------------------------------------------------------------------
 -- Add all Slash Commands
 
@@ -567,6 +546,19 @@ local function UFI_Slash(msg, editbox)
 			StaticPopup_Show("DARK_RELOAD");
 		return
 
+	elseif ( msg == 'name' or msg == 'nametext' ) then
+		if UnitFramesImprovedConfig.NameTextOutside == false then
+			UnitFramesImprovedConfig.NameTextOutside = true;
+			PlayerName:SetPoint("CENTER", PlayerFrameHealthBar, "Center", 0, 20); 
+			PlayerName:SetFont("Fonts\\FRIZQT__.TTF", 12, "OUTLINE");
+			TargetName:SetPoint("CENTER", TargetFrameHealthBar, "Center", 0, 20); 
+			TargetName:SetFont("Fonts\\FRIZQT__.TTF", 12, "OUTLINE");
+			return
+		else
+			StaticPopup_Show("TEXT_RELOAD");
+		end
+		return
+
 	elseif  msg == 'status'  then
 		if UnitFramesImprovedConfig.DarkMode == true then
 			ufi_chattext( fontOrange .. ' DarkMode ' .. fontLightGreen ..  'ON' );
@@ -586,6 +578,11 @@ local function UFI_Slash(msg, editbox)
 		if ufi_modui == true then
 			ufi_chattext( fontOrange .. ' ModUI ' .. fontLightGreen ..  'ON' );
 		end
+		if UnitFramesImprovedConfig.NameTextOutside == true then
+			ufi_chattext( fontOrange .. ' Name text outside frame ' .. fontLightGreen ..  'ON' );
+		else
+			ufi_chattext( fontOrange .. ' Name text outside frame ' .. fontRed ..  'OFF' );
+		end
 		return
 
 	elseif  msg == 'help'  then
@@ -601,6 +598,7 @@ local function UFI_Slash(msg, editbox)
 		ufi_chattext( fontOrange .. '/ufi text ' ..fontWhite..  '-- ' .. fontLightGreen .. '(toggle) ' ..fontWhite.. 'Player StatusBar Text' );
 		ufi_chattext( fontOrange .. '/ufi class ' ..fontWhite..  '-- ' .. fontLightGreen .. '(toggle) ' ..fontWhite.. 'ClassPortraits' );
 		ufi_chattext( fontOrange .. '/ufi dark ' ..fontWhite..  '-- ' .. fontLightGreen .. '(toggle) ' ..fontWhite.. 'DarkMode' );
+		ufi_chattext( fontOrange .. '/ufi name ' ..fontWhite..  '-- ' .. fontLightGreen .. '(toggle) ' ..fontWhite.. 'Name text outside frame' );
 		ufi_chattext( fontOrange .. '/ufi unlock ' ..fontWhite..  '-- Move frames' );
 		ufi_chattext( fontOrange .. '/ufi lock ' ..fontWhite..  '-- Lock frames' );
 		ufi_chattext( fontOrange .. '/ufi status ' ..fontWhite..  '-- to see active settings' );
