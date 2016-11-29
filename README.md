@@ -1,7 +1,7 @@
 # UnitFramesImproved_Vanilla
 Backport of UnitFramesImproved to Vanilla with some minor changes like dark mode and class portraits.
 
-<b>Now modUI compatible with slash command /ufi modui</b>
+<b>Now with automatic detection and compatibility if modUI is activated.</b>
 
 link to modUI: https://github.com/obble/modui
 
