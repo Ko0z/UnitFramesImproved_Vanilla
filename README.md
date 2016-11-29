@@ -20,6 +20,8 @@ This backport is in Beta State and I would appreciate if you report any bugs you
 
 <b>"/ufi text" to toggle player StatusBar text ON/OFF.</b>
 
+<b>"/ufi name" to toggle name text outside frame ON/OFF.</b>
+
 <b>"/ufi class" to toggle ClassPortraits ON/OFF.</b>
 
 <b>"/ufi dark" to toggle DarkMode ON/OFF.</b>
