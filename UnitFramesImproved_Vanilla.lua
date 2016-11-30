@@ -3,20 +3,22 @@
 _G = getfenv(0)
 
 UNITFRAMESIMPROVED_UI_COLOR = {r = .4, g = .4, b = .4}
-
 local UnitFramesImproved = CreateFrame('Button', 'UnitFramesImproved');
 local ADDON_NAME = "UnitFramesImproved_Vanilla";
-local ufi_modui = false;
+ufi_modui = false;
 
 function UnitFramesImproved_Default_Options()
 	if not UnitFramesImprovedConfig then
 		UnitFramesImprovedConfig = { }
 	end
 	
-	if not UnitFramesImprovedConfig.StatusBarText		then	UnitFramesImprovedConfig.StatusBarText		= false end
 	if not UnitFramesImprovedConfig.ClassPortrait		then	UnitFramesImprovedConfig.ClassPortrait		= false end
 	if not UnitFramesImprovedConfig.DarkMode			then	UnitFramesImprovedConfig.DarkMode			= false end
-	if not UnitFramesImprovedConfig.NameTextOutside		then	UnitFramesImprovedConfig.NameTextOutside	= false end
+	if not UnitFramesImprovedConfig.NameTextX			then	UnitFramesImprovedConfig.NameTextX			= 0		end
+	if not UnitFramesImprovedConfig.NameTextY			then	UnitFramesImprovedConfig.NameTextY			= 0		end
+	if not UnitFramesImprovedConfig.NameTextFontSize	then	UnitFramesImprovedConfig.NameTextFontSize	= 10	end
+	if not UnitFramesImprovedConfig.NameOutline			then	UnitFramesImprovedConfig.NameOutline		= false	end
+
 end
 
 
@@ -40,24 +42,10 @@ function UnitFramesImproved_Vanilla_OnLoad()
 		UnitFramesImproved_DarkMode();
 	end
 
-	if UnitFramesImprovedConfig.NameTextOutside == true then
-		PlayerName:SetPoint("CENTER", PlayerFrameHealthBar, "Center", 0, 20);
-		PlayerName:SetFont("Fonts\\FRIZQT__.TTF", 12, "OUTLINE");
-		TargetName:SetPoint("CENTER", TargetFrameHealthBar, "Center", 0, 20); 
-		TargetName:SetFont("Fonts\\FRIZQT__.TTF", 12, "OUTLINE");
-	end
 	-----------------------
 	-- FOR MODUI COMPATIBILITY
 	if (ufi_modui == false or ufi_modui == nil) then
 		TextStatusBar_UpdateTextString = UnitFramesImproved_TextStatusBar_UpdateTextString;
-
-		PlayerFrameHealthBarText:SetFont("Fonts\\FRIZQT__.TTF", 10);
-		PlayerFrameHealthBarText:SetShadowColor(0, 0, 0, 1)
-		PlayerFrameHealthBarText:SetShadowOffset(1, -1)
-
-		PlayerFrameManaBarText:SetFont("Fonts\\FRIZQT__.TTF", 10);
-		PlayerFrameManaBarText:SetShadowColor(0, 0, 0, 1)
-		PlayerFrameManaBarText:SetShadowOffset(1, -1)
 		--ufi_chattext( fontOrange.. 'modUI ' ..fontLightRed.. 'not detected.' );
 		-- Update some values
 		TextStatusBar_UpdateTextString(PlayerFrame.healthbar);
@@ -92,6 +80,8 @@ function UnitFramesImproved_Style_PlayerFrame()
 	PlayerFrameHealthBarText:SetPoint("CENTER",50,6);
 
 	PlayerFrameTexture:SetTexture("Interface\\Addons\\UnitFramesImproved_Vanilla\\Textures\\UI-TargetingFrame");
+	--PlayerFrameTexture:SetTexture("Interface\\Addons\\UnitFramesImproved_Vanilla\\Textures\\UI-FocusTargetingFrame");
+
 	PlayerStatusTexture:SetTexture("Interface\\Addons\\UnitFramesImproved_Vanilla\\Textures\\UI-Player-Status");	
 end
 
@@ -136,12 +126,6 @@ function UnitFramesImproved_TextStatusBar_UpdateTextString(textStatusBar)
 			else
 				textStatusBar.isZero = nil;
 				if ( textStatusBar.prefix ) then
-					if UnitFramesImprovedConfig.StatusBarText then
-						string:SetText(textStatusBar.prefix.." "..value.."/"..valueMax);
-					else
-						string:SetText(value.."/"..valueMax);
-					end
-				else
 					string:SetText(value.."/"..valueMax);
 				end
 				if ( GetCVar("statusBarText") == "1" and textStatusBar.textLockable ) then
@@ -213,6 +197,7 @@ function UnitColor(unit)
 		r, g, b = 0.5, 0.5, 0.5;
 	elseif ( UnitIsPlayer(unit) ) then
 		--Try to color it by class.
+		
 		if ( classColor ) then
 			if ( UnitClass(unit) == "Shaman" ) then
 				r, g, b = 0, 0.44, 0.87;
@@ -227,6 +212,11 @@ function UnitColor(unit)
 			end
 		end
 	else
+		--if ( UnitIsFriend("player", unit) ) then
+		--		r, g, b = 0.0, 1.0, 0.0;
+		--	else
+		--		r, g, b = 1.0, 0.0, 0.0;
+		--end
 		if ( classColor ) then
 			r, g, b = classColor.r, classColor.g, classColor.b;
 		else 
@@ -408,212 +398,6 @@ function UnitFramesImproved_DarkMode()
 		end
 	end
 end
------------------------------------------------------------------------
---Popup Dialogs 
-
-StaticPopupDialogs["CLASS_RELOAD"] = {
-	text = "A reload is required to toggle this setting.",
-	button1 = "Reload",
-	button2 = "Ignore",
-	OnAccept = function()
-		if	UnitFramesImprovedConfig.ClassPortrait == true then
-			UnitFramesImprovedConfig.ClassPortrait = false;
-			ReloadUI();
-		else
-			UnitFramesImprovedConfig.ClassPortrait = true;
-			ReloadUI();
-		end
-	end,
-	timeout = 0,
-	whileDead = true,
-	hideOnEscape = true
-}
-
-StaticPopupDialogs["DARK_RELOAD"] = {
-	text = "A reload is required to toggle this setting.",
-	button1 = "Reload",
-	button2 = "Ignore",
-	OnAccept = function()
-		if	UnitFramesImprovedConfig.DarkMode == true then
-			UnitFramesImprovedConfig.DarkMode = false;
-			ReloadUI();
-		else
-			UnitFramesImprovedConfig.DarkMode = true;
-			ReloadUI();
-		end
-	end,
-	timeout = 0,
-	whileDead = true,
-	hideOnEscape = true
-}
-
-StaticPopupDialogs["TEXT_RELOAD"] = {
-	text = "A reload is required to toggle this setting.",
-	button1 = "Reload",
-	button2 = "Ignore",
-	OnAccept = function()
-		UnitFramesImprovedConfig.NameTextOutside = false;
-		ReloadUI();
-	end,
-	timeout = 0,
-	whileDead = true,
-	hideOnEscape = true
-}
-
------------------------------------------------------------------------------
--- Add all Slash Commands
-
-SLASH_UNITFRAMESIMPROVED1 = "/ufi";
-SLASH_UNITFRAMESIMPROVED2 = "/unitframesimproved"
-  
-local function UFI_Slash(msg, editbox)
-	-- extract option name and option argument from message string
-	-- handle show/hide of options dialog first of all
-	-- handle all simple commands that dont require parsing right here	
-	
-	if  msg == 'text'  then
-		if UnitFramesImprovedConfig.StatusBarText == true then
-			UnitFramesImprovedConfig.StatusBarText = false;
-			TextStatusBar_UpdateTextString(PlayerFrame.healthbar);
-			TextStatusBar_UpdateTextString(PlayerFrame.manabar);
-			ufi_chattext( ' StatusBarText disabled ' );
-		else
-			UnitFramesImprovedConfig.StatusBarText = true;
-			TextStatusBar_UpdateTextString(PlayerFrame.healthbar);
-			TextStatusBar_UpdateTextString(PlayerFrame.manabar);
-			ufi_chattext( fontLightGreen..' StatusBarText enabled ' );
-		end
-		return
-
-	elseif  msg == 'unlock'  then
-		local function PlayerDragStart()
-			PlayerFrame:StartMoving();
-		end
-		local function PlayerDragStop()
-			PlayerFrame:StopMovingOrSizing();
-		end
-		local function TargetDragStart()
-			TargetFrame:StartMoving();
-		end
-		local function TargetDragStop()
-			TargetFrame:StopMovingOrSizing();
-		end
-		PlayerFrame:SetClampedToScreen(true);
-	    TargetFrame:SetClampedToScreen(true);
-		PlayerFrame:SetMovable(true);
-		PlayerFrame:EnableMouse(true);
-		PlayerFrame:RegisterForDrag("LeftButton");
-		PlayerFrame:SetScript("OnDragStart", PlayerDragStart);
-		PlayerFrame:SetScript("OnDragStop", PlayerDragStop);
-		ufi_chattext( fontRed.. ' PlayerFrame Unlocked' );
-		TargetFrame:SetMovable(true);
-		TargetFrame:EnableMouse(true);
-		TargetFrame:RegisterForDrag("LeftButton");
-		TargetFrame:SetScript("OnDragStart", TargetDragStart);
-		TargetFrame:SetScript("OnDragStop", TargetDragStop);
-		ufi_chattext( fontRed.. ' TargetFrame Unlocked' );
-		PlayerFrameTexture:SetVertexColor(0, 1, 0);
-		TargetFrameTexture:SetVertexColor(0, 1, 0);
-		return
-		
-	elseif  msg == 'lock'  then
-		PlayerFrame:SetClampedToScreen(false);
-	    TargetFrame:SetClampedToScreen(false);
-		if UnitFramesImprovedConfig.DarkMode == true then
-			PlayerFrameTexture:SetVertexColor(UNITFRAMESIMPROVED_UI_COLOR.r, UNITFRAMESIMPROVED_UI_COLOR.g, UNITFRAMESIMPROVED_UI_COLOR.b)
-			TargetFrameTexture:SetVertexColor(UNITFRAMESIMPROVED_UI_COLOR.r, UNITFRAMESIMPROVED_UI_COLOR.g, UNITFRAMESIMPROVED_UI_COLOR.b)
-		else
-			PlayerFrameTexture:SetVertexColor(1, 1, 1);
-			TargetFrameTexture:SetVertexColor(1, 1, 1);
-		end
-		PlayerFrame:StopMovingOrSizing();
-		TargetFrame:StopMovingOrSizing();
-		PlayerFrame:SetScript("OnDragStart", nil);
-		PlayerFrame:SetScript("OnDragStop", nil);
-		TargetFrame:SetScript("OnDragStart", nil);
-		TargetFrame:SetScript("OnDragStop", nil);
-		PlayerFrame:IsUserPlaced(true);
-		TargetFrame:IsUserPlaced(true);
-		ufi_chattext( fontLightGreen.. ' PlayerFrame Locked' )
-		ufi_chattext( fontLightGreen.. ' TargetFrame Locked' )
-		return
-
-	elseif  msg == 'class'  then
-			StaticPopup_Show("CLASS_RELOAD");
-		return
-
-	elseif ( msg == 'dark' or msg == 'darkmode' ) then
-			StaticPopup_Show("DARK_RELOAD");
-		return
-
-	elseif ( msg == 'name' or msg == 'nametext' ) then
-		if UnitFramesImprovedConfig.NameTextOutside == false then
-			UnitFramesImprovedConfig.NameTextOutside = true;
-			PlayerName:SetPoint("CENTER", PlayerFrameHealthBar, "Center", 0, 20); 
-			PlayerName:SetFont("Fonts\\FRIZQT__.TTF", 12, "OUTLINE");
-			TargetName:SetPoint("CENTER", TargetFrameHealthBar, "Center", 0, 20); 
-			TargetName:SetFont("Fonts\\FRIZQT__.TTF", 12, "OUTLINE");
-			return
-		else
-			StaticPopup_Show("TEXT_RELOAD");
-		end
-		return
-
-	elseif  msg == 'status'  then
-		if UnitFramesImprovedConfig.DarkMode == true then
-			ufi_chattext( fontOrange .. ' DarkMode ' .. fontLightGreen ..  'ON' );
-		else
-			ufi_chattext( fontOrange .. ' DarkMode ' .. fontRed ..  'OFF ' );
-		end
-		if UnitFramesImprovedConfig.ClassPortrait == true then
-			ufi_chattext( fontOrange .. ' ClassPortrait ' .. fontLightGreen ..  'ON' );
-		else
-			ufi_chattext( fontOrange .. ' ClassPortrait ' .. fontRed ..  'OFF ' );
-		end
-		if UnitFramesImprovedConfig.StatusBarText == true then
-			ufi_chattext( fontOrange .. ' StatusBarText ' .. fontLightGreen ..  'ON' );
-		else
-			ufi_chattext( fontOrange .. ' StatusBarText ' .. fontRed ..  'OFF' );
-		end
-		if ufi_modui == true then
-			ufi_chattext( fontOrange .. ' ModUI ' .. fontLightGreen ..  'ON' );
-		end
-		if UnitFramesImprovedConfig.NameTextOutside == true then
-			ufi_chattext( fontOrange .. ' Name text outside frame ' .. fontLightGreen ..  'ON' );
-		else
-			ufi_chattext( fontOrange .. ' Name text outside frame ' .. fontRed ..  'OFF' );
-		end
-		return
-
-	elseif  msg == 'help'  then
-		ufi_chattext( ' Usage: enter /ufi or /unitframesimproved for options' );
-		ufi_chattext( ' for AddOn help go to '..fontLightGreen..'https://github.com/Ko0z/UnitFramesImproved_Vanilla' );
-		return
-
-	elseif  msg == 'rl'  then
-		ReloadUI();
-		return
-
-	else
-		ufi_chattext( fontOrange .. '/ufi text ' ..fontWhite..  '-- ' .. fontLightGreen .. '(toggle) ' ..fontWhite.. 'Player StatusBar Text' );
-		ufi_chattext( fontOrange .. '/ufi class ' ..fontWhite..  '-- ' .. fontLightGreen .. '(toggle) ' ..fontWhite.. 'ClassPortraits' );
-		ufi_chattext( fontOrange .. '/ufi dark ' ..fontWhite..  '-- ' .. fontLightGreen .. '(toggle) ' ..fontWhite.. 'DarkMode' );
-		ufi_chattext( fontOrange .. '/ufi name ' ..fontWhite..  '-- ' .. fontLightGreen .. '(toggle) ' ..fontWhite.. 'Name text outside frame' );
-		ufi_chattext( fontOrange .. '/ufi unlock ' ..fontWhite..  '-- Move frames' );
-		ufi_chattext( fontOrange .. '/ufi lock ' ..fontWhite..  '-- Lock frames' );
-		ufi_chattext( fontOrange .. '/ufi status ' ..fontWhite..  '-- to see active settings' );
-		ufi_chattext( fontOrange .. '/ufi help ' ..fontWhite..  '-- for help' );
-	end
-end 
-
-SlashCmdList["UNITFRAMESIMPROVED"] = UFI_Slash;
-
-fontLightBlue = "|cff00e0ff"
-fontLightGreen = "|cff60ff60"
-fontLightRed = "|cffff8080"
-fontRed = "|cffff0000"
-fontOrange = "|cffff7000"
-fontWhite = "|cffffffff"
 
 function ufi_chattext(txt)
 	if( DEFAULT_CHAT_FRAME ) then

@@ -1,11 +1,11 @@
 ## Interface: 11200
 ## Title: UnitFramesImproved_Vanilla
 ## Notes: UnitFramesImproved Backported from Legion with a few changes
-## Version: 0.7
+## Version: 0.8
 ## Author: Ko0z (Richard Bertilsson) for Vanilla Backport Originally by: Althalla (Kim Forsberg)
 ## SavedVariables: UnitFramesImprovedConfig
 
 UnitFramesImproved_Vanilla.lua
-
+ufi_options.lua
 
 
