@@ -399,6 +399,8 @@ local menu = CreateFrame('Frame', 'ufi_options', UIParent)
 		UnitFramesImprovedConfig.NameTextY = 0
 		UnitFramesImprovedConfig.NameTextFontSize = 10
 		UnitFramesImprovedConfig.NameOutline = false
+		UnitFramesImprovedConfig.NPCClassColor = 1
+		UnitFramesImprovedConfig.PlayerClassColor = 1
 		ReloadUI();
 	end,
 	timeout = 0,
