@@ -49,7 +49,7 @@ local menu = CreateFrame('Frame', 'ufi_options', UIParent)
     --menu.intro:SetTextColor(colour.r, colour.g, colour.b)
     menu.intro:SetPoint('TOP', menu, 0, -30)
     menu.intro:SetWidth(280)
-    menu.intro:SetText'Hello! You are using |cffff6c6cUFI|r v0.8. This is a beta version so please report any issues to:'
+    menu.intro:SetText'Hello! You are using |cffff6c6cUFI|r v0.82. This is a beta version so please report any issues to:'
 	
 
 	menu.uilink = CreateFrame('EditBox', 'ufi_uilink', menu, 'InputBoxTemplate')
@@ -105,8 +105,27 @@ local menu = CreateFrame('Frame', 'ufi_options', UIParent)
 	_G[menu.textoutline:GetName()..'Text']:SetJustifyH'LEFT'
     _G[menu.textoutline:GetName()..'Text']:SetWidth(270)
     _G[menu.textoutline:GetName()..'Text']:SetPoint('LEFT', menu.textoutline, 'RIGHT', 4, 0)
-    _G[menu.textoutline:GetName()..'Text']:SetText'Name text outline'
+    _G[menu.textoutline:GetName()..'Text']:SetText'Font Outline'
 	-----------------------------------------------------
+	--NPC Class Color checkbutton
+	menu.npcclasscolor = CreateFrame('CheckButton', 'ufi_npcclasscolor', menu, 'UICheckButtonTemplate')
+    menu.npcclasscolor:SetHeight(20) menu.npcclasscolor:SetWidth(20)
+    menu.npcclasscolor:SetPoint('TOPLEFT', menu, 205, -80)
+	_G[menu.npcclasscolor:GetName()..'Text']:SetJustifyH'LEFT'
+    _G[menu.npcclasscolor:GetName()..'Text']:SetWidth(270)
+    _G[menu.npcclasscolor:GetName()..'Text']:SetPoint('LEFT', menu.npcclasscolor, 'RIGHT', 4, 0)
+    _G[menu.npcclasscolor:GetName()..'Text']:SetText'NPC Class Colors'
+	----------------------------------------------------
+	--Player Class Color checkbutton
+	menu.playerclasscolor = CreateFrame('CheckButton', 'ufi_playerclasscolor', menu, 'UICheckButtonTemplate')
+    menu.playerclasscolor:SetHeight(20) menu.playerclasscolor:SetWidth(20)
+    menu.playerclasscolor:SetPoint('TOPLEFT', menu, 205, -100)
+	_G[menu.playerclasscolor:GetName()..'Text']:SetJustifyH'LEFT'
+    _G[menu.playerclasscolor:GetName()..'Text']:SetWidth(270)
+    _G[menu.playerclasscolor:GetName()..'Text']:SetPoint('LEFT', menu.playerclasscolor, 'RIGHT', 4, 0)
+    _G[menu.playerclasscolor:GetName()..'Text']:SetText'Player Class Colors'
+	----------------------------------------------------
+	-- Name Text X Slider
 	menu.nametextX = CreateFrame('Slider', 'ufi_optionsnametextX', menu, 'OptionsSliderTemplate')
     menu.nametextX:SetWidth(200) 
 	menu.nametextX:SetHeight(16)
@@ -118,9 +137,9 @@ local menu = CreateFrame('Frame', 'ufi_options', UIParent)
 
         UnitFramesImprovedConfig.NameTextX = menu.nametextX:GetValue();
 
-		PlayerName:SetPoint("CENTER", PlayerFrameHealthBar, "Center", UnitFramesImprovedConfig.NameTextX, UnitFramesImprovedConfig.NameTextY+4); 
+		PlayerName:SetPoint("CENTER", PlayerFrameHealthBar, "Center", UnitFramesImprovedConfig.NameTextX, UnitFramesImprovedConfig.NameTextY+5); 
 		--PlayerName:SetFont("Fonts\\FRIZQT__.TTF", 12, "OUTLINE");
-		TargetName:SetPoint("CENTER", TargetFrameHealthBar, "Center", -UnitFramesImprovedConfig.NameTextX, UnitFramesImprovedConfig.NameTextY+4); 
+		TargetName:SetPoint("CENTER", TargetFrameHealthBar, "Center", -UnitFramesImprovedConfig.NameTextX, UnitFramesImprovedConfig.NameTextY+5); 
 		--TargetName:SetFont("Fonts\\FRIZQT__.TTF", 12, "OUTLINE");
     end)
 
@@ -128,6 +147,7 @@ local menu = CreateFrame('Frame', 'ufi_options', UIParent)
     _G[menu.nametextX:GetName()..'High']:SetText''
     _G[menu.nametextX:GetName()..'Text']:SetText'Name position X'
 	-----------------------------------------------------
+	-- Name Text Y Slider
 	menu.nametextY = CreateFrame('Slider', 'ufi_optionsnametextY', menu, 'OptionsSliderTemplate')
     menu.nametextY:SetWidth(200) 
 	menu.nametextY:SetHeight(16)
@@ -138,15 +158,15 @@ local menu = CreateFrame('Frame', 'ufi_options', UIParent)
     menu.nametextY:SetScript('OnValueChanged', function()
 
         UnitFramesImprovedConfig.NameTextY = menu.nametextY:GetValue();
-		PlayerName:SetPoint("CENTER", PlayerFrameHealthBar, "Center", UnitFramesImprovedConfig.NameTextX, UnitFramesImprovedConfig.NameTextY+4); 
-		TargetName:SetPoint("CENTER", TargetFrameHealthBar, "Center", -UnitFramesImprovedConfig.NameTextX, UnitFramesImprovedConfig.NameTextY+4); 
+		PlayerName:SetPoint("CENTER", PlayerFrameHealthBar, "Center", UnitFramesImprovedConfig.NameTextX, UnitFramesImprovedConfig.NameTextY+5); 
+		TargetName:SetPoint("CENTER", TargetFrameHealthBar, "Center", -UnitFramesImprovedConfig.NameTextX, UnitFramesImprovedConfig.NameTextY+5); 
     end)
 
     _G[menu.nametextY:GetName()..'Low']:SetText''
     _G[menu.nametextY:GetName()..'High']:SetText''
     _G[menu.nametextY:GetName()..'Text']:SetText'Name position Y'
 	-----------------------------------------------------------
-
+	-- Font Size Slider
 	menu.nametextfontsize = CreateFrame('Slider', 'ufi_optionsnametextfontsize', menu, 'OptionsSliderTemplate')
     menu.nametextfontsize:SetWidth(200) 
 	menu.nametextfontsize:SetHeight(16)
@@ -200,6 +220,26 @@ local menu = CreateFrame('Frame', 'ufi_options', UIParent)
 			UnitFramesImprovedConfig.NameOutline = false;
 			PlayerName:SetFont("Fonts\\FRIZQT__.TTF", UnitFramesImprovedConfig.NameTextFontSize);
 			TargetName:SetFont("Fonts\\FRIZQT__.TTF", UnitFramesImprovedConfig.NameTextFontSize); 
+		end
+    end)
+
+	menu.npcclasscolor:SetScript('OnClick', function()
+        if this:GetChecked() == 1 then 
+			UnitFramesImprovedConfig.NPCClassColor = 1;
+			--UnitFramesImproved_TargetFrame_Update();
+		else 
+			UnitFramesImprovedConfig.NPCClassColor = 0;
+			--UnitFramesImproved_TargetFrame_Update();
+		end
+    end)
+
+	menu.playerclasscolor:SetScript('OnClick', function()
+        if this:GetChecked() == 1 then 
+			UnitFramesImprovedConfig.PlayerClassColor = 1;
+			UnitFramesImproved_ColorUpdate();
+		else 
+			UnitFramesImprovedConfig.PlayerClassColor = 0;
+			UnitFramesImproved_ColorUpdate();
 		end
     end)
 
@@ -289,6 +329,18 @@ local menu = CreateFrame('Frame', 'ufi_options', UIParent)
 			menu.textoutline:SetChecked(false) 
 		end
 
+		if UnitFramesImprovedConfig.NPCClassColor == 1 then 
+			menu.npcclasscolor:SetChecked(true) 
+		else 
+			menu.npcclasscolor:SetChecked(false) 
+		end
+
+		if UnitFramesImprovedConfig.PlayerClassColor == 1 then 
+			menu.playerclasscolor:SetChecked(true) 
+		else 
+			menu.playerclasscolor:SetChecked(false) 
+		end
+
 		if UnitFramesImprovedConfig.NameTextX then
 			menu.nametextX:SetValue(UnitFramesImprovedConfig.NameTextX)
 		else 
@@ -307,8 +359,8 @@ local menu = CreateFrame('Frame', 'ufi_options', UIParent)
 			menu.nametextfontsize:SetValue(10)
 		end
 
-		PlayerName:SetPoint("CENTER", PlayerFrameHealthBar, "Center", UnitFramesImprovedConfig.NameTextX, UnitFramesImprovedConfig.NameTextY+4);
-		TargetName:SetPoint("CENTER", TargetFrameHealthBar, "Center", -UnitFramesImprovedConfig.NameTextX, UnitFramesImprovedConfig.NameTextY+4); 
+		PlayerName:SetPoint("CENTER", PlayerFrameHealthBar, "Center", UnitFramesImprovedConfig.NameTextX, UnitFramesImprovedConfig.NameTextY+5);
+		TargetName:SetPoint("CENTER", TargetFrameHealthBar, "Center", -UnitFramesImprovedConfig.NameTextX, UnitFramesImprovedConfig.NameTextY+5); 
 
 		if UnitFramesImprovedConfig.NameOutline == true then
 			PlayerName:SetFont("Fonts\\FRIZQT__.TTF", UnitFramesImprovedConfig.NameTextFontSize, "OUTLINE");
@@ -321,7 +373,9 @@ local menu = CreateFrame('Frame', 'ufi_options', UIParent)
 		if ufi_modui == true then
 			menu.darkmode:Disable();
 			menu.unlock:Disable();
-			_G[menu.darkmode:GetName()..'Text']:SetText'Dark Mode |cffff6c6cdisabled by modUI|r'
+			menu.playerclasscolor:Disable();
+			_G[menu.darkmode:GetName()..'Text']:SetText'|cffff6c6cdisabled by modUI|r'
+			_G[menu.playerclasscolor:GetName()..'Text']:SetText'|cffff6c6cenabled by modUI|r'
 		else
 			PlayerFrameHealthBarText:SetFont("Fonts\\FRIZQT__.TTF", 10);
 			PlayerFrameHealthBarText:SetShadowColor(0, 0, 0, 1)

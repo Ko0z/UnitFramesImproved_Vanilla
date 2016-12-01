@@ -2,7 +2,7 @@
 
 _G = getfenv(0)
 
-UNITFRAMESIMPROVED_UI_COLOR = {r = .4, g = .4, b = .4}
+UNITFRAMESIMPROVED_UI_COLOR = {r = .3, g = .3, b = .3}
 local UnitFramesImproved = CreateFrame('Button', 'UnitFramesImproved');
 local ADDON_NAME = "UnitFramesImproved_Vanilla";
 ufi_modui = false;
@@ -18,6 +18,8 @@ function UnitFramesImproved_Default_Options()
 	if not UnitFramesImprovedConfig.NameTextY			then	UnitFramesImprovedConfig.NameTextY			= 0		end
 	if not UnitFramesImprovedConfig.NameTextFontSize	then	UnitFramesImprovedConfig.NameTextFontSize	= 10	end
 	if not UnitFramesImprovedConfig.NameOutline			then	UnitFramesImprovedConfig.NameOutline		= false	end
+	if not UnitFramesImprovedConfig.NPCClassColor		then	UnitFramesImprovedConfig.NPCClassColor		= 1		end
+	if not UnitFramesImprovedConfig.PlayerClassColor	then	UnitFramesImprovedConfig.PlayerClassColor	= 1		end
 
 end
 
@@ -28,7 +30,7 @@ function UnitFramesImproved_Vanilla_OnLoad()
 	HealthBar_OnValueChanged = UnitFramesImproved_ColorUpdate;
 	------------------------
 	TargetFrame_OnUpdate = UnitFramesImproved_TargetFrame_Update;
-	TargetFrame_CheckFaction = UnitFramesImproved_TargetFrame_CheckFaction;
+	----------------------------
 	TargetFrame_CheckClassification = UnitFramesImproved_TargetFrame_CheckClassification;
 
 	ufi_chattext( fontLightGreen..'UnitFramesImproved_Vanilla Loaded. ' .. fontLightRed .. 'Type ' ..fontOrange.. '/ufi ' ..fontLightRed.. 'for options' );
@@ -46,7 +48,6 @@ function UnitFramesImproved_Vanilla_OnLoad()
 	-- FOR MODUI COMPATIBILITY
 	if (ufi_modui == false or ufi_modui == nil) then
 		TextStatusBar_UpdateTextString = UnitFramesImproved_TextStatusBar_UpdateTextString;
-		--ufi_chattext( fontOrange.. 'modUI ' ..fontLightRed.. 'not detected.' );
 		-- Update some values
 		TextStatusBar_UpdateTextString(PlayerFrame.healthbar);
 		TextStatusBar_UpdateTextString(PlayerFrame.manabar);
@@ -54,7 +55,8 @@ function UnitFramesImproved_Vanilla_OnLoad()
 		ufi_chattext( fontOrange.. 'modUI ' ..fontLightGreen.. 'detected.' );
 		PlayerFrameBackground.bg:Hide();
 		UnitFramesImprovedConfig.DarkMode = false;
-		
+		UnitFramesImprovedConfig.PlayerClassColor	= 1;
+
 		local NAME_TEXTURE   = [[Interface\AddOns\modui\statusbar\texture\name.tga]]
 		PlayerFrameHealthBar:SetStatusBarTexture(NAME_TEXTURE)
 		TargetFrameHealthBar:SetStatusBarTexture(NAME_TEXTURE)
@@ -80,13 +82,15 @@ function UnitFramesImproved_Style_PlayerFrame()
 	PlayerFrameHealthBarText:SetPoint("CENTER",50,6);
 
 	PlayerFrameTexture:SetTexture("Interface\\Addons\\UnitFramesImproved_Vanilla\\Textures\\UI-TargetingFrame");
-	--PlayerFrameTexture:SetTexture("Interface\\Addons\\UnitFramesImproved_Vanilla\\Textures\\UI-FocusTargetingFrame");
-
 	PlayerStatusTexture:SetTexture("Interface\\Addons\\UnitFramesImproved_Vanilla\\Textures\\UI-Player-Status");	
 end
 
 function UnitFramesImproved_ColorUpdate()
-	PlayerFrameHealthBar:SetStatusBarColor(UnitColor("player"));
+	if UnitFramesImprovedConfig.PlayerClassColor == 1 then
+		PlayerFrameHealthBar:SetStatusBarColor(UnitColor("player"));
+	else
+		PlayerFrameHealthBar:SetStatusBarColor(0,1,0);
+	end
 end
 
 function UnitFramesImproved_Style_TargetFrame(unit)
@@ -96,13 +100,11 @@ function UnitFramesImproved_Style_TargetFrame(unit)
 			TargetFrameHealthBar:SetPoint("TOPLEFT",6,-41);
 			TargetDeadText:SetPoint("CENTER",-50,4);
 			TargetFrameNameBackground:Hide()
-			TargetFrameNameBackground:SetPoint("TOPLEFT",7,-41);
 		else
 			TargetFrameHealthBar:SetHeight(29);
 			TargetFrameHealthBar:SetPoint("TOPLEFT",6,-22);
 			TargetDeadText:SetPoint("CENTER",-50,6);
 			TargetFrameNameBackground:Hide();
-			TargetFrameNameBackground:SetPoint("TOPLEFT",7,-22);
 		end
 		TargetFrameHealthBar:SetWidth(119);
 		TargetFrameHealthBar.lockColor = true;
@@ -155,7 +157,6 @@ function UnitFramesImproved_TargetFrame_Update()
 end
 
 function UnitFramesImproved_TargetFrame_CheckClassification()
-
 	local classification = UnitClassification("target");
 	
 	if ( classification == "worldboss" ) then
@@ -190,6 +191,7 @@ end
 -- Utility functions
 function UnitColor(unit)
 	local r, g, b;
+	local sr, sg, sb = TargetFrameNameBackground:GetVertexColor();
 	local localizedClass, englishClass = UnitClass(unit);
 	local classColor = RAID_CLASS_COLORS[englishClass];
 	if ( ( not UnitIsPlayer(unit) ) and ( ( not UnitIsConnected(unit) ) or ( UnitIsDeadOrGhost(unit) ) ) ) then
@@ -197,30 +199,30 @@ function UnitColor(unit)
 		r, g, b = 0.5, 0.5, 0.5;
 	elseif ( UnitIsPlayer(unit) ) then
 		--Try to color it by class.
-		
-		if ( classColor ) then
-			if ( UnitClass(unit) == "Shaman" ) then
-				r, g, b = 0, 0.44, 0.87;
+		if UnitFramesImprovedConfig.PlayerClassColor == 1 then
+
+			if ( classColor ) then
+				if ( UnitClass(unit) == "Shaman" ) then
+					r, g, b = 0, 0.44, 0.87;
+				else
+				r, g, b = classColor.r, classColor.g, classColor.b;
+				end
 			else
-			r, g, b = classColor.r, classColor.g, classColor.b;
+				if ( UnitIsFriend("player", unit) ) then
+					r, g, b = 0.0, 1.0, 0.0;
+				else
+					r, g, b = 1.0, 0.0, 0.0;
+				end
 			end
 		else
-			if ( UnitIsFriend("player", unit) ) then
-				r, g, b = 0.0, 1.0, 0.0;
-			else
-				r, g, b = 1.0, 0.0, 0.0;
-			end
+			r, g, b = sr, sg, sb;
 		end
+
 	else
-		--if ( UnitIsFriend("player", unit) ) then
-		--		r, g, b = 0.0, 1.0, 0.0;
-		--	else
-		--		r, g, b = 1.0, 0.0, 0.0;
-		--end
-		if ( classColor ) then
+		if UnitFramesImprovedConfig.NPCClassColor == 1 and classColor then
 			r, g, b = classColor.r, classColor.g, classColor.b;
-		else 
-			r, g, b = 0, 1, 0;
+		else
+			r, g, b = sr, sg, sb;
 		end
 	end
 	
