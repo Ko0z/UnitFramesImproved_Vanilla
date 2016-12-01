@@ -10,14 +10,15 @@ If you have suggestions or ideas you'r welcome to post them in the issues sectio
 
 <b>I recommend using MobInfo2 to be able to see mobs health/mana etc.</b>
 
+<b>COMMANDS: </b>
+
+<b>"/ufi"</b> to show Options
+
 <a href="http://imgur.com/Ud4z7Fo"><img src="http://i.imgur.com/Ud4z7Fo.png" title="source: imgur.com" /></a>
 
 <b>modUI compatible.</b>
 
-<a href="http://imgur.com/nwbY55L"><img src="http://i.imgur.com/nwbY55L.png" title="source: imgur.com" /></a>
+<a href="http://imgur.com/pOPtV70"><img src="http://i.imgur.com/pOPtV70.png" title="source: imgur.com" /></a>
 
 <b>Dont forget to remove "-master" at the end of the filename when you add it to your interface folder.</b>
 
-<b>COMMANDS: </b>
-
-<b>"/ufi"</b> to show Options
