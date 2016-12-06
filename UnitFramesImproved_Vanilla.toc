@@ -1,11 +1,19 @@
 ## Interface: 11200
 ## Title: UnitFramesImproved_Vanilla
 ## Notes: UnitFramesImproved Backported from Legion with a few changes
-## Version: 0.82
-## Author: Ko0z (Richard Bertilsson) for Vanilla Backport Originally by: Althalla (Kim Forsberg)
-## SavedVariables: UnitFramesImprovedConfig
+## Version: 0.90
+## Author: Ko0z (Richard Bertilsson) for Vanilla Backport, Originally by: Althalla (Kim Forsberg)
+## SavedVariables: MobHealth3DB, MobHealth3Config, UnitFramesImprovedConfig
+
+libs\AceLibrary\AceLibrary.lua
+libs\AceOO-2.0\AceOO-2.0.lua
+libs\AceEvent-2.0\AceEvent-2.0.lua
+libs\AceAddon-2.0\AceAddon-2.0.lua
+libs\AceConsole-2.0\AceConsole-2.0.lua
+
+libs\MobHealth3.lua
+libs\MH3_Blizzard.lua
+libs\mobhealth.lua
 
 UnitFramesImproved_Vanilla.lua
 ufi_options.lua
-
-

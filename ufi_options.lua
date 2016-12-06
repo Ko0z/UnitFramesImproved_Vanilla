@@ -177,7 +177,7 @@ local menu = CreateFrame('Frame', 'ufi_options', UIParent)
     menu.nametextfontsize:SetScript('OnValueChanged', function()
 
         UnitFramesImprovedConfig.NameTextFontSize = menu.nametextfontsize:GetValue();
-		if UnitFramesImprovedConfig.NameOutline == true then
+		if UnitFramesImprovedConfig.NameOutline == 1 then
 			PlayerName:SetFont("Fonts\\FRIZQT__.TTF", UnitFramesImprovedConfig.NameTextFontSize, "OUTLINE");
 			TargetName:SetFont("Fonts\\FRIZQT__.TTF", UnitFramesImprovedConfig.NameTextFontSize, "OUTLINE");
 		else
@@ -213,11 +213,11 @@ local menu = CreateFrame('Frame', 'ufi_options', UIParent)
 
 	menu.textoutline:SetScript('OnClick', function()
         if this:GetChecked() == 1 then 
-			UnitFramesImprovedConfig.NameOutline = true;
+			UnitFramesImprovedConfig.NameOutline = 1;
 			PlayerName:SetFont("Fonts\\FRIZQT__.TTF", UnitFramesImprovedConfig.NameTextFontSize, "OUTLINE");
 			TargetName:SetFont("Fonts\\FRIZQT__.TTF", UnitFramesImprovedConfig.NameTextFontSize, "OUTLINE"); 
 		else 
-			UnitFramesImprovedConfig.NameOutline = false;
+			UnitFramesImprovedConfig.NameOutline = 0;
 			PlayerName:SetFont("Fonts\\FRIZQT__.TTF", UnitFramesImprovedConfig.NameTextFontSize);
 			TargetName:SetFont("Fonts\\FRIZQT__.TTF", UnitFramesImprovedConfig.NameTextFontSize); 
 		end
@@ -323,7 +323,7 @@ local menu = CreateFrame('Frame', 'ufi_options', UIParent)
 			menu.darkmode:SetChecked(false) 
 		end
 
-		if UnitFramesImprovedConfig.NameOutline == true then 
+		if UnitFramesImprovedConfig.NameOutline == 1 then 
 			menu.textoutline:SetChecked(true) 
 		else 
 			menu.textoutline:SetChecked(false) 
@@ -362,7 +362,7 @@ local menu = CreateFrame('Frame', 'ufi_options', UIParent)
 		PlayerName:SetPoint("CENTER", PlayerFrameHealthBar, "Center", UnitFramesImprovedConfig.NameTextX, UnitFramesImprovedConfig.NameTextY+5);
 		TargetName:SetPoint("CENTER", TargetFrameHealthBar, "Center", -UnitFramesImprovedConfig.NameTextX, UnitFramesImprovedConfig.NameTextY+5); 
 
-		if UnitFramesImprovedConfig.NameOutline == true then
+		if UnitFramesImprovedConfig.NameOutline == 1 then
 			PlayerName:SetFont("Fonts\\FRIZQT__.TTF", UnitFramesImprovedConfig.NameTextFontSize, "OUTLINE");
 			TargetName:SetFont("Fonts\\FRIZQT__.TTF", UnitFramesImprovedConfig.NameTextFontSize, "OUTLINE");
 		else
@@ -377,13 +377,15 @@ local menu = CreateFrame('Frame', 'ufi_options', UIParent)
 			_G[menu.darkmode:GetName()..'Text']:SetText'|cffff6c6cdisabled by modUI|r'
 			_G[menu.playerclasscolor:GetName()..'Text']:SetText'|cffff6c6cenabled by modUI|r'
 		else
-			PlayerFrameHealthBarText:SetFont("Fonts\\FRIZQT__.TTF", 10);
-			PlayerFrameHealthBarText:SetShadowColor(0, 0, 0, 1)
-			PlayerFrameHealthBarText:SetShadowOffset(1, -1)
+			PlayerFrameHealthBarText:SetFont(STANDARD_TEXT_FONT, 10, 'OUTLINE');
+			PlayerFrameHealthBarText:SetJustifyV'MIDDLE'
+			--PlayerFrameHealthBarText:SetShadowColor(0, 0, 0, 1)
+			--PlayerFrameHealthBarText:SetShadowOffset(1, -1)
 
-			PlayerFrameManaBarText:SetFont("Fonts\\FRIZQT__.TTF", 10);
-			PlayerFrameManaBarText:SetShadowColor(0, 0, 0, 1)
-			PlayerFrameManaBarText:SetShadowOffset(1, -1)
+			PlayerFrameManaBarText:SetFont(STANDARD_TEXT_FONT, 10, 'OUTLINE');
+			PlayerFrameManaBarText:SetJustifyV'MIDDLE'
+			--PlayerFrameManaBarText:SetShadowColor(0, 0, 0, 1)
+			--PlayerFrameManaBarText:SetShadowOffset(1, -1)
 		end
 
     end)
@@ -397,9 +399,9 @@ local menu = CreateFrame('Frame', 'ufi_options', UIParent)
 		UnitFramesImprovedConfig.DarkMode = false
 		UnitFramesImprovedConfig.NameTextX = 0		
 		UnitFramesImprovedConfig.NameTextY = 0
-		UnitFramesImprovedConfig.NameTextFontSize = 10
-		UnitFramesImprovedConfig.NameOutline = false
-		UnitFramesImprovedConfig.NPCClassColor = 1
+		UnitFramesImprovedConfig.NameTextFontSize = 11
+		UnitFramesImprovedConfig.NameOutline = 1
+		UnitFramesImprovedConfig.NPCClassColor = 0
 		UnitFramesImprovedConfig.PlayerClassColor = 1
 		ReloadUI();
 	end,
@@ -414,6 +416,7 @@ local menu = CreateFrame('Frame', 'ufi_options', UIParent)
 	fontRed = "|cffff0000"
 	fontOrange = "|cffff7000"
 	fontWhite = "|cffffffff"
+	fontGreen = "|cff00ff00"
 
 	SLASH_UFI_OPTIONS1 = '/ufi'
     SlashCmdList['UFI_OPTIONS'] = function(arg)

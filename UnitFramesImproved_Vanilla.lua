@@ -16,9 +16,9 @@ function UnitFramesImproved_Default_Options()
 	if not UnitFramesImprovedConfig.DarkMode			then	UnitFramesImprovedConfig.DarkMode			= false end
 	if not UnitFramesImprovedConfig.NameTextX			then	UnitFramesImprovedConfig.NameTextX			= 0		end
 	if not UnitFramesImprovedConfig.NameTextY			then	UnitFramesImprovedConfig.NameTextY			= 0		end
-	if not UnitFramesImprovedConfig.NameTextFontSize	then	UnitFramesImprovedConfig.NameTextFontSize	= 10	end
-	if not UnitFramesImprovedConfig.NameOutline			then	UnitFramesImprovedConfig.NameOutline		= false	end
-	if not UnitFramesImprovedConfig.NPCClassColor		then	UnitFramesImprovedConfig.NPCClassColor		= 1		end
+	if not UnitFramesImprovedConfig.NameTextFontSize	then	UnitFramesImprovedConfig.NameTextFontSize	= 11	end
+	if not UnitFramesImprovedConfig.NameOutline			then	UnitFramesImprovedConfig.NameOutline		= 1	end
+	if not UnitFramesImprovedConfig.NPCClassColor		then	UnitFramesImprovedConfig.NPCClassColor		= 0		end
 	if not UnitFramesImprovedConfig.PlayerClassColor	then	UnitFramesImprovedConfig.PlayerClassColor	= 1		end
 
 end
@@ -27,13 +27,17 @@ end
 function UnitFramesImproved_Vanilla_OnLoad()
 	UnitFramesImproved_Default_Options();
 	-- Generic status text hook
+
 	HealthBar_OnValueChanged = UnitFramesImproved_ColorUpdate;
-	------------------------
 	TargetFrame_OnUpdate = UnitFramesImproved_TargetFrame_Update;
-	----------------------------
 	TargetFrame_CheckClassification = UnitFramesImproved_TargetFrame_CheckClassification;
 
-	ufi_chattext( fontLightGreen..'UnitFramesImproved_Vanilla Loaded. ' .. fontLightRed .. 'Type ' ..fontOrange.. '/ufi ' ..fontLightRed.. 'for options' );
+	ufi_chattext( fontLightGreen..'UnitFramesImproved_Vanilla Loaded. ' .. fontLightRed .. 'Type ' ..fontOrange.. '/ufi ' ..fontLightRed.. 'for options.' );
+	if MobHealth3Config.saveData == true then
+		ufi_chattext( fontLightGreen..'MobHealth3 Loaded. -' .. fontWhite .. ' Saving mob health between sessions =' .. fontGreen..' ON ' .. fontWhite .. 'Type '..fontOrange.. '/mh3 ' ..fontLightGreen.. 'for options.' );
+	else
+		ufi_chattext( fontLightGreen..'MobHealth3 Loaded. -' .. fontWhite .. ' Saving mob health between sessions =' .. fontRed..' OFF ' .. fontWhite .. 'Type '..fontOrange.. '/mh3 ' ..fontLightGreen.. 'for options.' );
+	end
 	-------------------------------------------------------------------------------------
 	-- Check Saved Configs and apply
 	if UnitFramesImprovedConfig.ClassPortrait == true then
@@ -79,7 +83,7 @@ function UnitFramesImproved_Style_PlayerFrame()
 	PlayerFrameHealthBar:SetWidth(119);
 	PlayerFrameHealthBar:SetHeight(29);
 	PlayerFrameHealthBar:SetPoint("TOPLEFT",106,-22);
-	PlayerFrameHealthBarText:SetPoint("CENTER",50,6);
+	PlayerFrameHealthBarText:SetPoint("CENTER",50,5);
 
 	PlayerFrameTexture:SetTexture("Interface\\Addons\\UnitFramesImproved_Vanilla\\Textures\\UI-TargetingFrame");
 	PlayerStatusTexture:SetTexture("Interface\\Addons\\UnitFramesImproved_Vanilla\\Textures\\UI-Player-Status");	
@@ -110,6 +114,15 @@ function UnitFramesImproved_Style_TargetFrame(unit)
 		TargetFrameHealthBar.lockColor = true;
 end
 
+function true_format(v)            -- STATUS TEXT FORMATTING ie 1.5k, 2.3m
+         if v > 1E7 then return (math.floor(v/1E6))..'m'
+         elseif v > 1E6 then return (math.floor((v/1E6)*10)/10)..'m'
+         elseif v > 1E4 then return (math.floor(v/1E3))..'k'
+         elseif v > 1E3 then return (math.floor((v/1E3)*10)/10)..'k'
+         else return v 
+	end
+end
+
 function UnitFramesImproved_TextStatusBar_UpdateTextString(textStatusBar)	
 	if ( not textStatusBar ) then
 		textStatusBar = this;
@@ -119,6 +132,12 @@ function UnitFramesImproved_TextStatusBar_UpdateTextString(textStatusBar)
 	if(string) then
 		local value = textStatusBar:GetValue();
 		local valueMin, valueMax = textStatusBar:GetMinMaxValues();
+		------------------------
+		local pp = UnitPowerType'player'
+    	local v  = math.floor(textStatusBar:GetValue())
+    	local min, max = textStatusBar:GetMinMaxValues()
+        local percent = math.floor(v/max*100)
+		---------------------------
 		if ( valueMax > 0 ) then
 			textStatusBar:Show();
 			if ( value == 0 and textStatusBar.zeroText ) then
@@ -127,9 +146,7 @@ function UnitFramesImproved_TextStatusBar_UpdateTextString(textStatusBar)
 				string:Show();
 			else
 				textStatusBar.isZero = nil;
-				if ( textStatusBar.prefix ) then
-					string:SetText(value.."/"..valueMax);
-				end
+					string:SetText(true_format(v)..'/'..true_format(max).. ' \226\128\148 ' ..percent..'%')
 				if ( GetCVar("statusBarText") == "1" and textStatusBar.textLockable ) then
 					string:Show();
 				elseif ( textStatusBar.lockShow > 0 ) then
@@ -410,6 +427,7 @@ end
 function UnitFramesImproved_OnLoad() 
 	UnitFramesImproved:SetScript("OnEvent", UnitFramesImproved_OnEvent)
 	UnitFramesImproved:RegisterEvent('ADDON_LOADED');
+	UnitFramesImproved:RegisterEvent('PLAYER_ENTERING_WORLD');
 end
 
 function UnitFramesImproved_OnEvent() 	
@@ -419,7 +437,9 @@ function UnitFramesImproved_OnEvent()
 
 	if (event == "ADDON_LOADED") then	--makes sure it doesnt fire more than once.
 		if (arg1 == ADDON_NAME) then 
-			UnitFramesImproved_Vanilla_OnLoad(); 
+			--if (event == "PLAYER_ENTERING_WORLD") then
+				UnitFramesImproved_Vanilla_OnLoad(); 
+			--end
 		end
     end 
 end
