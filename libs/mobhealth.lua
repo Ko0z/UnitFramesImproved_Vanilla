@@ -4,6 +4,7 @@
 	local uValue = 1
 
     local move = function()
+		if ufi_modui == true then return end;
         for _, v in pairs ({MobHealth3BlizzardHealthText, MobHealth3BlizzardPowerText}) do
             v:SetFont(STANDARD_TEXT_FONT, 10, 'OUTLINE')
             v:SetShadowOffset(0, 0)
@@ -19,6 +20,7 @@
     end
 
     function MH3Blizz:HealthUpdate()
+		if ufi_modui == true then return end;
         local v, max  = MobHealth3:GetUnitHealth('target', UnitHealth'target', UnitHealthMax'target')
         local percent = math.floor(v/max*100)
         local string  = MobHealth3BlizzardHealthText
@@ -51,6 +53,7 @@
     end
 
     function MH3Blizz:PowerUpdate()
+		if ufi_modui == true then return end;
         local _, class = UnitClass'target'
         local v, max   = UnitMana'target', UnitManaMax'target'
         local percent  = math.floor(v/max*100)
