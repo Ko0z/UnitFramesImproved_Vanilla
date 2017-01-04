@@ -49,7 +49,7 @@ local menu = CreateFrame('Frame', 'ufi_options', UIParent)
     --menu.intro:SetTextColor(colour.r, colour.g, colour.b)
     menu.intro:SetPoint('TOP', menu, 0, -30)
     menu.intro:SetWidth(280)
-    menu.intro:SetText'Hello! You are using |cffff6c6cUFI|r v0.90. This is a beta version so please report any issues to:'
+    menu.intro:SetText'Hello! You are using |cffff6c6cUFI|r v0.93. This is a beta version so please report any issues to:'
 	
 
 	menu.uilink = CreateFrame('EditBox', 'ufi_uilink', menu, 'InputBoxTemplate')
@@ -83,7 +83,7 @@ local menu = CreateFrame('Frame', 'ufi_options', UIParent)
 	--classportraits checkbutton
 	menu.classportrait = CreateFrame('CheckButton', 'ufi_classportraits', menu, 'UICheckButtonTemplate')
     menu.classportrait:SetHeight(20) menu.classportrait:SetWidth(20)
-    menu.classportrait:SetPoint('TOPLEFT', menu, 25, -80)
+    menu.classportrait:SetPoint('TOPLEFT', menu, 20, -80)
 	_G[menu.classportrait:GetName()..'Text']:SetJustifyH'LEFT'
     _G[menu.classportrait:GetName()..'Text']:SetWidth(270)
     _G[menu.classportrait:GetName()..'Text']:SetPoint('LEFT', menu.classportrait, 'RIGHT', 4, 0)
@@ -92,7 +92,7 @@ local menu = CreateFrame('Frame', 'ufi_options', UIParent)
 	--darkmode checkbutton
 	menu.darkmode = CreateFrame('CheckButton', 'ufi_darkmode', menu, 'UICheckButtonTemplate')
     menu.darkmode:SetHeight(20) menu.darkmode:SetWidth(20)
-    menu.darkmode:SetPoint('TOPLEFT', menu, 25, -100)
+    menu.darkmode:SetPoint('TOPLEFT', menu, 20, -100)
 	_G[menu.darkmode:GetName()..'Text']:SetJustifyH'LEFT'
     _G[menu.darkmode:GetName()..'Text']:SetWidth(270)
     _G[menu.darkmode:GetName()..'Text']:SetPoint('LEFT', menu.darkmode, 'RIGHT', 4, 0)
@@ -101,7 +101,7 @@ local menu = CreateFrame('Frame', 'ufi_options', UIParent)
 	--name text outline checkbutton
 	menu.textoutline = CreateFrame('CheckButton', 'ufi_textoutline', menu, 'UICheckButtonTemplate')
     menu.textoutline:SetHeight(20) menu.textoutline:SetWidth(20)
-    menu.textoutline:SetPoint('TOPLEFT', menu, 25, -120)
+    menu.textoutline:SetPoint('TOPLEFT', menu, 20, -120)
 	_G[menu.textoutline:GetName()..'Text']:SetJustifyH'LEFT'
     _G[menu.textoutline:GetName()..'Text']:SetWidth(270)
     _G[menu.textoutline:GetName()..'Text']:SetPoint('LEFT', menu.textoutline, 'RIGHT', 4, 0)
@@ -110,7 +110,7 @@ local menu = CreateFrame('Frame', 'ufi_options', UIParent)
 	--NPC Class Color checkbutton
 	menu.npcclasscolor = CreateFrame('CheckButton', 'ufi_npcclasscolor', menu, 'UICheckButtonTemplate')
     menu.npcclasscolor:SetHeight(20) menu.npcclasscolor:SetWidth(20)
-    menu.npcclasscolor:SetPoint('TOPLEFT', menu, 205, -80)
+    menu.npcclasscolor:SetPoint('TOPLEFT', menu, 120, -80)
 	_G[menu.npcclasscolor:GetName()..'Text']:SetJustifyH'LEFT'
     _G[menu.npcclasscolor:GetName()..'Text']:SetWidth(270)
     _G[menu.npcclasscolor:GetName()..'Text']:SetPoint('LEFT', menu.npcclasscolor, 'RIGHT', 4, 0)
@@ -119,11 +119,38 @@ local menu = CreateFrame('Frame', 'ufi_options', UIParent)
 	--Player Class Color checkbutton
 	menu.playerclasscolor = CreateFrame('CheckButton', 'ufi_playerclasscolor', menu, 'UICheckButtonTemplate')
     menu.playerclasscolor:SetHeight(20) menu.playerclasscolor:SetWidth(20)
-    menu.playerclasscolor:SetPoint('TOPLEFT', menu, 205, -100)
+    menu.playerclasscolor:SetPoint('TOPLEFT', menu, 120, -100)
 	_G[menu.playerclasscolor:GetName()..'Text']:SetJustifyH'LEFT'
     _G[menu.playerclasscolor:GetName()..'Text']:SetWidth(270)
     _G[menu.playerclasscolor:GetName()..'Text']:SetPoint('LEFT', menu.playerclasscolor, 'RIGHT', 4, 0)
-    _G[menu.playerclasscolor:GetName()..'Text']:SetText'Player Class Colors'
+    _G[menu.playerclasscolor:GetName()..'Text']:SetText'Player Class Color'
+	----------------------------------------------------
+	--Percentage checkbutton
+	menu.percentage = CreateFrame('CheckButton', 'ufi_percentage', menu, 'UICheckButtonTemplate')
+    menu.percentage:SetHeight(20) menu.percentage:SetWidth(20)
+    menu.percentage:SetPoint('TOPLEFT', menu, 120, -120)
+	_G[menu.percentage:GetName()..'Text']:SetJustifyH'LEFT'
+    _G[menu.percentage:GetName()..'Text']:SetWidth(270)
+    _G[menu.percentage:GetName()..'Text']:SetPoint('LEFT', menu.percentage, 'RIGHT', 4, 0)
+    _G[menu.percentage:GetName()..'Text']:SetText'Show Percentages'
+	----------------------------------------------------
+	--True Format over 10k checkbutton
+	menu.trueformat = CreateFrame('CheckButton', 'ufi_trueformat', menu, 'UICheckButtonTemplate')
+    menu.trueformat:SetHeight(20) menu.trueformat:SetWidth(20)
+    menu.trueformat:SetPoint('TOPLEFT', menu, 240, -80)
+	_G[menu.trueformat:GetName()..'Text']:SetJustifyH'LEFT'
+    _G[menu.trueformat:GetName()..'Text']:SetWidth(270)
+    _G[menu.trueformat:GetName()..'Text']:SetPoint('LEFT', menu.trueformat, 'RIGHT', 4, 0)
+    _G[menu.trueformat:GetName()..'Text']:SetText'Format HP<10k'
+	----------------------------------------------------
+	--Hide Pet Text checkbutton
+	menu.hidepettext = CreateFrame('CheckButton', 'ufi_hidepettext', menu, 'UICheckButtonTemplate')
+    menu.hidepettext:SetHeight(20) menu.hidepettext:SetWidth(20)
+    menu.hidepettext:SetPoint('TOPLEFT', menu, 240, -100)
+	_G[menu.hidepettext:GetName()..'Text']:SetJustifyH'LEFT'
+    _G[menu.hidepettext:GetName()..'Text']:SetWidth(270)
+    _G[menu.hidepettext:GetName()..'Text']:SetPoint('LEFT', menu.hidepettext, 'RIGHT', 4, 0)
+    _G[menu.hidepettext:GetName()..'Text']:SetText'Hide Pet Text'
 	----------------------------------------------------
 	-- Name Text X Slider
 	menu.nametextX = CreateFrame('Slider', 'ufi_optionsnametextX', menu, 'OptionsSliderTemplate')
@@ -243,6 +270,37 @@ local menu = CreateFrame('Frame', 'ufi_options', UIParent)
 		end
     end)
 
+	menu.percentage:SetScript('OnClick', function()
+        if this:GetChecked() == 1 then 
+			UnitFramesImprovedConfig.Percentage = 1;
+			reload_request();
+		else 
+			UnitFramesImprovedConfig.Percentage = 0;
+			reload_request();
+		end
+    end)
+
+	menu.trueformat:SetScript('OnClick', function()
+        if this:GetChecked() == 1 then 
+			UnitFramesImprovedConfig.TrueFormat = 1;
+			reload_request();
+		else 
+			UnitFramesImprovedConfig.TrueFormat = 0;
+			reload_request();
+		end
+    end)
+
+	menu.hidepettext:SetScript('OnClick', function()
+        if this:GetChecked() == 1 then 
+			UnitFramesImprovedConfig.HidePetText = 1;
+			reload_request();
+		else 
+			UnitFramesImprovedConfig.HidePetText = 0;
+			reload_request();
+		end
+    end)
+
+
 	menu.resetdefault:SetScript('OnClick', function()
         StaticPopup_Show("DEFAULT_RELOAD");
     end)
@@ -341,6 +399,24 @@ local menu = CreateFrame('Frame', 'ufi_options', UIParent)
 			menu.playerclasscolor:SetChecked(false) 
 		end
 
+		if UnitFramesImprovedConfig.Percentage == 1 then 
+			menu.percentage:SetChecked(true) 
+		else 
+			menu.percentage:SetChecked(false) 
+		end
+
+		if UnitFramesImprovedConfig.TrueFormat == 1 then 
+			menu.trueformat:SetChecked(true) 
+		else 
+			menu.trueformat:SetChecked(false) 
+		end
+
+		if UnitFramesImprovedConfig.HidePetText == 1 then 
+			menu.hidepettext:SetChecked(true) 
+		else 
+			menu.hidepettext:SetChecked(false) 
+		end
+
 		if UnitFramesImprovedConfig.NameTextX then
 			menu.nametextX:SetValue(UnitFramesImprovedConfig.NameTextX)
 		else 
@@ -374,8 +450,12 @@ local menu = CreateFrame('Frame', 'ufi_options', UIParent)
 			menu.darkmode:Disable();
 			menu.unlock:Disable();
 			menu.playerclasscolor:Disable();
-			_G[menu.darkmode:GetName()..'Text']:SetText'|cffff6c6cdisabled by modUI|r'
-			_G[menu.playerclasscolor:GetName()..'Text']:SetText'|cffff6c6cenabled by modUI|r'
+			menu.percentage:Disable();
+			menu.hidepettext:Disable();
+			_G[menu.darkmode:GetName()..'Text']:SetText'|cffff6c6cmodUI locked|r'
+			_G[menu.playerclasscolor:GetName()..'Text']:SetText'|cffff6c6cmodUI locked|r'
+			_G[menu.percentage:GetName()..'Text']:SetText'|cffff6c6cmodUI locked|r'
+			_G[menu.hidepettext:GetName()..'Text']:SetText'|cffff6c6cmodUI locked|r'
 		else
 			PlayerFrameHealthBarText:SetFont(STANDARD_TEXT_FONT, 10, 'OUTLINE');
 			PlayerFrameHealthBarText:SetJustifyV'MIDDLE'
@@ -403,6 +483,9 @@ local menu = CreateFrame('Frame', 'ufi_options', UIParent)
 		UnitFramesImprovedConfig.NameOutline = 1
 		UnitFramesImprovedConfig.NPCClassColor = 0
 		UnitFramesImprovedConfig.PlayerClassColor = 1
+		UnitFramesImprovedConfig.Percentage = 1
+		UnitFramesImprovedConfig.TrueFormat = 1
+		UnitFramesImprovedConfig.HidePetText = 0
 		ReloadUI();
 	end,
 	timeout = 0,

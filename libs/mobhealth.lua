@@ -40,7 +40,11 @@
             if max == 100 then
                 string:SetText(percent..'%')
             else
-                string:SetText(true_format(v)..'/'..true_format(max)..' — '..percent..'%')
+				if UnitFramesImprovedConfig.Percentage == 1 then
+					string:SetText(true_format(v)..'/'..true_format(max)..' — '..percent..'%')
+				else
+					string:SetText(true_format(v)..'/'..true_format(max))
+				end
             end
             string:SetPoint('RIGHT', -8, 0)
         elseif uValue  == 1 and uBoth == 0 then
@@ -69,7 +73,11 @@
             if max == 100 then
                 string:SetText(percent..'%')
             else
-                string:SetText(true_format(v)..'/'..true_format(max)..' — '..percent..'%')
+				if UnitFramesImprovedConfig.Percentage == 1 then
+					string:SetText(true_format(v)..'/'..true_format(max)..' — '..percent..'%')
+				else
+					string:SetText(true_format(v)..'/'..true_format(max))
+				end
             end
             string:SetPoint('RIGHT', -8, 0)
         elseif uValue  == 1 and uBoth == 0 then

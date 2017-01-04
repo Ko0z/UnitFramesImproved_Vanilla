@@ -1,7 +1,7 @@
 ## Interface: 11200
 ## Title: UnitFramesImproved_Vanilla
 ## Notes: UnitFramesImproved Backported from Legion with a few changes
-## Version: 0.90
+## Version: 0.93
 ## Author: Ko0z (Richard Bertilsson) for Vanilla Backport, Originally by: Althalla (Kim Forsberg)
 ## SavedVariables: MobHealth3DB, MobHealth3Config, UnitFramesImprovedConfig
 

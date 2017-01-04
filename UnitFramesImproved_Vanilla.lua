@@ -11,16 +11,18 @@ function UnitFramesImproved_Default_Options()
 	if not UnitFramesImprovedConfig then
 		UnitFramesImprovedConfig = { }
 	end
-	
+
 	if not UnitFramesImprovedConfig.ClassPortrait		then	UnitFramesImprovedConfig.ClassPortrait		= false end
 	if not UnitFramesImprovedConfig.DarkMode			then	UnitFramesImprovedConfig.DarkMode			= false end
 	if not UnitFramesImprovedConfig.NameTextX			then	UnitFramesImprovedConfig.NameTextX			= 0		end
 	if not UnitFramesImprovedConfig.NameTextY			then	UnitFramesImprovedConfig.NameTextY			= 0		end
 	if not UnitFramesImprovedConfig.NameTextFontSize	then	UnitFramesImprovedConfig.NameTextFontSize	= 11	end
-	if not UnitFramesImprovedConfig.NameOutline			then	UnitFramesImprovedConfig.NameOutline		= 1	end
+	if not UnitFramesImprovedConfig.NameOutline			then	UnitFramesImprovedConfig.NameOutline		= 1		end
 	if not UnitFramesImprovedConfig.NPCClassColor		then	UnitFramesImprovedConfig.NPCClassColor		= 0		end
 	if not UnitFramesImprovedConfig.PlayerClassColor	then	UnitFramesImprovedConfig.PlayerClassColor	= 1		end
-
+	if not UnitFramesImprovedConfig.Percentage			then	UnitFramesImprovedConfig.Percentage			= 1		end
+	if not UnitFramesImprovedConfig.TrueFormat			then	UnitFramesImprovedConfig.TrueFormat			= 1		end
+	if not UnitFramesImprovedConfig.HidePetText			then	UnitFramesImprovedConfig.HidePetText		= 0		end
 end
 
 
@@ -60,6 +62,8 @@ function UnitFramesImproved_Vanilla_OnLoad()
 		PlayerFrameBackground.bg:Hide();
 		UnitFramesImprovedConfig.DarkMode = false;
 		UnitFramesImprovedConfig.PlayerClassColor	= 1;
+		UnitFramesImprovedConfig.Percentage = 0;
+		UnitFramesImprovedConfig.HidePetText = 0;
 
 		local NAME_TEXTURE   = [[Interface\AddOns\modui\statusbar\texture\name.tga]]
 		PlayerFrameHealthBar:SetStatusBarTexture(NAME_TEXTURE)
@@ -71,6 +75,7 @@ function UnitFramesImproved_Vanilla_OnLoad()
 	UnitFramesImproved_TargetFrame_CheckClassification();
 	UnitFramesImproved_Style_TargetFrame(TargetFrame);
 	UnitFramesImproved_Style_TargetFrame(FocusFrame);
+
 end
 
 function UnitFramesImproved_Style_TargetOfTargetFrame()
@@ -118,7 +123,7 @@ function true_format(v)            -- STATUS TEXT FORMATTING ie 1.5k, 2.3m
          if v > 1E7 then return (math.floor(v/1E6))..'m'
          elseif v > 1E6 then return (math.floor((v/1E6)*10)/10)..'m'
          elseif v > 1E4 then return (math.floor(v/1E3))..'k'
-         elseif v > 1E3 then return (math.floor((v/1E3)*10)/10)..'k'
+         elseif v > 1E3 and UnitFramesImprovedConfig.TrueFormat == 1 then return (math.floor((v/1E3)*10)/10)..'k'
          else return v 
 	end
 end
@@ -128,7 +133,7 @@ function UnitFramesImproved_TextStatusBar_UpdateTextString(textStatusBar)
 		textStatusBar = this;
 	end
 	local string = textStatusBar.TextString;
-		
+	
 	if(string) then
 		local value = textStatusBar:GetValue();
 		local valueMin, valueMax = textStatusBar:GetMinMaxValues();
@@ -138,15 +143,24 @@ function UnitFramesImproved_TextStatusBar_UpdateTextString(textStatusBar)
     	local min, max = textStatusBar:GetMinMaxValues()
         local percent = math.floor(v/max*100)
 		---------------------------
+
+		
 		if ( valueMax > 0 ) then
 			textStatusBar:Show();
+
 			if ( value == 0 and textStatusBar.zeroText ) then
 				string:SetText(textStatusBar.zeroText);
 				textStatusBar.isZero = 1;
 				string:Show();
 			else
 				textStatusBar.isZero = nil;
-					string:SetText(true_format(v)..'/'..true_format(max).. ' \226\128\148 ' ..percent..'%')
+					
+					if UnitFramesImprovedConfig.Percentage == 1 then
+						string:SetText(true_format(v)..'/'..true_format(max).. ' \226\128\148 ' ..percent..'%')
+					else
+						string:SetText(true_format(v)..'/'..true_format(max))
+					end
+
 				if ( GetCVar("statusBarText") == "1" and textStatusBar.textLockable ) then
 					string:Show();
 				elseif ( textStatusBar.lockShow > 0 ) then
@@ -155,9 +169,14 @@ function UnitFramesImproved_TextStatusBar_UpdateTextString(textStatusBar)
 					string:Hide();
 				end
 			end
+
 		else
 			textStatusBar:Hide();
 		end
+	end
+	if UnitFramesImprovedConfig.HidePetText == 1 then
+		PetFrameHealthBarText:Hide();
+		PetFrameManaBarText:Hide();
 	end
 end
 

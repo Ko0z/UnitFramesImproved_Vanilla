@@ -14,7 +14,7 @@ If you have suggestions or ideas you'r welcome to post them in the issues sectio
 
 <b>"/ufi"</b> to show Options
 
-<a href="http://imgur.com/Ud4z7Fo"><img src="http://i.imgur.com/Ud4z7Fo.png" title="source: imgur.com" /></a>
+<a href="http://imgur.com/MrKoYU1"><img src="http://i.imgur.com/MrKoYU1.png" title="source: imgur.com" /></a>
 
 <b>modUI compatible.</b>
 
