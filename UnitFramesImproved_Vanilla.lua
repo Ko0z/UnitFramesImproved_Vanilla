@@ -6,6 +6,8 @@ UNITFRAMESIMPROVED_UI_COLOR = {r = .3, g = .3, b = .3}
 local UnitFramesImproved = CreateFrame('Button', 'UnitFramesImproved');
 local ADDON_NAME = "UnitFramesImproved_Vanilla";
 ufi_modui = false;
+FLAT_TEXTURE   = [[Interface\AddOns\UnitFramesImproved_Vanilla\Textures\name.tga]]
+ORIG_TEXTURE   = [[Interface\TargetingFrame\UI-StatusBar.blp]]
 
 function UnitFramesImproved_Default_Options()
 	if not UnitFramesImprovedConfig then
@@ -72,17 +74,23 @@ function UnitFramesImproved_Vanilla_OnLoad()
 	UnitFramesImproved_TargetFrame_CheckClassification();
 	UnitFramesImproved_Style_TargetFrame(TargetFrame);
 	UnitFramesImproved_Style_TargetFrame(FocusFrame);
+
 	--Flat Healthbar texture if set in config
 	if UnitFramesImprovedConfig.HealthTexture == 1 then
-		UnitFramesImproved_HealthBarTexture();
+		UnitFramesImproved_HealthBarTexture(FLAT_TEXTURE);
 	end
 end
 
 --Sets the texture of the HealthBars
-function UnitFramesImproved_HealthBarTexture()
-	local NAME_TEXTURE   = [[Interface\AddOns\UnitFramesImproved_Vanilla\Textures\name.tga]]
+function UnitFramesImproved_HealthBarTexture(NAME_TEXTURE)
 	PlayerFrameHealthBar:SetStatusBarTexture(NAME_TEXTURE)
+	PlayerFrameManaBar:SetStatusBarTexture(NAME_TEXTURE)
 	TargetFrameHealthBar:SetStatusBarTexture(NAME_TEXTURE)
+	TargetFrameManaBar:SetStatusBarTexture(NAME_TEXTURE)
+	PetFrameHealthBar:SetStatusBarTexture(NAME_TEXTURE)
+	PetFrameManaBar:SetStatusBarTexture(NAME_TEXTURE)
+	TargetofTargetHealthBar:SetStatusBarTexture(NAME_TEXTURE)
+	TargetofTargetManaBar:SetStatusBarTexture(NAME_TEXTURE)
 end
 
 function UnitFramesImproved_Style_TargetOfTargetFrame()

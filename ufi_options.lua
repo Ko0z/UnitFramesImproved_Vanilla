@@ -49,7 +49,7 @@ local menu = CreateFrame('Frame', 'ufi_options', UIParent)
     --menu.intro:SetTextColor(colour.r, colour.g, colour.b)
     menu.intro:SetPoint('TOP', menu, 0, -30)
     menu.intro:SetWidth(280)
-    menu.intro:SetText'Hello! You are using |cffff6c6cUFI|r v0.94. This is a beta version so please report any issues to:'
+    menu.intro:SetText'Hello! You are using |cffff6c6cUFI|r v0.95. This is a beta version so please report any issues to:'
 	
 
 	menu.uilink = CreateFrame('EditBox', 'ufi_uilink', menu, 'InputBoxTemplate')
@@ -152,14 +152,14 @@ local menu = CreateFrame('Frame', 'ufi_options', UIParent)
     _G[menu.hidepettext:GetName()..'Text']:SetPoint('LEFT', menu.hidepettext, 'RIGHT', 4, 0)
     _G[menu.hidepettext:GetName()..'Text']:SetText'Hide Pet Text'
 	----------------------------------------------------
-	--Hide Pet Text checkbutton
+	--Flat Statusbars checkbutton
 	menu.healthtexture = CreateFrame('CheckButton', 'ufi_healthtexture', menu, 'UICheckButtonTemplate')
     menu.healthtexture:SetHeight(20) menu.healthtexture:SetWidth(20)
     menu.healthtexture:SetPoint('TOPLEFT', menu, 240, -120)
 	_G[menu.healthtexture:GetName()..'Text']:SetJustifyH'LEFT'
     _G[menu.healthtexture:GetName()..'Text']:SetWidth(270)
     _G[menu.healthtexture:GetName()..'Text']:SetPoint('LEFT', menu.healthtexture, 'RIGHT', 4, 0)
-    _G[menu.healthtexture:GetName()..'Text']:SetText'Flat Healthbar'
+    _G[menu.healthtexture:GetName()..'Text']:SetText'Flat Statusbars'
 	----------------------------------------------------
 	-- Name Text X Slider
 	menu.nametextX = CreateFrame('Slider', 'ufi_optionsnametextX', menu, 'OptionsSliderTemplate')
@@ -312,10 +312,11 @@ local menu = CreateFrame('Frame', 'ufi_options', UIParent)
 	menu.healthtexture:SetScript('OnClick', function()
         if this:GetChecked() == 1 then 
 			UnitFramesImprovedConfig.HealthTexture = 1;
-			UnitFramesImproved_HealthBarTexture();
+			UnitFramesImproved_HealthBarTexture(FLAT_TEXTURE);
 		else 
 			UnitFramesImprovedConfig.HealthTexture = 0;
-			reload_request();
+			UnitFramesImproved_HealthBarTexture(ORIG_TEXTURE);
+			--reload_request();
 		end
     end)
 
