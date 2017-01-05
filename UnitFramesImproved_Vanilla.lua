@@ -23,6 +23,7 @@ function UnitFramesImproved_Default_Options()
 	if not UnitFramesImprovedConfig.Percentage			then	UnitFramesImprovedConfig.Percentage			= 1		end
 	if not UnitFramesImprovedConfig.TrueFormat			then	UnitFramesImprovedConfig.TrueFormat			= 1		end
 	if not UnitFramesImprovedConfig.HidePetText			then	UnitFramesImprovedConfig.HidePetText		= 0		end
+	if not UnitFramesImprovedConfig.HealthTexture		then	UnitFramesImprovedConfig.HealthTexture		= 0		end
 end
 
 
@@ -61,21 +62,27 @@ function UnitFramesImproved_Vanilla_OnLoad()
 		ufi_chattext( fontOrange.. 'modUI ' ..fontLightGreen.. 'detected.' );
 		PlayerFrameBackground.bg:Hide();
 		UnitFramesImprovedConfig.DarkMode = false;
-		UnitFramesImprovedConfig.PlayerClassColor	= 1;
+		UnitFramesImprovedConfig.PlayerClassColor = 1;
 		UnitFramesImprovedConfig.Percentage = 0;
 		UnitFramesImprovedConfig.HidePetText = 0;
-
-		local NAME_TEXTURE   = [[Interface\AddOns\modui\statusbar\texture\name.tga]]
-		PlayerFrameHealthBar:SetStatusBarTexture(NAME_TEXTURE)
-		TargetFrameHealthBar:SetStatusBarTexture(NAME_TEXTURE)
-
+		UnitFramesImprovedConfig.HealthTexture	= 1;
 	end
 			-- Set up some stylings
 	UnitFramesImproved_Style_PlayerFrame();
 	UnitFramesImproved_TargetFrame_CheckClassification();
 	UnitFramesImproved_Style_TargetFrame(TargetFrame);
 	UnitFramesImproved_Style_TargetFrame(FocusFrame);
+	--Flat Healthbar texture if set in config
+	if UnitFramesImprovedConfig.HealthTexture == 1 then
+		UnitFramesImproved_HealthBarTexture();
+	end
+end
 
+--Sets the texture of the HealthBars
+function UnitFramesImproved_HealthBarTexture()
+	local NAME_TEXTURE   = [[Interface\AddOns\UnitFramesImproved_Vanilla\Textures\name.tga]]
+	PlayerFrameHealthBar:SetStatusBarTexture(NAME_TEXTURE)
+	TargetFrameHealthBar:SetStatusBarTexture(NAME_TEXTURE)
 end
 
 function UnitFramesImproved_Style_TargetOfTargetFrame()
@@ -133,7 +140,7 @@ function UnitFramesImproved_TextStatusBar_UpdateTextString(textStatusBar)
 		textStatusBar = this;
 	end
 	local string = textStatusBar.TextString;
-	
+
 	if(string) then
 		local value = textStatusBar:GetValue();
 		local valueMin, valueMax = textStatusBar:GetMinMaxValues();

@@ -14,11 +14,11 @@ If you have suggestions or ideas you'r welcome to post them in the issues sectio
 
 <b>"/ufi"</b> to show Options
 
-<a href="http://imgur.com/MrKoYU1"><img src="http://i.imgur.com/MrKoYU1.png" title="source: imgur.com" /></a>
+<a href="http://imgur.com/PH1xDmg"><img src="http://i.imgur.com/PH1xDmg.png" title="source: imgur.com" /></a>
 
 <b>modUI compatible.</b>
 
-<a href="http://imgur.com/pOPtV70"><img src="http://i.imgur.com/pOPtV70.png" title="source: imgur.com" /></a>
+<a href="http://imgur.com/XPWg6IU"><img src="http://i.imgur.com/XPWg6IU.png" title="source: imgur.com" /></a>
 
 <b>Dont forget to remove "-master" at the end of the filename when you add it to your interface folder.</b>
 

@@ -49,7 +49,7 @@ local menu = CreateFrame('Frame', 'ufi_options', UIParent)
     --menu.intro:SetTextColor(colour.r, colour.g, colour.b)
     menu.intro:SetPoint('TOP', menu, 0, -30)
     menu.intro:SetWidth(280)
-    menu.intro:SetText'Hello! You are using |cffff6c6cUFI|r v0.93. This is a beta version so please report any issues to:'
+    menu.intro:SetText'Hello! You are using |cffff6c6cUFI|r v0.94. This is a beta version so please report any issues to:'
 	
 
 	menu.uilink = CreateFrame('EditBox', 'ufi_uilink', menu, 'InputBoxTemplate')
@@ -151,6 +151,15 @@ local menu = CreateFrame('Frame', 'ufi_options', UIParent)
     _G[menu.hidepettext:GetName()..'Text']:SetWidth(270)
     _G[menu.hidepettext:GetName()..'Text']:SetPoint('LEFT', menu.hidepettext, 'RIGHT', 4, 0)
     _G[menu.hidepettext:GetName()..'Text']:SetText'Hide Pet Text'
+	----------------------------------------------------
+	--Hide Pet Text checkbutton
+	menu.healthtexture = CreateFrame('CheckButton', 'ufi_healthtexture', menu, 'UICheckButtonTemplate')
+    menu.healthtexture:SetHeight(20) menu.healthtexture:SetWidth(20)
+    menu.healthtexture:SetPoint('TOPLEFT', menu, 240, -120)
+	_G[menu.healthtexture:GetName()..'Text']:SetJustifyH'LEFT'
+    _G[menu.healthtexture:GetName()..'Text']:SetWidth(270)
+    _G[menu.healthtexture:GetName()..'Text']:SetPoint('LEFT', menu.healthtexture, 'RIGHT', 4, 0)
+    _G[menu.healthtexture:GetName()..'Text']:SetText'Flat Healthbar'
 	----------------------------------------------------
 	-- Name Text X Slider
 	menu.nametextX = CreateFrame('Slider', 'ufi_optionsnametextX', menu, 'OptionsSliderTemplate')
@@ -300,6 +309,15 @@ local menu = CreateFrame('Frame', 'ufi_options', UIParent)
 		end
     end)
 
+	menu.healthtexture:SetScript('OnClick', function()
+        if this:GetChecked() == 1 then 
+			UnitFramesImprovedConfig.HealthTexture = 1;
+			UnitFramesImproved_HealthBarTexture();
+		else 
+			UnitFramesImprovedConfig.HealthTexture = 0;
+			reload_request();
+		end
+    end)
 
 	menu.resetdefault:SetScript('OnClick', function()
         StaticPopup_Show("DEFAULT_RELOAD");
@@ -417,6 +435,12 @@ local menu = CreateFrame('Frame', 'ufi_options', UIParent)
 			menu.hidepettext:SetChecked(false) 
 		end
 
+		if UnitFramesImprovedConfig.HealthTexture == 1 then 
+			menu.healthtexture:SetChecked(true) 
+		else 
+			menu.healthtexture:SetChecked(false) 
+		end
+
 		if UnitFramesImprovedConfig.NameTextX then
 			menu.nametextX:SetValue(UnitFramesImprovedConfig.NameTextX)
 		else 
@@ -452,10 +476,12 @@ local menu = CreateFrame('Frame', 'ufi_options', UIParent)
 			menu.playerclasscolor:Disable();
 			menu.percentage:Disable();
 			menu.hidepettext:Disable();
+			menu.healthtexture:Disable();
 			_G[menu.darkmode:GetName()..'Text']:SetText'|cffff6c6cmodUI locked|r'
 			_G[menu.playerclasscolor:GetName()..'Text']:SetText'|cffff6c6cmodUI locked|r'
 			_G[menu.percentage:GetName()..'Text']:SetText'|cffff6c6cmodUI locked|r'
 			_G[menu.hidepettext:GetName()..'Text']:SetText'|cffff6c6cmodUI locked|r'
+			_G[menu.healthtexture:GetName()..'Text']:SetText'|cffff6c6cmodUI locked|r'
 		else
 			PlayerFrameHealthBarText:SetFont(STANDARD_TEXT_FONT, 10, 'OUTLINE');
 			PlayerFrameHealthBarText:SetJustifyV'MIDDLE'
@@ -486,6 +512,7 @@ local menu = CreateFrame('Frame', 'ufi_options', UIParent)
 		UnitFramesImprovedConfig.Percentage = 1
 		UnitFramesImprovedConfig.TrueFormat = 1
 		UnitFramesImprovedConfig.HidePetText = 0
+		UnitFramesImprovedConfig.HealthTexture = 0
 		ReloadUI();
 	end,
 	timeout = 0,
