@@ -8,6 +8,7 @@ local ADDON_NAME = "UnitFramesImproved_Vanilla";
 ufi_modui = false;
 FLAT_TEXTURE   = [[Interface\AddOns\UnitFramesImproved_Vanilla\Textures\name.tga]]
 ORIG_TEXTURE   = [[Interface\TargetingFrame\UI-StatusBar.blp]]
+PET_ATTACK_TEXTURE = PetAttackModeTexture:GetTexture();
 
 function UnitFramesImproved_Default_Options()
 	if not UnitFramesImprovedConfig then
@@ -19,6 +20,7 @@ function UnitFramesImproved_Default_Options()
 	if not UnitFramesImprovedConfig.NameTextX			then	UnitFramesImprovedConfig.NameTextX			= 0		end
 	if not UnitFramesImprovedConfig.NameTextY			then	UnitFramesImprovedConfig.NameTextY			= 0		end
 	if not UnitFramesImprovedConfig.NameTextFontSize	then	UnitFramesImprovedConfig.NameTextFontSize	= 11	end
+	if not UnitFramesImprovedConfig.HPFontSize			then	UnitFramesImprovedConfig.HPFontSize			= 10	end
 	if not UnitFramesImprovedConfig.NameOutline			then	UnitFramesImprovedConfig.NameOutline		= 1		end
 	if not UnitFramesImprovedConfig.NPCClassColor		then	UnitFramesImprovedConfig.NPCClassColor		= 0		end
 	if not UnitFramesImprovedConfig.PlayerClassColor	then	UnitFramesImprovedConfig.PlayerClassColor	= 1		end
@@ -26,6 +28,7 @@ function UnitFramesImproved_Default_Options()
 	if not UnitFramesImprovedConfig.TrueFormat			then	UnitFramesImprovedConfig.TrueFormat			= 1		end
 	if not UnitFramesImprovedConfig.HidePetText			then	UnitFramesImprovedConfig.HidePetText		= 0		end
 	if not UnitFramesImprovedConfig.HealthTexture		then	UnitFramesImprovedConfig.HealthTexture		= 0		end
+	if not UnitFramesImprovedConfig.StatusGlow			then	UnitFramesImprovedConfig.StatusGlow			= 1		end
 end
 
 
@@ -36,6 +39,7 @@ function UnitFramesImproved_Vanilla_OnLoad()
 	HealthBar_OnValueChanged = UnitFramesImproved_ColorUpdate;
 	TargetFrame_OnUpdate = UnitFramesImproved_TargetFrame_Update;
 	TargetFrame_CheckClassification = UnitFramesImproved_TargetFrame_CheckClassification;
+	PetFrame_OnUpdate = UnitFramesImproved_PetFrame_OnUpdate;
 
 	ufi_chattext( fontLightGreen..'UnitFramesImproved_Vanilla Loaded. ' .. fontLightRed .. 'Type ' ..fontOrange.. '/ufi ' ..fontLightRed.. 'for options.' );
 	if MobHealth3Config.saveData == true then
@@ -57,16 +61,12 @@ function UnitFramesImproved_Vanilla_OnLoad()
 	-- FOR MODUI COMPATIBILITY
 	if (ufi_modui == false or ufi_modui == nil) then
 		TextStatusBar_UpdateTextString = UnitFramesImproved_TextStatusBar_UpdateTextString;
-		-- Update some values
-		TextStatusBar_UpdateTextString(PlayerFrame.healthbar);
-		TextStatusBar_UpdateTextString(PlayerFrame.manabar);
 	else
 		ufi_chattext( fontOrange.. 'modUI ' ..fontLightGreen.. 'detected.' );
 		PlayerFrameBackground.bg:Hide();
 		UnitFramesImprovedConfig.DarkMode = false;
 		UnitFramesImprovedConfig.PlayerClassColor = 1;
 		UnitFramesImprovedConfig.Percentage = 0;
-		UnitFramesImprovedConfig.HidePetText = 0;
 		UnitFramesImprovedConfig.HealthTexture	= 1;
 	end
 			-- Set up some stylings
@@ -79,9 +79,19 @@ function UnitFramesImproved_Vanilla_OnLoad()
 	if UnitFramesImprovedConfig.HealthTexture == 1 then
 		UnitFramesImproved_HealthBarTexture(FLAT_TEXTURE);
 	end
+
+	if UnitFramesImprovedConfig.DarkMode == true then
+		UnitFramesImproved_DarkMode();
+	end
+	
+	-- Update some values
+	TextStatusBar_UpdateTextString(PlayerFrame.healthbar);
+	TextStatusBar_UpdateTextString(PlayerFrame.manabar);
+	TextStatusBar_UpdateTextString(PetFrame.healthbar);
+	TextStatusBar_UpdateTextString(PetFrame.manabar);
 end
 
---Sets the texture of the HealthBars
+--Sets the texture for the StatusBars
 function UnitFramesImproved_HealthBarTexture(NAME_TEXTURE)
 	PlayerFrameHealthBar:SetStatusBarTexture(NAME_TEXTURE)
 	PlayerFrameManaBar:SetStatusBarTexture(NAME_TEXTURE)
@@ -106,7 +116,12 @@ function UnitFramesImproved_Style_PlayerFrame()
 	PlayerFrameHealthBarText:SetPoint("CENTER",50,5);
 
 	PlayerFrameTexture:SetTexture("Interface\\Addons\\UnitFramesImproved_Vanilla\\Textures\\UI-TargetingFrame");
-	PlayerStatusTexture:SetTexture("Interface\\Addons\\UnitFramesImproved_Vanilla\\Textures\\UI-Player-Status");	
+
+	if UnitFramesImprovedConfig.StatusGlow == 1 then
+		PlayerStatusTexture:SetTexture("Interface\\Addons\\UnitFramesImproved_Vanilla\\Textures\\UI-Player-Status");	
+	else
+		PlayerStatusTexture:SetTexture(nil);
+	end	
 end
 
 function UnitFramesImproved_ColorUpdate()
@@ -152,14 +167,11 @@ function UnitFramesImproved_TextStatusBar_UpdateTextString(textStatusBar)
 	if(string) then
 		local value = textStatusBar:GetValue();
 		local valueMin, valueMax = textStatusBar:GetMinMaxValues();
-		------------------------
 		local pp = UnitPowerType'player'
     	local v  = math.floor(textStatusBar:GetValue())
     	local min, max = textStatusBar:GetMinMaxValues()
         local percent = math.floor(v/max*100)
-		---------------------------
 
-		
 		if ( valueMax > 0 ) then
 			textStatusBar:Show();
 
@@ -184,18 +196,14 @@ function UnitFramesImproved_TextStatusBar_UpdateTextString(textStatusBar)
 					string:Hide();
 				end
 			end
-
 		else
 			textStatusBar:Hide();
 		end
 	end
-	if UnitFramesImprovedConfig.HidePetText == 1 then
-		PetFrameHealthBarText:Hide();
-		PetFrameManaBarText:Hide();
-	end
 end
 
 function UnitFramesImproved_TargetFrame_Update()
+	MH3Blizz:PowerUpdate();
 	-- Set back color of health bar
 	TargetofTarget_Update();
 	if ( UnitIsTapped("target") and not UnitIsTappedByPlayer("target") ) then
@@ -204,6 +212,33 @@ function UnitFramesImproved_TargetFrame_Update()
 	else
 		-- Standard by class etc if not
 		this.healthbar:SetStatusBarColor(UnitColor(this.healthbar.unit));	
+	end
+end
+
+function UnitFramesImproved_PetFrame_OnUpdate(elapsed)
+	if ( PetAttackModeTexture:IsVisible() ) then
+		local alpha = 255;
+		local counter = this.attackModeCounter + elapsed;
+		local sign    = this.attackModeSign;
+
+		if ( counter > 0.5 ) then
+			sign = -sign;
+			this.attackModeSign = sign;
+		end
+		counter = mod(counter, 0.5);
+		this.attackModeCounter = counter;
+
+		if ( sign == 1 ) then
+			alpha = (55  + (counter * 400)) / 255;
+		else
+			alpha = (255 - (counter * 400)) / 255;
+		end
+		PetAttackModeTexture:SetVertexColor(1.0, 1.0, 1.0, alpha);
+	end
+	CombatFeedback_OnUpdate(elapsed);
+	if UnitFramesImprovedConfig.HidePetText == 1 then
+		PetFrame.healthbar.TextString:Hide();
+		PetFrame.manabar.TextString:Hide();
 	end
 end
 
@@ -235,7 +270,6 @@ function UnitFramesImproved_TargetFrame_CheckFaction()
 	else
 		TargetPVPIcon:Hide();
 	end
-	
 	UnitFramesImproved_Style_TargetFrame(this.unit);
 end
 
@@ -386,7 +420,7 @@ function UnitFramesImproved_ClassPortraits ()
 				TargetofTargetFrame.portrait:SetTexCoord(unpack(CLASS_BUTTONS[class]))
 				elseif(UnitName("targettarget")~=nil) then
 					TargetofTargetFrame.portrait:SetTexCoord(0,1,0,1)
-				end
+			end
 		end
 		)
 	end
@@ -394,61 +428,57 @@ end
 
 function UnitFramesImproved_DarkMode()
 	-- Dark borders UI, code from modUI
-	if (UnitFramesImprovedConfig.DarkMode == false or UnitFramesImprovedConfig.DarkMode == nil ) then
-		return;
-	else 
-		for _, v in pairs({
-				-- MINIMAP CLUSTER
-			MinimapBorder,
-			MiniMapMailBorder,
-			MiniMapTrackingBorder,
-			MiniMapMeetingStoneBorder,
-			MiniMapMailBorder,
-			MiniMapBattlefieldBorder,
-				-- UNIT & CASTBAR
-			PlayerFrameTexture,
-			TargetFrameTexture,
-			PetFrameTexture,
-			PartyMemberFrame1Texture,
-			PartyMemberFrame2Texture,
-			PartyMemberFrame3Texture,
-			PartyMemberFrame4Texture,
-			PartyMemberFrame1PetFrameTexture,
-			PartyMemberFrame2PetFrameTexture,
-			PartyMemberFrame3PetFrameTexture,
-			PartyMemberFrame4PetFrameTexture,
-			TargetofTargetTexture,
-			CastingBarBorder,
-				-- MAIN MENU BAR
-			MainMenuBarTexture0,
-			MainMenuBarTexture1,
-			MainMenuBarTexture2,
-			MainMenuBarTexture3,
-			MainMenuMaxLevelBar0,
-			MainMenuMaxLevelBar1,
-			MainMenuMaxLevelBar2,
-			MainMenuMaxLevelBar3,
-			MainMenuXPBarTextureLeftCap,
-			MainMenuXPBarTextureRightCap,
-			MainMenuXPBarTextureMid,
-			BonusActionBarTexture0,
-			BonusActionBarTexture1,
-			ReputationWatchBarTexture0,
-			ReputationWatchBarTexture1,
-			ReputationWatchBarTexture2,
-			ReputationWatchBarTexture3,
-			ReputationXPBarTexture0,
-			ReputationXPBarTexture1,
-			ReputationXPBarTexture2,
-			ReputationXPBarTexture3,
-			SlidingActionBarTexture0,
-			SlidingActionBarTexture1,
-			MainMenuBarLeftEndCap,
-			MainMenuBarRightEndCap,
-			ExhaustionTick:GetNormalTexture(),
-		})	do 
-			v:SetVertexColor(UNITFRAMESIMPROVED_UI_COLOR.r, UNITFRAMESIMPROVED_UI_COLOR.g, UNITFRAMESIMPROVED_UI_COLOR.b)
-		end
+	for _, v in pairs({
+			-- MINIMAP CLUSTER
+		MinimapBorder,
+		MiniMapMailBorder,
+		MiniMapTrackingBorder,
+		MiniMapMeetingStoneBorder,
+		MiniMapMailBorder,
+		MiniMapBattlefieldBorder,
+			-- UNIT & CASTBAR
+		PlayerFrameTexture,
+		TargetFrameTexture,
+		PetFrameTexture,
+		PartyMemberFrame1Texture,
+		PartyMemberFrame2Texture,
+		PartyMemberFrame3Texture,
+		PartyMemberFrame4Texture,
+		PartyMemberFrame1PetFrameTexture,
+		PartyMemberFrame2PetFrameTexture,
+		PartyMemberFrame3PetFrameTexture,
+		PartyMemberFrame4PetFrameTexture,
+		TargetofTargetTexture,
+		CastingBarBorder,
+			-- MAIN MENU BAR
+		MainMenuBarTexture0,
+		MainMenuBarTexture1,
+		MainMenuBarTexture2,
+		MainMenuBarTexture3,
+		MainMenuMaxLevelBar0,
+		MainMenuMaxLevelBar1,
+		MainMenuMaxLevelBar2,
+		MainMenuMaxLevelBar3,
+		MainMenuXPBarTextureLeftCap,
+		MainMenuXPBarTextureRightCap,
+		MainMenuXPBarTextureMid,
+		BonusActionBarTexture0,
+		BonusActionBarTexture1,
+		ReputationWatchBarTexture0,
+		ReputationWatchBarTexture1,
+		ReputationWatchBarTexture2,
+		ReputationWatchBarTexture3,
+		ReputationXPBarTexture0,
+		ReputationXPBarTexture1,
+		ReputationXPBarTexture2,
+		ReputationXPBarTexture3,
+		SlidingActionBarTexture0,
+		SlidingActionBarTexture1,
+		MainMenuBarLeftEndCap,
+		MainMenuBarRightEndCap,
+		ExhaustionTick:GetNormalTexture(),
+	})	do 
+		v:SetVertexColor(UNITFRAMESIMPROVED_UI_COLOR.r, UNITFRAMESIMPROVED_UI_COLOR.g, UNITFRAMESIMPROVED_UI_COLOR.b)
 	end
 end
 

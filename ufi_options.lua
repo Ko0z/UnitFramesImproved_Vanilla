@@ -1,5 +1,5 @@
 local menu = CreateFrame('Frame', 'ufi_options', UIParent)
-    menu:SetWidth(360) menu:SetHeight(270)
+    menu:SetWidth(360) menu:SetHeight(370)
     menu:SetPoint('CENTER', UIParent)
     menu:SetBackdrop({bgFile   = [[Interface\Tooltips\UI-Tooltip-Background]],
                       edgeFile = [[Interface\DialogFrame\UI-DialogBox-Border]],
@@ -30,12 +30,12 @@ local menu = CreateFrame('Frame', 'ufi_options', UIParent)
     menu.reload:SetWidth(100) menu.reload:SetHeight(20)
     menu.reload:SetText'Reload UI'
     menu.reload:SetFont(STANDARD_TEXT_FONT, 10)
-    menu.reload:SetPoint('TOP', menu, 0, -320)
+    menu.reload:SetPoint('TOP', menu, 0, -420)
     menu.reload:Hide()
 
 	function reload_request()
 		menu.reload:Show();
-		menu:SetHeight(370);
+		menu:SetHeight(470);
 	end
 
 	menu.reload.description = menu.reload:CreateFontString(nil, 'OVERLAY', 'GameFontNormal')
@@ -49,9 +49,8 @@ local menu = CreateFrame('Frame', 'ufi_options', UIParent)
     --menu.intro:SetTextColor(colour.r, colour.g, colour.b)
     menu.intro:SetPoint('TOP', menu, 0, -30)
     menu.intro:SetWidth(280)
-    menu.intro:SetText'Hello! You are using |cffff6c6cUFI|r v0.95. This is a beta version so please report any issues to:'
+    menu.intro:SetText'Hello! You are using |cffff6c6cUFI|r v0.98. This is a beta version so please report any issues to:'
 	
-
 	menu.uilink = CreateFrame('EditBox', 'ufi_uilink', menu, 'InputBoxTemplate')
     menu.uilink:SetFont(STANDARD_TEXT_FONT, 12)
     menu.uilink:SetWidth(250) 
@@ -62,24 +61,6 @@ local menu = CreateFrame('Frame', 'ufi_options', UIParent)
     menu.uilink:SetText'github.com/Ko0z/UnitFramesImproved_Vanilla'
     --end)
 	-------------------------------------------------
-	--BUTTON
-	
-	menu.unlock = CreateFrame('Button', 'ufi_lock', menu, 'UIPanelButtonTemplate')
-    menu.unlock:SetWidth(100) 
-	menu.unlock:SetHeight(20)
-    menu.unlock:SetText'Unlock/Lock'
-    menu.unlock:SetFont(STANDARD_TEXT_FONT, 10)
-    menu.unlock:SetPoint('TOPLEFT', menu, 25, -235)
-	--menu.unlock:Disable();
-
-	menu.resetdefault = CreateFrame('Button', 'ufi_resetdefault', menu, 'UIPanelButtonTemplate')
-    menu.resetdefault:SetWidth(100) 
-	menu.resetdefault:SetHeight(20)
-    menu.resetdefault:SetText'Reset to default'
-    menu.resetdefault:SetFont(STANDARD_TEXT_FONT, 10)
-    menu.resetdefault:SetPoint('TOPRIGHT', menu, -25, -235)
-	
-	----------------------------------------------------
 	--classportraits checkbutton
 	menu.classportrait = CreateFrame('CheckButton', 'ufi_classportraits', menu, 'UICheckButtonTemplate')
     menu.classportrait:SetHeight(20) menu.classportrait:SetWidth(20)
@@ -161,11 +142,38 @@ local menu = CreateFrame('Frame', 'ufi_options', UIParent)
     _G[menu.healthtexture:GetName()..'Text']:SetPoint('LEFT', menu.healthtexture, 'RIGHT', 4, 0)
     _G[menu.healthtexture:GetName()..'Text']:SetText'Flat Statusbars'
 	----------------------------------------------------
+	--Status glow hide checkbutton
+	menu.statusglow = CreateFrame('CheckButton', 'ufi_statusglow', menu, 'UICheckButtonTemplate')
+    menu.statusglow:SetHeight(20) menu.statusglow:SetWidth(20)
+    menu.statusglow:SetPoint('TOPLEFT', menu, 20, -140)
+	_G[menu.statusglow:GetName()..'Text']:SetJustifyH'LEFT'
+    _G[menu.statusglow:GetName()..'Text']:SetWidth(270)
+    _G[menu.statusglow:GetName()..'Text']:SetPoint('LEFT', menu.statusglow, 'RIGHT', 4, 0)
+    _G[menu.statusglow:GetName()..'Text']:SetText'Status Glow'
+	-----------------------------------------------------
+	--BUTTON
+	
+	menu.unlock = CreateFrame('Button', 'ufi_lock', menu, 'UIPanelButtonTemplate')
+    menu.unlock:SetWidth(100) 
+	menu.unlock:SetHeight(20)
+    menu.unlock:SetText'Unlock/Lock'
+    menu.unlock:SetFont(STANDARD_TEXT_FONT, 10)
+    menu.unlock:SetPoint('TOPLEFT', menu, 25, -335)
+	--menu.unlock:Disable();
+
+	menu.resetdefault = CreateFrame('Button', 'ufi_resetdefault', menu, 'UIPanelButtonTemplate')
+    menu.resetdefault:SetWidth(100) 
+	menu.resetdefault:SetHeight(20)
+    menu.resetdefault:SetText'Reset to default'
+    menu.resetdefault:SetFont(STANDARD_TEXT_FONT, 10)
+    menu.resetdefault:SetPoint('TOPRIGHT', menu, -25, -335)
+	
+	----------------------------------------------------
 	-- Name Text X Slider
 	menu.nametextX = CreateFrame('Slider', 'ufi_optionsnametextX', menu, 'OptionsSliderTemplate')
     menu.nametextX:SetWidth(200) 
 	menu.nametextX:SetHeight(16)
-    menu.nametextX:SetPoint('TOP', menu, 0, -155)
+    menu.nametextX:SetPoint('TOP', menu, 0, -180)
     menu.nametextX:SetMinMaxValues(-40, 40)
     menu.nametextX:SetValue(0)
     menu.nametextX:SetValueStep(1)
@@ -174,9 +182,7 @@ local menu = CreateFrame('Frame', 'ufi_options', UIParent)
         UnitFramesImprovedConfig.NameTextX = menu.nametextX:GetValue();
 
 		PlayerName:SetPoint("CENTER", PlayerFrameHealthBar, "Center", UnitFramesImprovedConfig.NameTextX, UnitFramesImprovedConfig.NameTextY+5); 
-		--PlayerName:SetFont("Fonts\\FRIZQT__.TTF", 12, "OUTLINE");
 		TargetName:SetPoint("CENTER", TargetFrameHealthBar, "Center", -UnitFramesImprovedConfig.NameTextX, UnitFramesImprovedConfig.NameTextY+5); 
-		--TargetName:SetFont("Fonts\\FRIZQT__.TTF", 12, "OUTLINE");
     end)
 
     _G[menu.nametextX:GetName()..'Low']:SetText''
@@ -187,7 +193,7 @@ local menu = CreateFrame('Frame', 'ufi_options', UIParent)
 	menu.nametextY = CreateFrame('Slider', 'ufi_optionsnametextY', menu, 'OptionsSliderTemplate')
     menu.nametextY:SetWidth(200) 
 	menu.nametextY:SetHeight(16)
-    menu.nametextY:SetPoint('TOP', menu, 0, -185)
+    menu.nametextY:SetPoint('TOP', menu, 0, -210)
     menu.nametextY:SetMinMaxValues(-40, 40)
     menu.nametextY:SetValue(0)
     menu.nametextY:SetValueStep(1)
@@ -202,11 +208,11 @@ local menu = CreateFrame('Frame', 'ufi_options', UIParent)
     _G[menu.nametextY:GetName()..'High']:SetText''
     _G[menu.nametextY:GetName()..'Text']:SetText'Name position Y'
 	-----------------------------------------------------------
-	-- Font Size Slider
+	-- Name Font Size Slider
 	menu.nametextfontsize = CreateFrame('Slider', 'ufi_optionsnametextfontsize', menu, 'OptionsSliderTemplate')
     menu.nametextfontsize:SetWidth(200) 
 	menu.nametextfontsize:SetHeight(16)
-    menu.nametextfontsize:SetPoint('TOP', menu, 0, -215)
+    menu.nametextfontsize:SetPoint('TOP', menu, 0, -240)
     menu.nametextfontsize:SetMinMaxValues(7, 14)
     menu.nametextfontsize:SetValue(10)
     menu.nametextfontsize:SetValueStep(1)
@@ -224,7 +230,41 @@ local menu = CreateFrame('Frame', 'ufi_options', UIParent)
 
     _G[menu.nametextfontsize:GetName()..'Low']:SetText''
     _G[menu.nametextfontsize:GetName()..'High']:SetText''
-    _G[menu.nametextfontsize:GetName()..'Text']:SetText'Text Font Size'
+    _G[menu.nametextfontsize:GetName()..'Text']:SetText'Name Font Size'
+	-----------------------------------------------------------
+	-- HP/MP Font Size Slider
+	menu.hpfontsize = CreateFrame('Slider', 'ufi_optionshpfontsize', menu, 'OptionsSliderTemplate')
+    menu.hpfontsize:SetWidth(200) 
+	menu.hpfontsize:SetHeight(16)
+    menu.hpfontsize:SetPoint('TOP', menu, 0, -270)
+    menu.hpfontsize:SetMinMaxValues(7, 14)
+    menu.hpfontsize:SetValue(10)
+    menu.hpfontsize:SetValueStep(1)
+    menu.hpfontsize:SetScript('OnValueChanged', function()
+
+        UnitFramesImprovedConfig.HPFontSize = menu.hpfontsize:GetValue();
+		
+		if UnitFramesImprovedConfig.NameOutline == 1 then
+			PlayerFrameHealthBarText:SetFont(STANDARD_TEXT_FONT, UnitFramesImprovedConfig.HPFontSize, 'OUTLINE');
+			PlayerFrameManaBarText:SetFont(STANDARD_TEXT_FONT, UnitFramesImprovedConfig.HPFontSize, 'OUTLINE');
+			MobHealth3BlizzardHealthText:SetFont(STANDARD_TEXT_FONT, UnitFramesImprovedConfig.HPFontSize, 'OUTLINE')
+			MobHealth3BlizzardPowerText:SetFont(STANDARD_TEXT_FONT, UnitFramesImprovedConfig.HPFontSize, 'OUTLINE')
+			PetFrameHealthBarText:SetFont(STANDARD_TEXT_FONT, UnitFramesImprovedConfig.HPFontSize, 'OUTLINE');
+			PetFrameManaBarText:SetFont(STANDARD_TEXT_FONT, UnitFramesImprovedConfig.HPFontSize, 'OUTLINE');
+		else
+			PlayerFrameHealthBarText:SetFont(STANDARD_TEXT_FONT, UnitFramesImprovedConfig.HPFontSize);
+			PlayerFrameManaBarText:SetFont(STANDARD_TEXT_FONT, UnitFramesImprovedConfig.HPFontSize);
+			MobHealth3BlizzardHealthText:SetFont(STANDARD_TEXT_FONT, UnitFramesImprovedConfig.HPFontSize)
+			MobHealth3BlizzardPowerText:SetFont(STANDARD_TEXT_FONT, UnitFramesImprovedConfig.HPFontSize)
+			PetFrameHealthBarText:SetFont(STANDARD_TEXT_FONT, UnitFramesImprovedConfig.HPFontSize);
+			PetFrameManaBarText:SetFont(STANDARD_TEXT_FONT, UnitFramesImprovedConfig.HPFontSize);
+		end
+		
+    end)
+
+    _G[menu.hpfontsize:GetName()..'Low']:SetText''
+    _G[menu.hpfontsize:GetName()..'High']:SetText''
+    _G[menu.hpfontsize:GetName()..'Text']:SetText'HP/MP Font Size'
 	-----------------------------------------------------------
 	-- OnClick Button functions
 	menu.classportrait:SetScript('OnClick', function()
@@ -240,10 +280,14 @@ local menu = CreateFrame('Frame', 'ufi_options', UIParent)
 	menu.darkmode:SetScript('OnClick', function()
         if this:GetChecked() == 1 then 
 			UnitFramesImprovedConfig.DarkMode = true;
-			reload_request();
+			UNITFRAMESIMPROVED_UI_COLOR = {r = .3, g = .3, b = .3}
+			UnitFramesImproved_DarkMode();
+			--reload_request();
 		else 
 			UnitFramesImprovedConfig.DarkMode = false;
-			reload_request();
+			UNITFRAMESIMPROVED_UI_COLOR = {r = 1, g = 1, b = 1}
+			UnitFramesImproved_DarkMode();
+			--reload_request();
 		end
     end)
 
@@ -251,21 +295,33 @@ local menu = CreateFrame('Frame', 'ufi_options', UIParent)
         if this:GetChecked() == 1 then 
 			UnitFramesImprovedConfig.NameOutline = 1;
 			PlayerName:SetFont("Fonts\\FRIZQT__.TTF", UnitFramesImprovedConfig.NameTextFontSize, "OUTLINE");
-			TargetName:SetFont("Fonts\\FRIZQT__.TTF", UnitFramesImprovedConfig.NameTextFontSize, "OUTLINE"); 
+			TargetName:SetFont("Fonts\\FRIZQT__.TTF", UnitFramesImprovedConfig.NameTextFontSize, "OUTLINE");
+			PlayerFrameHealthBarText:SetFont(STANDARD_TEXT_FONT, UnitFramesImprovedConfig.HPFontSize, 'OUTLINE');
+			PlayerFrameManaBarText:SetFont(STANDARD_TEXT_FONT, UnitFramesImprovedConfig.HPFontSize, 'OUTLINE');
+			PetName:SetFont("Fonts\\FRIZQT__.TTF", 10, "OUTLINE");
+			PetFrameHealthBarText:SetFont(STANDARD_TEXT_FONT, UnitFramesImprovedConfig.HPFontSize, 'OUTLINE');
+			PetFrameManaBarText:SetFont(STANDARD_TEXT_FONT, UnitFramesImprovedConfig.HPFontSize, 'OUTLINE');
+			MobHealth3BlizzardHealthText:SetFont(STANDARD_TEXT_FONT, UnitFramesImprovedConfig.HPFontSize, 'OUTLINE')
+			MobHealth3BlizzardPowerText:SetFont(STANDARD_TEXT_FONT, UnitFramesImprovedConfig.HPFontSize, 'OUTLINE') 
 		else 
 			UnitFramesImprovedConfig.NameOutline = 0;
 			PlayerName:SetFont("Fonts\\FRIZQT__.TTF", UnitFramesImprovedConfig.NameTextFontSize);
-			TargetName:SetFont("Fonts\\FRIZQT__.TTF", UnitFramesImprovedConfig.NameTextFontSize); 
+			TargetName:SetFont("Fonts\\FRIZQT__.TTF", UnitFramesImprovedConfig.NameTextFontSize);
+			PlayerFrameHealthBarText:SetFont(STANDARD_TEXT_FONT, UnitFramesImprovedConfig.HPFontSize);
+			PlayerFrameManaBarText:SetFont(STANDARD_TEXT_FONT, UnitFramesImprovedConfig.HPFontSize);
+			PetName:SetFont("Fonts\\FRIZQT__.TTF", 10);
+			PetFrameHealthBarText:SetFont(STANDARD_TEXT_FONT, UnitFramesImprovedConfig.HPFontSize);
+			PetFrameManaBarText:SetFont(STANDARD_TEXT_FONT, UnitFramesImprovedConfig.HPFontSize);
+			MobHealth3BlizzardHealthText:SetFont(STANDARD_TEXT_FONT, UnitFramesImprovedConfig.HPFontSize)
+			MobHealth3BlizzardPowerText:SetFont(STANDARD_TEXT_FONT, UnitFramesImprovedConfig.HPFontSize) 
 		end
     end)
 
 	menu.npcclasscolor:SetScript('OnClick', function()
         if this:GetChecked() == 1 then 
 			UnitFramesImprovedConfig.NPCClassColor = 1;
-			--UnitFramesImproved_TargetFrame_Update();
 		else 
 			UnitFramesImprovedConfig.NPCClassColor = 0;
-			--UnitFramesImproved_TargetFrame_Update();
 		end
     end)
 
@@ -282,30 +338,52 @@ local menu = CreateFrame('Frame', 'ufi_options', UIParent)
 	menu.percentage:SetScript('OnClick', function()
         if this:GetChecked() == 1 then 
 			UnitFramesImprovedConfig.Percentage = 1;
-			reload_request();
+			TextStatusBar_UpdateTextString(PlayerFrame.healthbar);
+			TextStatusBar_UpdateTextString(PlayerFrame.manabar);
+			TextStatusBar_UpdateTextString(PetFrame.healthbar);
+			TextStatusBar_UpdateTextString(PetFrame.manabar);
+			MH3Blizz:HealthUpdate();
+			MH3Blizz:PowerUpdate();
 		else 
 			UnitFramesImprovedConfig.Percentage = 0;
-			reload_request();
+			TextStatusBar_UpdateTextString(PlayerFrame.healthbar);
+			TextStatusBar_UpdateTextString(PlayerFrame.manabar);
+			TextStatusBar_UpdateTextString(PetFrame.healthbar);
+			TextStatusBar_UpdateTextString(PetFrame.manabar);
+			MH3Blizz:HealthUpdate();
+			MH3Blizz:PowerUpdate();
 		end
     end)
 
 	menu.trueformat:SetScript('OnClick', function()
         if this:GetChecked() == 1 then 
 			UnitFramesImprovedConfig.TrueFormat = 1;
-			reload_request();
+			TextStatusBar_UpdateTextString(PlayerFrame.healthbar);
+			TextStatusBar_UpdateTextString(PlayerFrame.manabar);
+			TextStatusBar_UpdateTextString(PetFrame.healthbar);
+			TextStatusBar_UpdateTextString(PetFrame.manabar);
+			MH3Blizz:HealthUpdate();
+			MH3Blizz:PowerUpdate();
 		else 
 			UnitFramesImprovedConfig.TrueFormat = 0;
-			reload_request();
+			TextStatusBar_UpdateTextString(PlayerFrame.healthbar);
+			TextStatusBar_UpdateTextString(PlayerFrame.manabar);
+			TextStatusBar_UpdateTextString(PetFrame.healthbar);
+			TextStatusBar_UpdateTextString(PetFrame.manabar);
+			MH3Blizz:HealthUpdate();
+			MH3Blizz:PowerUpdate();
 		end
     end)
 
 	menu.hidepettext:SetScript('OnClick', function()
         if this:GetChecked() == 1 then 
 			UnitFramesImprovedConfig.HidePetText = 1;
-			reload_request();
+			TextStatusBar_UpdateTextString(PetFrame.healthbar);
+			TextStatusBar_UpdateTextString(PetFrame.manabar);
 		else 
 			UnitFramesImprovedConfig.HidePetText = 0;
-			reload_request();
+			TextStatusBar_UpdateTextString(PetFrame.healthbar);
+			TextStatusBar_UpdateTextString(PetFrame.manabar);
 		end
     end)
 
@@ -316,7 +394,18 @@ local menu = CreateFrame('Frame', 'ufi_options', UIParent)
 		else 
 			UnitFramesImprovedConfig.HealthTexture = 0;
 			UnitFramesImproved_HealthBarTexture(ORIG_TEXTURE);
-			--reload_request();
+		end
+    end)
+
+	menu.statusglow:SetScript('OnClick', function()
+        if this:GetChecked() == 1 then 
+			UnitFramesImprovedConfig.StatusGlow = 1;
+			PlayerStatusTexture:SetTexture("Interface\\Addons\\UnitFramesImproved_Vanilla\\Textures\\UI-Player-Status");
+			PetAttackModeTexture:SetTexture(PET_ATTACK_TEXTURE);
+		else 
+			UnitFramesImprovedConfig.StatusGlow = 0;
+			PetAttackModeTexture:SetTexture(nil);
+			PlayerStatusTexture:SetTexture(nil);
 		end
     end)
 
@@ -389,7 +478,6 @@ local menu = CreateFrame('Frame', 'ufi_options', UIParent)
         
         if UnitFramesImprovedConfig.ClassPortrait == true then 
 			menu.classportrait:SetChecked(true) 
-			--menu.darkmode:Disable();
 		else 
 			menu.classportrait:SetChecked(false) 
 		end
@@ -442,6 +530,12 @@ local menu = CreateFrame('Frame', 'ufi_options', UIParent)
 			menu.healthtexture:SetChecked(false) 
 		end
 
+		if UnitFramesImprovedConfig.StatusGlow == 1 then 
+			menu.statusglow:SetChecked(true) 
+		else 
+			menu.statusglow:SetChecked(false) 
+		end
+
 		if UnitFramesImprovedConfig.NameTextX then
 			menu.nametextX:SetValue(UnitFramesImprovedConfig.NameTextX)
 		else 
@@ -457,7 +551,13 @@ local menu = CreateFrame('Frame', 'ufi_options', UIParent)
 		if UnitFramesImprovedConfig.NameTextFontSize then
 			menu.nametextfontsize:SetValue(UnitFramesImprovedConfig.NameTextFontSize)
 		else 
-			menu.nametextfontsize:SetValue(10)
+			menu.nametextfontsize:SetValue(11)
+		end
+
+		if UnitFramesImprovedConfig.HPFontSize then
+			menu.hpfontsize:SetValue(UnitFramesImprovedConfig.HPFontSize)
+		else 
+			menu.hpfontsize:SetValue(10)
 		end
 
 		PlayerName:SetPoint("CENTER", PlayerFrameHealthBar, "Center", UnitFramesImprovedConfig.NameTextX, UnitFramesImprovedConfig.NameTextY+5);
@@ -466,9 +566,11 @@ local menu = CreateFrame('Frame', 'ufi_options', UIParent)
 		if UnitFramesImprovedConfig.NameOutline == 1 then
 			PlayerName:SetFont("Fonts\\FRIZQT__.TTF", UnitFramesImprovedConfig.NameTextFontSize, "OUTLINE");
 			TargetName:SetFont("Fonts\\FRIZQT__.TTF", UnitFramesImprovedConfig.NameTextFontSize, "OUTLINE");
+			PetName:SetFont("Fonts\\FRIZQT__.TTF", 10, "OUTLINE");
 		else
 			PlayerName:SetFont("Fonts\\FRIZQT__.TTF", UnitFramesImprovedConfig.NameTextFontSize);
 			TargetName:SetFont("Fonts\\FRIZQT__.TTF", UnitFramesImprovedConfig.NameTextFontSize);
+			PetName:SetFont("Fonts\\FRIZQT__.TTF", 10);
 		end
 
 		if ufi_modui == true then
@@ -476,23 +578,31 @@ local menu = CreateFrame('Frame', 'ufi_options', UIParent)
 			menu.unlock:Disable();
 			menu.playerclasscolor:Disable();
 			menu.percentage:Disable();
-			menu.hidepettext:Disable();
 			menu.healthtexture:Disable();
 			_G[menu.darkmode:GetName()..'Text']:SetText'|cffff6c6cmodUI locked|r'
 			_G[menu.playerclasscolor:GetName()..'Text']:SetText'|cffff6c6cmodUI locked|r'
 			_G[menu.percentage:GetName()..'Text']:SetText'|cffff6c6cmodUI locked|r'
-			_G[menu.hidepettext:GetName()..'Text']:SetText'|cffff6c6cmodUI locked|r'
 			_G[menu.healthtexture:GetName()..'Text']:SetText'|cffff6c6cmodUI locked|r'
 		else
-			PlayerFrameHealthBarText:SetFont(STANDARD_TEXT_FONT, 10, 'OUTLINE');
+			if UnitFramesImprovedConfig.NameOutline == 1 then
+				PlayerFrameHealthBarText:SetFont(STANDARD_TEXT_FONT, UnitFramesImprovedConfig.HPFontSize, 'OUTLINE');
+				-- GREEN HP
+				--PlayerFrameHealthBarText:SetVertexColor(0, 1, 0);
+				PlayerFrameManaBarText:SetFont(STANDARD_TEXT_FONT, UnitFramesImprovedConfig.HPFontSize, 'OUTLINE');
+				PetFrameHealthBarText:SetFont(STANDARD_TEXT_FONT, UnitFramesImprovedConfig.HPFontSize, 'OUTLINE');
+				PetFrameManaBarText:SetFont(STANDARD_TEXT_FONT, UnitFramesImprovedConfig.HPFontSize, 'OUTLINE');
+			else
+				PlayerFrameHealthBarText:SetFont(STANDARD_TEXT_FONT, UnitFramesImprovedConfig.HPFontSize);
+				-- GREEN HP
+				--PlayerFrameHealthBarText:SetVertexColor(0, 1, 0);
+				PlayerFrameManaBarText:SetFont(STANDARD_TEXT_FONT, UnitFramesImprovedConfig.HPFontSize);
+				PetFrameHealthBarText:SetFont(STANDARD_TEXT_FONT, UnitFramesImprovedConfig.HPFontSize);
+				PetFrameManaBarText:SetFont(STANDARD_TEXT_FONT, UnitFramesImprovedConfig.HPFontSize);
+			end
 			PlayerFrameHealthBarText:SetJustifyV'MIDDLE'
-			--PlayerFrameHealthBarText:SetShadowColor(0, 0, 0, 1)
-			--PlayerFrameHealthBarText:SetShadowOffset(1, -1)
-
-			PlayerFrameManaBarText:SetFont(STANDARD_TEXT_FONT, 10, 'OUTLINE');
 			PlayerFrameManaBarText:SetJustifyV'MIDDLE'
-			--PlayerFrameManaBarText:SetShadowColor(0, 0, 0, 1)
-			--PlayerFrameManaBarText:SetShadowOffset(1, -1)
+			PetFrameHealthBarText:SetJustifyV'MIDDLE'
+			PetFrameManaBarText:SetJustifyV'MIDDLE'
 		end
 
     end)
@@ -507,6 +617,7 @@ local menu = CreateFrame('Frame', 'ufi_options', UIParent)
 		UnitFramesImprovedConfig.NameTextX = 0		
 		UnitFramesImprovedConfig.NameTextY = 0
 		UnitFramesImprovedConfig.NameTextFontSize = 11
+		UnitFramesImprovedConfig.HPFontSize = 10
 		UnitFramesImprovedConfig.NameOutline = 1
 		UnitFramesImprovedConfig.NPCClassColor = 0
 		UnitFramesImprovedConfig.PlayerClassColor = 1
@@ -514,6 +625,7 @@ local menu = CreateFrame('Frame', 'ufi_options', UIParent)
 		UnitFramesImprovedConfig.TrueFormat = 1
 		UnitFramesImprovedConfig.HidePetText = 0
 		UnitFramesImprovedConfig.HealthTexture = 0
+		UnitFramesImprovedConfig.StatusGlow = 1
 		ReloadUI();
 	end,
 	timeout = 0,

@@ -6,7 +6,11 @@
     local move = function()
 		if ufi_modui == true then return end;
         for _, v in pairs ({MobHealth3BlizzardHealthText, MobHealth3BlizzardPowerText}) do
-            v:SetFont(STANDARD_TEXT_FONT, 10, 'OUTLINE')
+			if UnitFramesImprovedConfig.NameOutline == 1 then
+				v:SetFont(STANDARD_TEXT_FONT, UnitFramesImprovedConfig.HPFontSize, 'OUTLINE')
+			else
+				v:SetFont(STANDARD_TEXT_FONT, UnitFramesImprovedConfig.HPFontSize)
+			end
             v:SetShadowOffset(0, 0)
             v:SetJustifyV'MIDDLE'
             if uStatus  == 0 and uBoth == 0 then
