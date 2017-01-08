@@ -37,6 +37,7 @@ function UnitFramesImproved_Vanilla_OnLoad()
 	-- Generic status text hook
 
 	HealthBar_OnValueChanged = UnitFramesImproved_ColorUpdate;
+	--PlayerFrame_Update = UnitFramesImproved_PlayerFrame_Update;
 	TargetFrame_OnUpdate = UnitFramesImproved_TargetFrame_Update;
 	TargetFrame_CheckClassification = UnitFramesImproved_TargetFrame_CheckClassification;
 	PetFrame_OnUpdate = UnitFramesImproved_PetFrame_OnUpdate;
@@ -101,6 +102,7 @@ function UnitFramesImproved_HealthBarTexture(NAME_TEXTURE)
 	PetFrameManaBar:SetStatusBarTexture(NAME_TEXTURE)
 	TargetofTargetHealthBar:SetStatusBarTexture(NAME_TEXTURE)
 	TargetofTargetManaBar:SetStatusBarTexture(NAME_TEXTURE)
+	--Add party frames
 end
 
 function UnitFramesImproved_Style_TargetOfTargetFrame()
@@ -124,11 +126,41 @@ function UnitFramesImproved_Style_PlayerFrame()
 	end	
 end
 
-function UnitFramesImproved_ColorUpdate()
-	if UnitFramesImprovedConfig.PlayerClassColor == 1 then
-		PlayerFrameHealthBar:SetStatusBarColor(UnitColor("player"));
+function UnitFramesImproved_ColorUpdate(value, smooth)
+	if this == PlayerFrameHealthBar then
+		if UnitFramesImprovedConfig.PlayerClassColor == 1 then
+			PlayerFrameHealthBar:SetStatusBarColor(UnitColor("player"));
+		else
+			PlayerFrameHealthBar:SetStatusBarColor(0,1,0);
+		end
 	else
-		PlayerFrameHealthBar:SetStatusBarColor(0,1,0);
+		if ( not value ) then
+			return;
+		end
+		local r, g, b;
+		local min, max = this:GetMinMaxValues();
+		if ( (value < min) or (value > max) ) then
+			return;
+		end
+		if ( (max - min) > 0 ) then
+			value = (value - min) / (max - min);
+		else
+			value = 0;
+		end
+		if(smooth) then
+			if(value > 0.5) then
+				r = (1.0 - value) * 2;
+				g = 1.0;
+			else
+				r = 1.0;
+				g = value * 2;
+			end
+		else
+			r = 0.0;
+			g = 1.0;
+		end
+		b = 0.0;
+		this:SetStatusBarColor(r, g, b);
 	end
 end
 

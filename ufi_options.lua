@@ -49,7 +49,7 @@ local menu = CreateFrame('Frame', 'ufi_options', UIParent)
     --menu.intro:SetTextColor(colour.r, colour.g, colour.b)
     menu.intro:SetPoint('TOP', menu, 0, -30)
     menu.intro:SetWidth(280)
-    menu.intro:SetText'Hello! You are using |cffff6c6cUFI|r v0.98. This is a beta version so please report any issues to:'
+    menu.intro:SetText'Hello! You are using |cffff6c6cUFI|r v0.99. This is a beta version so please report any issues to:'
 	
 	menu.uilink = CreateFrame('EditBox', 'ufi_uilink', menu, 'InputBoxTemplate')
     menu.uilink:SetFont(STANDARD_TEXT_FONT, 12)
@@ -328,10 +328,12 @@ local menu = CreateFrame('Frame', 'ufi_options', UIParent)
 	menu.playerclasscolor:SetScript('OnClick', function()
         if this:GetChecked() == 1 then 
 			UnitFramesImprovedConfig.PlayerClassColor = 1;
-			UnitFramesImproved_ColorUpdate();
+			PlayerFrameHealthBar:SetStatusBarColor(UnitColor("player"));
+			--UnitFramesImproved_ColorUpdate();
 		else 
 			UnitFramesImprovedConfig.PlayerClassColor = 0;
-			UnitFramesImproved_ColorUpdate();
+			PlayerFrameHealthBar:SetStatusBarColor(0,1,0);
+			--UnitFramesImproved_ColorUpdate();
 		end
     end)
 
