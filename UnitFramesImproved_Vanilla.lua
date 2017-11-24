@@ -179,6 +179,8 @@ function UnitFramesImproved_Style_TargetFrame(unit)
 		end
 		TargetFrameHealthBar:SetWidth(119);
 		TargetFrameHealthBar.lockColor = true;
+		duplicateHp = TargetFrameHealthBar:GetChildren();
+		duplicateHp:Hide();
 end
 
 function true_format(v)            -- STATUS TEXT FORMATTING ie 1.5k, 2.3m
