@@ -8,7 +8,6 @@ local ADDON_NAME = "UnitFramesImproved_Vanilla";
 ufi_modui = false;
 FLAT_TEXTURE   = [[Interface\AddOns\UnitFramesImproved_Vanilla\Textures\name.tga]]
 ORIG_TEXTURE   = [[Interface\TargetingFrame\UI-StatusBar.blp]]
-PET_ATTACK_TEXTURE = PetAttackModeTexture:GetTexture();
 
 function UnitFramesImproved_Default_Options()
 	if not UnitFramesImprovedConfig then
