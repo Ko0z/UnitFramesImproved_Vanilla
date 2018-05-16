@@ -49,7 +49,7 @@ local menu = CreateFrame('Frame', 'ufi_options', UIParent)
     --menu.intro:SetTextColor(colour.r, colour.g, colour.b)
     menu.intro:SetPoint('TOP', menu, 0, -30)
     menu.intro:SetWidth(280)
-    menu.intro:SetText'Hello! You are using |cffff6c6cUFI|r v0.99b. This is a beta version so please report any issues to:'
+    menu.intro:SetText'You are using |cffff6c6cUFI|r v1.0a. This is an alpha version of the official release, please report issues to:'
 	
 	menu.uilink = CreateFrame('EditBox', 'ufi_uilink', menu, 'InputBoxTemplate')
     menu.uilink:SetFont(STANDARD_TEXT_FONT, 12)
@@ -614,8 +614,8 @@ local menu = CreateFrame('Frame', 'ufi_options', UIParent)
 	button1 = "Yes and Reload UI",
 	button2 = "Ignore",
 	OnAccept = function()
-		UnitFramesImprovedConfig.ClassPortrait = false
-		UnitFramesImprovedConfig.DarkMode = false
+		UnitFramesImprovedConfig.ClassPortrait = true
+		UnitFramesImprovedConfig.DarkMode = true
 		UnitFramesImprovedConfig.NameTextX = 0		
 		UnitFramesImprovedConfig.NameTextY = 0
 		UnitFramesImprovedConfig.NameTextFontSize = 11
@@ -624,7 +624,7 @@ local menu = CreateFrame('Frame', 'ufi_options', UIParent)
 		UnitFramesImprovedConfig.NPCClassColor = 0
 		UnitFramesImprovedConfig.PlayerClassColor = 1
 		UnitFramesImprovedConfig.Percentage = 1
-		UnitFramesImprovedConfig.TrueFormat = 1
+		UnitFramesImprovedConfig.TrueFormat = 0
 		UnitFramesImprovedConfig.HidePetText = 0
 		UnitFramesImprovedConfig.HealthTexture = 0
 		UnitFramesImprovedConfig.StatusGlow = 1
