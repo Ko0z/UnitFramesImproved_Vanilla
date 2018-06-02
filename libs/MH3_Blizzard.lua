@@ -47,7 +47,7 @@ function MH3Blizz:OnInitialize()
     ptext = frame:CreateFontString("MobHealth3BlizzardPowerText", "ARTWORK")
     ptext:SetFontObject(GameFontNormalSmall)
     ptext:SetHeight(32)
-    ptext:SetPoint("TOP", TargetFrameManaBar, "BOTTOM", MH3BlizzConfig.powerX-2, MH3BlizzConfig.powerY+22)
+    ptext:SetPoint("TOP", TargetFrameManaBar, "BOTTOM", MH3BlizzConfig.powerX-2, MH3BlizzConfig.powerY+21)
     ptext:SetTextColor(1, 1, 1, 1)
 
     self:RegisterChatCommand({"/mh3b", "/mh3blizz"}, {

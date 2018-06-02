@@ -49,7 +49,7 @@ local menu = CreateFrame('Frame', 'ufi_options', UIParent)
     --menu.intro:SetTextColor(colour.r, colour.g, colour.b)
     menu.intro:SetPoint('TOP', menu, 0, -30)
     menu.intro:SetWidth(280)
-    menu.intro:SetText'You are using |cffff6c6cUFI|r v1.0a. This is an alpha version of the official release, please report issues to:'
+    menu.intro:SetText'You are using |cffff6c6cUFI|r v1.0b. This is a beta version of the official release, please report issues to:'
 	
 	menu.uilink = CreateFrame('EditBox', 'ufi_uilink', menu, 'InputBoxTemplate')
     menu.uilink:SetFont(STANDARD_TEXT_FONT, 12)
@@ -115,6 +115,15 @@ local menu = CreateFrame('Frame', 'ufi_options', UIParent)
     _G[menu.percentage:GetName()..'Text']:SetPoint('LEFT', menu.percentage, 'RIGHT', 4, 0)
     _G[menu.percentage:GetName()..'Text']:SetText'Show Percentages'
 	----------------------------------------------------
+	--Colored Statusbar Text
+	menu.colorsbtext = CreateFrame('CheckButton', 'ufi_colorsbtext', menu, 'UICheckButtonTemplate')
+    menu.colorsbtext:SetHeight(20) menu.colorsbtext:SetWidth(20)
+    menu.colorsbtext:SetPoint('TOPLEFT', menu, 120, -140)
+	_G[menu.colorsbtext:GetName()..'Text']:SetJustifyH'LEFT'
+    _G[menu.colorsbtext:GetName()..'Text']:SetWidth(270)
+    _G[menu.colorsbtext:GetName()..'Text']:SetPoint('LEFT', menu.colorsbtext, 'RIGHT', 4, 0)
+    _G[menu.colorsbtext:GetName()..'Text']:SetText'Colored SB Text'
+	----------------------------------------------------
 	--True Format over 10k checkbutton
 	menu.trueformat = CreateFrame('CheckButton', 'ufi_trueformat', menu, 'UICheckButtonTemplate')
     menu.trueformat:SetHeight(20) menu.trueformat:SetWidth(20)
@@ -141,6 +150,15 @@ local menu = CreateFrame('Frame', 'ufi_options', UIParent)
     _G[menu.healthtexture:GetName()..'Text']:SetWidth(270)
     _G[menu.healthtexture:GetName()..'Text']:SetPoint('LEFT', menu.healthtexture, 'RIGHT', 4, 0)
     _G[menu.healthtexture:GetName()..'Text']:SetText'Flat Statusbars'
+	----------------------------------------------------
+	--Improved Pet Frame
+	menu.improvedpet = CreateFrame('CheckButton', 'ufi_improvedpet', menu, 'UICheckButtonTemplate')
+    menu.improvedpet:SetHeight(20) menu.improvedpet:SetWidth(20)
+    menu.improvedpet:SetPoint('TOPLEFT', menu, 240, -140)
+	_G[menu.improvedpet:GetName()..'Text']:SetJustifyH'LEFT'
+    _G[menu.improvedpet:GetName()..'Text']:SetWidth(270)
+    _G[menu.improvedpet:GetName()..'Text']:SetPoint('LEFT', menu.improvedpet, 'RIGHT', 4, 0)
+    _G[menu.improvedpet:GetName()..'Text']:SetText'Improved Pet'
 	----------------------------------------------------
 	--Status glow hide checkbutton
 	menu.statusglow = CreateFrame('CheckButton', 'ufi_statusglow', menu, 'UICheckButtonTemplate')
@@ -180,9 +198,12 @@ local menu = CreateFrame('Frame', 'ufi_options', UIParent)
     menu.nametextX:SetScript('OnValueChanged', function()
 
         UnitFramesImprovedConfig.NameTextX = menu.nametextX:GetValue();
+		--SetCVar('ufiNameTextX',	menu.nametextX:GetValue());
 
 		PlayerName:SetPoint("CENTER", PlayerFrameHealthBar, "Center", UnitFramesImprovedConfig.NameTextX, UnitFramesImprovedConfig.NameTextY+5); 
+		--PlayerName:SetPoint("CENTER", PlayerFrameHealthBar, "Center", tonumber(GetCVar("ufiNameTextX")), tonumber(GetCVar("ufiNameTextY"))+5); 
 		TargetName:SetPoint("CENTER", TargetFrameHealthBar, "Center", -UnitFramesImprovedConfig.NameTextX, UnitFramesImprovedConfig.NameTextY+5); 
+		--TargetName:SetPoint("CENTER", TargetFrameHealthBar, "Center", -tonumber(GetCVar("ufiNameTextX")), tonumber(GetCVar("ufiNameTextY"))+5); 
     end)
 
     _G[menu.nametextX:GetName()..'Low']:SetText''
@@ -200,8 +221,12 @@ local menu = CreateFrame('Frame', 'ufi_options', UIParent)
     menu.nametextY:SetScript('OnValueChanged', function()
 
         UnitFramesImprovedConfig.NameTextY = menu.nametextY:GetValue();
+		--SetCVar('ufiNameTextY',	menu.nametextX:GetValue());
+
 		PlayerName:SetPoint("CENTER", PlayerFrameHealthBar, "Center", UnitFramesImprovedConfig.NameTextX, UnitFramesImprovedConfig.NameTextY+5); 
 		TargetName:SetPoint("CENTER", TargetFrameHealthBar, "Center", -UnitFramesImprovedConfig.NameTextX, UnitFramesImprovedConfig.NameTextY+5); 
+		--PlayerName:SetPoint("CENTER", PlayerFrameHealthBar, "Center", tonumber(GetCVar("ufiNameTextX")), tonumber(GetCVar("ufiNameTextY"))+5); 
+		--TargetName:SetPoint("CENTER", TargetFrameHealthBar, "Center", -tonumber(GetCVar("ufiNameTextX")), tonumber(GetCVar("ufiNameTextY"))+5); 
     end)
 
     _G[menu.nametextY:GetName()..'Low']:SetText''
@@ -219,12 +244,22 @@ local menu = CreateFrame('Frame', 'ufi_options', UIParent)
     menu.nametextfontsize:SetScript('OnValueChanged', function()
 
         UnitFramesImprovedConfig.NameTextFontSize = menu.nametextfontsize:GetValue();
-		if UnitFramesImprovedConfig.NameOutline == 1 then
+		--SetCVar('ufiNameTextFontSize',	menu.nametextX:GetValue());
+		--if UnitFramesImprovedConfig.NameOutline == 1 then
+		if (GetCVar("ufiNameOutline") == "1") then
 			PlayerName:SetFont("Fonts\\FRIZQT__.TTF", UnitFramesImprovedConfig.NameTextFontSize, "OUTLINE");
 			TargetName:SetFont("Fonts\\FRIZQT__.TTF", UnitFramesImprovedConfig.NameTextFontSize, "OUTLINE");
+			TargetofTargetName:SetFont("Fonts\\FRIZQT__.TTF", UnitFramesImprovedConfig.NameTextFontSize - 1, 'OUTLINE');
+			PetName:SetFont("Fonts\\FRIZQT__.TTF", UnitFramesImprovedConfig.NameTextFontSize - 1, "OUTLINE");
+			--PlayerName:SetFont("Fonts\\FRIZQT__.TTF", tonumber(GetCVar("ufiNameTextFontSize")), "OUTLINE");
+			--TargetName:SetFont("Fonts\\FRIZQT__.TTF", tonumber(GetCVar("ufiNameTextFontSize")), "OUTLINE");
 		else
 			PlayerName:SetFont("Fonts\\FRIZQT__.TTF", UnitFramesImprovedConfig.NameTextFontSize);
 			TargetName:SetFont("Fonts\\FRIZQT__.TTF", UnitFramesImprovedConfig.NameTextFontSize);
+			TargetofTargetName:SetFont("Fonts\\FRIZQT__.TTF", UnitFramesImprovedConfig.NameTextFontSize - 1);
+			PetName:SetFont("Fonts\\FRIZQT__.TTF", UnitFramesImprovedConfig.NameTextFontSize - 1);
+			--PlayerName:SetFont("Fonts\\FRIZQT__.TTF", tonumber(GetCVar("ufiNameTextFontSize")));
+			--TargetName:SetFont("Fonts\\FRIZQT__.TTF", tonumber(GetCVar("ufiNameTextFontSize")));
 		end
     end)
 
@@ -243,21 +278,37 @@ local menu = CreateFrame('Frame', 'ufi_options', UIParent)
     menu.hpfontsize:SetScript('OnValueChanged', function()
 
         UnitFramesImprovedConfig.HPFontSize = menu.hpfontsize:GetValue();
-		
-		if UnitFramesImprovedConfig.NameOutline == 1 then
+		--SetCVar('ufiHPFontSize',	menu.nametextX:GetValue());
+
+		--if UnitFramesImprovedConfig.NameOutline == 1 then
+		if (GetCVar("ufiNameOutline") == "1") then
 			PlayerFrameHealthBarText:SetFont(STANDARD_TEXT_FONT, UnitFramesImprovedConfig.HPFontSize, 'OUTLINE');
 			PlayerFrameManaBarText:SetFont(STANDARD_TEXT_FONT, UnitFramesImprovedConfig.HPFontSize, 'OUTLINE');
 			MobHealth3BlizzardHealthText:SetFont(STANDARD_TEXT_FONT, UnitFramesImprovedConfig.HPFontSize, 'OUTLINE')
 			MobHealth3BlizzardPowerText:SetFont(STANDARD_TEXT_FONT, UnitFramesImprovedConfig.HPFontSize, 'OUTLINE')
-			PetFrameHealthBarText:SetFont(STANDARD_TEXT_FONT, UnitFramesImprovedConfig.HPFontSize, 'OUTLINE');
-			PetFrameManaBarText:SetFont(STANDARD_TEXT_FONT, UnitFramesImprovedConfig.HPFontSize, 'OUTLINE');
+			PetFrameHealthBarText:SetFont(STANDARD_TEXT_FONT, UnitFramesImprovedConfig.HPFontSize - 2, 'OUTLINE');
+			PetFrameManaBarText:SetFont(STANDARD_TEXT_FONT, UnitFramesImprovedConfig.HPFontSize - 2, 'OUTLINE');
+			
+			--PlayerFrameHealthBarText:SetFont(STANDARD_TEXT_FONT, tonumber(GetCVar("ufiHPFontSize")), 'OUTLINE');
+			--PlayerFrameManaBarText:SetFont(STANDARD_TEXT_FONT, tonumber(GetCVar("ufiHPFontSize")), 'OUTLINE');
+			--MobHealth3BlizzardHealthText:SetFont(STANDARD_TEXT_FONT, tonumber(GetCVar("ufiHPFontSize")), 'OUTLINE')
+			--MobHealth3BlizzardPowerText:SetFont(STANDARD_TEXT_FONT, tonumber(GetCVar("ufiHPFontSize")), 'OUTLINE')
+			--PetFrameHealthBarText:SetFont(STANDARD_TEXT_FONT, tonumber(GetCVar("ufiHPFontSize")), 'OUTLINE');
+			--PetFrameManaBarText:SetFont(STANDARD_TEXT_FONT, tonumber(GetCVar("ufiHPFontSize")), 'OUTLINE');
 		else
 			PlayerFrameHealthBarText:SetFont(STANDARD_TEXT_FONT, UnitFramesImprovedConfig.HPFontSize);
 			PlayerFrameManaBarText:SetFont(STANDARD_TEXT_FONT, UnitFramesImprovedConfig.HPFontSize);
 			MobHealth3BlizzardHealthText:SetFont(STANDARD_TEXT_FONT, UnitFramesImprovedConfig.HPFontSize)
 			MobHealth3BlizzardPowerText:SetFont(STANDARD_TEXT_FONT, UnitFramesImprovedConfig.HPFontSize)
-			PetFrameHealthBarText:SetFont(STANDARD_TEXT_FONT, UnitFramesImprovedConfig.HPFontSize);
-			PetFrameManaBarText:SetFont(STANDARD_TEXT_FONT, UnitFramesImprovedConfig.HPFontSize);
+			PetFrameHealthBarText:SetFont(STANDARD_TEXT_FONT, UnitFramesImprovedConfig.HPFontSize - 2);
+			PetFrameManaBarText:SetFont(STANDARD_TEXT_FONT, UnitFramesImprovedConfig.HPFontSize - 2);
+			
+			--PlayerFrameHealthBarText:SetFont(STANDARD_TEXT_FONT, tonumber(GetCVar("ufiHPFontSize")));
+			--PlayerFrameManaBarText:SetFont(STANDARD_TEXT_FONT, tonumber(GetCVar("ufiHPFontSize")));
+			--MobHealth3BlizzardHealthText:SetFont(STANDARD_TEXT_FONT, tonumber(GetCVar("ufiHPFontSize")))
+			--MobHealth3BlizzardPowerText:SetFont(STANDARD_TEXT_FONT, tonumber(GetCVar("ufiHPFontSize")))
+			--PetFrameHealthBarText:SetFont(STANDARD_TEXT_FONT, tonumber(GetCVar("ufiHPFontSize")));
+			--PetFrameManaBarText:SetFont(STANDARD_TEXT_FONT, tonumber(GetCVar("ufiHPFontSize")));
 		end
 		
     end)
@@ -269,69 +320,102 @@ local menu = CreateFrame('Frame', 'ufi_options', UIParent)
 	-- OnClick Button functions
 	menu.classportrait:SetScript('OnClick', function()
         if this:GetChecked() == 1 then 
-			UnitFramesImprovedConfig.ClassPortrait = true;
+			--UnitFramesImprovedConfig.ClassPortrait = true;
+			SetCVar('ufiClassPortrait',		1, true)
 			reload_request();
 		else 
-			UnitFramesImprovedConfig.ClassPortrait = false;
+			--UnitFramesImprovedConfig.ClassPortrait = false;
+			SetCVar('ufiClassPortrait',		0, false)
 			reload_request();
 		end
     end)
 
 	menu.darkmode:SetScript('OnClick', function()
         if this:GetChecked() == 1 then 
-			UnitFramesImprovedConfig.DarkMode = true;
+			--UnitFramesImprovedConfig.DarkMode = true;
+			SetCVar('ufiDarkMode',		1, true)
 			UNITFRAMESIMPROVED_UI_COLOR = {r = .3, g = .3, b = .3}
+			UnitFramesImproved_Style_PlayerFrame();
+			UnitFramesImproved_TargetFrame_CheckClassification();
 			UnitFramesImproved_DarkMode();
 			--reload_request();
 		else 
-			UnitFramesImprovedConfig.DarkMode = false;
+			--UnitFramesImprovedConfig.DarkMode = false;
+			SetCVar('ufiDarkMode',		0, false)
 			UNITFRAMESIMPROVED_UI_COLOR = {r = 1, g = 1, b = 1}
+			UnitFramesImproved_Style_PlayerFrame();
+			UnitFramesImproved_TargetFrame_CheckClassification();
 			UnitFramesImproved_DarkMode();
 			--reload_request();
 		end
     end)
 
 	menu.textoutline:SetScript('OnClick', function()
+		
         if this:GetChecked() == 1 then 
-			UnitFramesImprovedConfig.NameOutline = 1;
+			--UnitFramesImprovedConfig.NameOutline = 1;
+			SetCVar('ufiNameOutline', 1, true)
 			PlayerName:SetFont("Fonts\\FRIZQT__.TTF", UnitFramesImprovedConfig.NameTextFontSize, "OUTLINE");
 			TargetName:SetFont("Fonts\\FRIZQT__.TTF", UnitFramesImprovedConfig.NameTextFontSize, "OUTLINE");
+			TargetofTargetName:SetFont("Fonts\\FRIZQT__.TTF", UnitFramesImprovedConfig.NameTextFontSize - 1, 'OUTLINE');
+			PetName:SetFont("Fonts\\FRIZQT__.TTF", UnitFramesImprovedConfig.NameTextFontSize - 1, "OUTLINE");
+			--PlayerName:SetFont("Fonts\\FRIZQT__.TTF", tonumber(GetCVar("ufiNameTextFontSize")), "OUTLINE");
+			--TargetName:SetFont("Fonts\\FRIZQT__.TTF", tonumber(GetCVar("ufiNameTextFontSize")), "OUTLINE");
 			PlayerFrameHealthBarText:SetFont(STANDARD_TEXT_FONT, UnitFramesImprovedConfig.HPFontSize, 'OUTLINE');
 			PlayerFrameManaBarText:SetFont(STANDARD_TEXT_FONT, UnitFramesImprovedConfig.HPFontSize, 'OUTLINE');
-			PetName:SetFont("Fonts\\FRIZQT__.TTF", 10, "OUTLINE");
-			PetFrameHealthBarText:SetFont(STANDARD_TEXT_FONT, UnitFramesImprovedConfig.HPFontSize, 'OUTLINE');
+			--PlayerFrameHealthBarText:SetFont(STANDARD_TEXT_FONT, tonumber(GetCVar("ufiHPFontSize")), 'OUTLINE');
+			--PlayerFrameManaBarText:SetFont(STANDARD_TEXT_FONT, tonumber(GetCVar("ufiHPFontSize")), 'OUTLINE');
+			PetFrameHealthBarText:SetFont(STANDARD_TEXT_FONT, UnitFramesImprovedConfig.HPFontSize - 2, 'OUTLINE');
 			PetFrameManaBarText:SetFont(STANDARD_TEXT_FONT, UnitFramesImprovedConfig.HPFontSize, 'OUTLINE');
 			MobHealth3BlizzardHealthText:SetFont(STANDARD_TEXT_FONT, UnitFramesImprovedConfig.HPFontSize, 'OUTLINE')
-			MobHealth3BlizzardPowerText:SetFont(STANDARD_TEXT_FONT, UnitFramesImprovedConfig.HPFontSize, 'OUTLINE') 
+			MobHealth3BlizzardPowerText:SetFont(STANDARD_TEXT_FONT, UnitFramesImprovedConfig.HPFontSize, 'OUTLINE')
+			--PetFrameHealthBarText:SetFont(STANDARD_TEXT_FONT, tonumber(GetCVar("ufiHPFontSize")), 'OUTLINE');
+			--PetFrameManaBarText:SetFont(STANDARD_TEXT_FONT, tonumber(GetCVar("ufiHPFontSize")), 'OUTLINE');
+			--MobHealth3BlizzardHealthText:SetFont(STANDARD_TEXT_FONT, tonumber(GetCVar("ufiHPFontSize")), 'OUTLINE')
+			--MobHealth3BlizzardPowerText:SetFont(STANDARD_TEXT_FONT, tonumber(GetCVar("ufiHPFontSize")), 'OUTLINE')
 		else 
-			UnitFramesImprovedConfig.NameOutline = 0;
+			--UnitFramesImprovedConfig.NameOutline = 0;
+			SetCVar('ufiNameOutline', 0, false)
 			PlayerName:SetFont("Fonts\\FRIZQT__.TTF", UnitFramesImprovedConfig.NameTextFontSize);
 			TargetName:SetFont("Fonts\\FRIZQT__.TTF", UnitFramesImprovedConfig.NameTextFontSize);
+			TargetofTargetName:SetFont("Fonts\\FRIZQT__.TTF", UnitFramesImprovedConfig.NameTextFontSize - 1);
+			PetName:SetFont("Fonts\\FRIZQT__.TTF", UnitFramesImprovedConfig.NameTextFontSize - 1);
+			--PlayerName:SetFont("Fonts\\FRIZQT__.TTF", tonumber(GetCVar("ufiNameTextFontSize")));
+			--TargetName:SetFont("Fonts\\FRIZQT__.TTF", tonumber(GetCVar("ufiNameTextFontSize")));
 			PlayerFrameHealthBarText:SetFont(STANDARD_TEXT_FONT, UnitFramesImprovedConfig.HPFontSize);
 			PlayerFrameManaBarText:SetFont(STANDARD_TEXT_FONT, UnitFramesImprovedConfig.HPFontSize);
-			PetName:SetFont("Fonts\\FRIZQT__.TTF", 10);
-			PetFrameHealthBarText:SetFont(STANDARD_TEXT_FONT, UnitFramesImprovedConfig.HPFontSize);
+			--PlayerFrameHealthBarText:SetFont(STANDARD_TEXT_FONT, tonumber(GetCVar("ufiHPFontSize")));
+			--PlayerFrameManaBarText:SetFont(STANDARD_TEXT_FONT, tonumber(GetCVar("ufiHPFontSize")));
+			PetFrameHealthBarText:SetFont(STANDARD_TEXT_FONT, UnitFramesImprovedConfig.HPFontSize - 2);
 			PetFrameManaBarText:SetFont(STANDARD_TEXT_FONT, UnitFramesImprovedConfig.HPFontSize);
 			MobHealth3BlizzardHealthText:SetFont(STANDARD_TEXT_FONT, UnitFramesImprovedConfig.HPFontSize)
 			MobHealth3BlizzardPowerText:SetFont(STANDARD_TEXT_FONT, UnitFramesImprovedConfig.HPFontSize) 
+			--PetFrameHealthBarText:SetFont(STANDARD_TEXT_FONT, tonumber(GetCVar("ufiHPFontSize")));
+			--PetFrameManaBarText:SetFont(STANDARD_TEXT_FONT, tonumber(GetCVar("ufiHPFontSize")));
+			--MobHealth3BlizzardHealthText:SetFont(STANDARD_TEXT_FONT, tonumber(GetCVar("ufiHPFontSize")))
+			--MobHealth3BlizzardPowerText:SetFont(STANDARD_TEXT_FONT, tonumber(GetCVar("ufiHPFontSize"))) 
 		end
     end)
 
 	menu.npcclasscolor:SetScript('OnClick', function()
         if this:GetChecked() == 1 then 
-			UnitFramesImprovedConfig.NPCClassColor = 1;
+			--UnitFramesImprovedConfig.NPCClassColor = 1;
+			SetCVar('ufiNPCClassColor', 1, true)
 		else 
-			UnitFramesImprovedConfig.NPCClassColor = 0;
+			--UnitFramesImprovedConfig.NPCClassColor = 0;
+			SetCVar('ufiNPCClassColor', 0, false)
 		end
     end)
 
 	menu.playerclasscolor:SetScript('OnClick', function()
         if this:GetChecked() == 1 then 
-			UnitFramesImprovedConfig.PlayerClassColor = 1;
+			--UnitFramesImprovedConfig.PlayerClassColor = 1;
+			SetCVar('ufiPlayerClassColor', 1, true)
 			PlayerFrameHealthBar:SetStatusBarColor(UnitColor("player"));
 			--UnitFramesImproved_ColorUpdate();
 		else 
-			UnitFramesImprovedConfig.PlayerClassColor = 0;
+			--UnitFramesImprovedConfig.PlayerClassColor = 0;
+			SetCVar('ufiPlayerClassColor', 0, false)
 			PlayerFrameHealthBar:SetStatusBarColor(0,1,0);
 			--UnitFramesImproved_ColorUpdate();
 		end
@@ -339,7 +423,8 @@ local menu = CreateFrame('Frame', 'ufi_options', UIParent)
 
 	menu.percentage:SetScript('OnClick', function()
         if this:GetChecked() == 1 then 
-			UnitFramesImprovedConfig.Percentage = 1;
+			--UnitFramesImprovedConfig.Percentage = 1;
+			SetCVar('ufiPercentage', 1, true)
 			TextStatusBar_UpdateTextString(PlayerFrame.healthbar);
 			TextStatusBar_UpdateTextString(PlayerFrame.manabar);
 			TextStatusBar_UpdateTextString(PetFrame.healthbar);
@@ -347,7 +432,34 @@ local menu = CreateFrame('Frame', 'ufi_options', UIParent)
 			MH3Blizz:HealthUpdate();
 			MH3Blizz:PowerUpdate();
 		else 
-			UnitFramesImprovedConfig.Percentage = 0;
+			--UnitFramesImprovedConfig.Percentage = 0;
+			SetCVar('ufiPercentage', 0, false)
+			TextStatusBar_UpdateTextString(PlayerFrame.healthbar);
+			TextStatusBar_UpdateTextString(PlayerFrame.manabar);
+			TextStatusBar_UpdateTextString(PetFrame.healthbar);
+			TextStatusBar_UpdateTextString(PetFrame.manabar);
+			MH3Blizz:HealthUpdate();
+			MH3Blizz:PowerUpdate();
+		end
+    end)
+
+	menu.colorsbtext:SetScript('OnClick', function()
+        if this:GetChecked() == 1 then 
+			--UnitFramesImprovedConfig.Percentage = 1;
+			SetCVar('ufiColoredSbText', 1, true)
+			TextStatusBar_UpdateTextString(PlayerFrame.healthbar);
+			TextStatusBar_UpdateTextString(PlayerFrame.manabar);
+			TextStatusBar_UpdateTextString(PetFrame.healthbar);
+			TextStatusBar_UpdateTextString(PetFrame.manabar);
+			MH3Blizz:HealthUpdate();
+			MH3Blizz:PowerUpdate();
+		else 
+			--UnitFramesImprovedConfig.Percentage = 0;
+			SetCVar('ufiColoredSbText', 0, false)
+			PlayerFrameHealthBarText:SetTextColor(1, 1, 1)
+			PlayerFrameManaBarText:SetTextColor(1, 1, 1)
+			MobHealth3BlizzardHealthText:SetTextColor(1, 1, 1)
+			MobHealth3BlizzardPowerText:SetTextColor(1, 1, 1)
 			TextStatusBar_UpdateTextString(PlayerFrame.healthbar);
 			TextStatusBar_UpdateTextString(PlayerFrame.manabar);
 			TextStatusBar_UpdateTextString(PetFrame.healthbar);
@@ -359,7 +471,8 @@ local menu = CreateFrame('Frame', 'ufi_options', UIParent)
 
 	menu.trueformat:SetScript('OnClick', function()
         if this:GetChecked() == 1 then 
-			UnitFramesImprovedConfig.TrueFormat = 1;
+			--UnitFramesImprovedConfig.TrueFormat = 1;
+			SetCVar('ufiTrueFormat', 1, true)
 			TextStatusBar_UpdateTextString(PlayerFrame.healthbar);
 			TextStatusBar_UpdateTextString(PlayerFrame.manabar);
 			TextStatusBar_UpdateTextString(PetFrame.healthbar);
@@ -367,7 +480,8 @@ local menu = CreateFrame('Frame', 'ufi_options', UIParent)
 			MH3Blizz:HealthUpdate();
 			MH3Blizz:PowerUpdate();
 		else 
-			UnitFramesImprovedConfig.TrueFormat = 0;
+			--UnitFramesImprovedConfig.TrueFormat = 0;
+			SetCVar('ufiTrueFormat', 0, false)
 			TextStatusBar_UpdateTextString(PlayerFrame.healthbar);
 			TextStatusBar_UpdateTextString(PlayerFrame.manabar);
 			TextStatusBar_UpdateTextString(PetFrame.healthbar);
@@ -379,11 +493,13 @@ local menu = CreateFrame('Frame', 'ufi_options', UIParent)
 
 	menu.hidepettext:SetScript('OnClick', function()
         if this:GetChecked() == 1 then 
-			UnitFramesImprovedConfig.HidePetText = 1;
+			--UnitFramesImprovedConfig.HidePetText = 1;
+			SetCVar('ufiHidePetText', 1, true)
 			TextStatusBar_UpdateTextString(PetFrame.healthbar);
 			TextStatusBar_UpdateTextString(PetFrame.manabar);
 		else 
-			UnitFramesImprovedConfig.HidePetText = 0;
+			--UnitFramesImprovedConfig.HidePetText = 0;
+			SetCVar('ufiHidePetText', 0, false)
 			TextStatusBar_UpdateTextString(PetFrame.healthbar);
 			TextStatusBar_UpdateTextString(PetFrame.manabar);
 		end
@@ -391,22 +507,48 @@ local menu = CreateFrame('Frame', 'ufi_options', UIParent)
 
 	menu.healthtexture:SetScript('OnClick', function()
         if this:GetChecked() == 1 then 
-			UnitFramesImprovedConfig.HealthTexture = 1;
+			--UnitFramesImprovedConfig.HealthTexture = 1;
+			SetCVar('ufiHealthTexture', 1, true)
 			UnitFramesImproved_HealthBarTexture(FLAT_TEXTURE);
 		else 
-			UnitFramesImprovedConfig.HealthTexture = 0;
+			--UnitFramesImprovedConfig.HealthTexture = 0;
+			SetCVar('ufiHealthTexture', 0, false)
 			UnitFramesImproved_HealthBarTexture(ORIG_TEXTURE);
+		end
+    end)
+
+	menu.improvedpet:SetScript('OnClick', function()
+        if this:GetChecked() == 1 then 
+			--UnitFramesImprovedConfig.HealthTexture = 1;
+			SetCVar('ufiImprovedPet', 1, true)
+			reload_request();
+		else 
+			--UnitFramesImprovedConfig.HealthTexture = 0;
+			SetCVar('ufiImprovedPet', 0, false)
+			reload_request();
 		end
     end)
 
 	menu.statusglow:SetScript('OnClick', function()
         if this:GetChecked() == 1 then 
-			UnitFramesImprovedConfig.StatusGlow = 1;
+			--UnitFramesImprovedConfig.StatusGlow = 1;
+			SetCVar('ufiStatusGlow', 1, true)
 			PlayerStatusTexture:SetTexture("Interface\\Addons\\UnitFramesImproved_Vanilla\\Textures\\UI-Player-Status");
-			PetAttackModeTexture:SetTexture(PET_ATTACK_TEXTURE);
+
+			--PetAttackModeTexture:SetTexCoord(1, 0, 0, 1)
+			--PetAttackModeTexture:ClearAllPoints()
+			--PetAttackModeTexture:SetTexture(PET_ATTACK_TEXTURE);
+			--PetAttackModeTexture:SetTexCoord(1, 0, 0, 1)
+			PetAttackModeTexture:SetTexture("Interface\\TargetingFrame\\UI-Player-AttackStatus");
+			--PetAttackModeTexture:ClearAllPoints() 
+
+			--PetAttackModeTexture:SetPoint("BOTTOMRIGHT", PetFrame, "BOTTOMRIGHT", 0, 7)
+			--PetAttackModeTexture:Show();
 		else 
-			UnitFramesImprovedConfig.StatusGlow = 0;
+			--UnitFramesImprovedConfig.StatusGlow = 0;
+			SetCVar('ufiStatusGlow', 0, false)
 			PetAttackModeTexture:SetTexture(nil);
+			--PetAttackModeTexture:Hide();
 			PlayerStatusTexture:SetTexture(nil);
 		end
     end)
@@ -451,13 +593,13 @@ local menu = CreateFrame('Frame', 'ufi_options', UIParent)
 		else
 			PlayerFrame:SetClampedToScreen(false);
 			TargetFrame:SetClampedToScreen(false);
-			if UnitFramesImprovedConfig.DarkMode == true then
-				PlayerFrameTexture:SetVertexColor(UNITFRAMESIMPROVED_UI_COLOR.r, UNITFRAMESIMPROVED_UI_COLOR.g, UNITFRAMESIMPROVED_UI_COLOR.b)
-				TargetFrameTexture:SetVertexColor(UNITFRAMESIMPROVED_UI_COLOR.r, UNITFRAMESIMPROVED_UI_COLOR.g, UNITFRAMESIMPROVED_UI_COLOR.b)
-			else
+			--if UnitFramesImprovedConfig.DarkMode == true then
+			--	PlayerFrameTexture:SetVertexColor(UNITFRAMESIMPROVED_UI_COLOR.r, UNITFRAMESIMPROVED_UI_COLOR.g, UNITFRAMESIMPROVED_UI_COLOR.b)
+			--	TargetFrameTexture:SetVertexColor(UNITFRAMESIMPROVED_UI_COLOR.r, UNITFRAMESIMPROVED_UI_COLOR.g, UNITFRAMESIMPROVED_UI_COLOR.b)
+			--else
 				PlayerFrameTexture:SetVertexColor(1, 1, 1);
 				TargetFrameTexture:SetVertexColor(1, 1, 1);
-			end
+			--end
 			PlayerFrame:StopMovingOrSizing();
 			TargetFrame:StopMovingOrSizing();
 			PlayerFrame:SetScript("OnDragStart", nil);
@@ -478,101 +620,143 @@ local menu = CreateFrame('Frame', 'ufi_options', UIParent)
     f:RegisterEvent'PLAYER_ENTERING_WORLD'
     f:SetScript('OnEvent', function()
         
-        if UnitFramesImprovedConfig.ClassPortrait == true then 
+		if (GetCVar("ufiClassPortrait") == "1") then
+        --if UnitFramesImprovedConfig.ClassPortrait == true then 
 			menu.classportrait:SetChecked(true) 
 		else 
 			menu.classportrait:SetChecked(false) 
 		end
 
-		if UnitFramesImprovedConfig.DarkMode == true then 
+		if (GetCVar("ufiDarkMode") == "1") then
+		--if UnitFramesImprovedConfig.DarkMode == true then 
 			menu.darkmode:SetChecked(true) 
 		else 
 			menu.darkmode:SetChecked(false) 
 		end
 
-		if UnitFramesImprovedConfig.NameOutline == 1 then 
+		--if UnitFramesImprovedConfig.NameOutline == 1 then
+		if (GetCVar("ufiNameOutline") == "1") then
 			menu.textoutline:SetChecked(true) 
 		else 
 			menu.textoutline:SetChecked(false) 
 		end
 
-		if UnitFramesImprovedConfig.NPCClassColor == 1 then 
+		--if UnitFramesImprovedConfig.NPCClassColor == 1 then
+		if (GetCVar("ufiNPCClassColor") == "1") then
 			menu.npcclasscolor:SetChecked(true) 
 		else 
 			menu.npcclasscolor:SetChecked(false) 
 		end
 
-		if UnitFramesImprovedConfig.PlayerClassColor == 1 then 
+		--if UnitFramesImprovedConfig.PlayerClassColor == 1 then
+		if (GetCVar("ufiPlayerClassColor") == "1") then
 			menu.playerclasscolor:SetChecked(true) 
 		else 
 			menu.playerclasscolor:SetChecked(false) 
 		end
 
-		if UnitFramesImprovedConfig.Percentage == 1 then 
+		--if UnitFramesImprovedConfig.Percentage == 1 then 
+		if (GetCVar("ufiPercentage") == "1") then
 			menu.percentage:SetChecked(true) 
 		else 
 			menu.percentage:SetChecked(false) 
 		end
 
-		if UnitFramesImprovedConfig.TrueFormat == 1 then 
+		if (GetCVar("ufiColoredSbText") == "1") then
+			menu.colorsbtext:SetChecked(true) 
+		else 
+			menu.colorsbtext:SetChecked(false) 
+		end
+
+		--if UnitFramesImprovedConfig.TrueFormat == 1 then
+		if (GetCVar("ufiTrueFormat") == "1") then
 			menu.trueformat:SetChecked(true) 
 		else 
 			menu.trueformat:SetChecked(false) 
 		end
 
-		if UnitFramesImprovedConfig.HidePetText == 1 then 
+		--if UnitFramesImprovedConfig.HidePetText == 1 then
+		if (GetCVar("ufiHidePetText") == "1") then
 			menu.hidepettext:SetChecked(true) 
 		else 
 			menu.hidepettext:SetChecked(false) 
 		end
 
-		if UnitFramesImprovedConfig.HealthTexture == 1 then 
+		--if UnitFramesImprovedConfig.HealthTexture == 1 then
+		if (GetCVar("ufiHealthTexture") == "1") then
 			menu.healthtexture:SetChecked(true) 
 		else 
 			menu.healthtexture:SetChecked(false) 
 		end
 
-		if UnitFramesImprovedConfig.StatusGlow == 1 then 
+		if (GetCVar("ufiImprovedPet") == "1") then
+			menu.improvedpet:SetChecked(true) 
+		else 
+			menu.improvedpet:SetChecked(false) 
+		end
+
+		--if UnitFramesImprovedConfig.StatusGlow == 1 then
+		if (GetCVar("ufiStatusGlow") == "1") then
 			menu.statusglow:SetChecked(true) 
+			PetAttackModeTexture:SetTexture("Interface\\TargetingFrame\\UI-Player-AttackStatus");
 		else 
 			menu.statusglow:SetChecked(false) 
+			PetAttackModeTexture:SetTexture(nil);
 		end
 
 		if UnitFramesImprovedConfig.NameTextX then
+		--if (GetCVar("ufiNameTextX")) then
 			menu.nametextX:SetValue(UnitFramesImprovedConfig.NameTextX)
+			--menu.nametextX:SetValue(tonumber(GetCVar("ufiNameTextX")))
 		else 
 			menu.nametextX:SetValue(0)
 		end
 
 		if UnitFramesImprovedConfig.NameTextY then
+		--if (GetCVar("ufiNameTextY")) then
 			menu.nametextY:SetValue(UnitFramesImprovedConfig.NameTextY)
+			--menu.nametextY:SetValue(tonumber(GetCVar("ufiNameTextY")))
 		else 
 			menu.nametextY:SetValue(0)
 		end
 
 		if UnitFramesImprovedConfig.NameTextFontSize then
+		--if (GetCVar("ufiNameTextFontSize")) then
 			menu.nametextfontsize:SetValue(UnitFramesImprovedConfig.NameTextFontSize)
+			--menu.nametextfontsize:SetValue(tonumber(GetCVar("ufiNameTextFontSize")))
 		else 
 			menu.nametextfontsize:SetValue(11)
 		end
 
 		if UnitFramesImprovedConfig.HPFontSize then
+		--if (GetCVar("ufiHPFontSize")) then
 			menu.hpfontsize:SetValue(UnitFramesImprovedConfig.HPFontSize)
+			--menu.hpfontsize:SetValue(tonumber(GetCVar("ufiHPFontSize")));
 		else 
 			menu.hpfontsize:SetValue(10)
 		end
 
 		PlayerName:SetPoint("CENTER", PlayerFrameHealthBar, "Center", UnitFramesImprovedConfig.NameTextX, UnitFramesImprovedConfig.NameTextY+5);
 		TargetName:SetPoint("CENTER", TargetFrameHealthBar, "Center", -UnitFramesImprovedConfig.NameTextX, UnitFramesImprovedConfig.NameTextY+5); 
+		--PlayerName:SetPoint("CENTER", PlayerFrameHealthBar, "Center", tonumber(GetCVar("ufiNameTextX")), tonumber(GetCVar("ufiNameTextY"))+5);
+		--TargetName:SetPoint("CENTER", TargetFrameHealthBar, "Center", -tonumber(GetCVar("ufiNameTextX")), tonumber(GetCVar("ufiNameTextY"))+5); 
 
-		if UnitFramesImprovedConfig.NameOutline == 1 then
+		--if UnitFramesImprovedConfig.NameOutline == 1 then
+		if (GetCVar("ufiNameOutline") == "1") then
 			PlayerName:SetFont("Fonts\\FRIZQT__.TTF", UnitFramesImprovedConfig.NameTextFontSize, "OUTLINE");
 			TargetName:SetFont("Fonts\\FRIZQT__.TTF", UnitFramesImprovedConfig.NameTextFontSize, "OUTLINE");
-			PetName:SetFont("Fonts\\FRIZQT__.TTF", 10, "OUTLINE");
+			TargetofTargetName:SetFont("Fonts\\FRIZQT__.TTF", UnitFramesImprovedConfig.NameTextFontSize - 1, 'OUTLINE');
+			--PlayerName:SetFont("Fonts\\FRIZQT__.TTF", tonumber(GetCVar("ufiNameTextFontSize")), "OUTLINE");
+			--TargetName:SetFont("Fonts\\FRIZQT__.TTF", tonumber(GetCVar("ufiNameTextFontSize")), "OUTLINE");
+			PetName:SetFont("Fonts\\FRIZQT__.TTF", UnitFramesImprovedConfig.NameTextFontSize - 1, "OUTLINE");
 		else
 			PlayerName:SetFont("Fonts\\FRIZQT__.TTF", UnitFramesImprovedConfig.NameTextFontSize);
 			TargetName:SetFont("Fonts\\FRIZQT__.TTF", UnitFramesImprovedConfig.NameTextFontSize);
-			PetName:SetFont("Fonts\\FRIZQT__.TTF", 10);
+			TargetofTargetName:SetFont("Fonts\\FRIZQT__.TTF", UnitFramesImprovedConfig.NameTextFontSize - 1);
+			--PlayerName:SetFont("Fonts\\FRIZQT__.TTF", tonumber(GetCVar("ufiNameTextFontSize")));
+			--TargetName:SetFont("Fonts\\FRIZQT__.TTF", tonumber(GetCVar("ufiNameTextFontSize")));
+
+			PetName:SetFont("Fonts\\FRIZQT__.TTF", UnitFramesImprovedConfig.NameTextFontSize - 1);
 		end
 
 		if ufi_modui == true then
@@ -581,25 +765,39 @@ local menu = CreateFrame('Frame', 'ufi_options', UIParent)
 			menu.playerclasscolor:Disable();
 			menu.percentage:Disable();
 			menu.healthtexture:Disable();
+			menu.colorsbtext:Disable();
 			_G[menu.darkmode:GetName()..'Text']:SetText'|cffff6c6cmodUI locked|r'
 			_G[menu.playerclasscolor:GetName()..'Text']:SetText'|cffff6c6cmodUI locked|r'
 			_G[menu.percentage:GetName()..'Text']:SetText'|cffff6c6cmodUI locked|r'
+			_G[menu.colorsbtext:GetName()..'Text']:SetText'|cffff6c6cmodUI locked|r'
 			_G[menu.healthtexture:GetName()..'Text']:SetText'|cffff6c6cmodUI locked|r'
 		else
-			if UnitFramesImprovedConfig.NameOutline == 1 then
+			--if UnitFramesImprovedConfig.NameOutline == 1 then
+			if (GetCVar("ufiNameOutline") == "1") then
+			
 				PlayerFrameHealthBarText:SetFont(STANDARD_TEXT_FONT, UnitFramesImprovedConfig.HPFontSize, 'OUTLINE');
+				--PlayerFrameHealthBarText:SetFont(STANDARD_TEXT_FONT, tonumber(GetCVar("ufiHPFontSize")), 'OUTLINE');
 				-- GREEN HP
 				--PlayerFrameHealthBarText:SetVertexColor(0, 1, 0);
+
 				PlayerFrameManaBarText:SetFont(STANDARD_TEXT_FONT, UnitFramesImprovedConfig.HPFontSize, 'OUTLINE');
-				PetFrameHealthBarText:SetFont(STANDARD_TEXT_FONT, UnitFramesImprovedConfig.HPFontSize, 'OUTLINE');
-				PetFrameManaBarText:SetFont(STANDARD_TEXT_FONT, UnitFramesImprovedConfig.HPFontSize, 'OUTLINE');
+				PetFrameHealthBarText:SetFont(STANDARD_TEXT_FONT, UnitFramesImprovedConfig.HPFontSize - 2, 'OUTLINE');
+				PetFrameManaBarText:SetFont(STANDARD_TEXT_FONT, UnitFramesImprovedConfig.HPFontSize - 2, 'OUTLINE');
+				--PlayerFrameManaBarText:SetFont(STANDARD_TEXT_FONT, tonumber(GetCVar("ufiHPFontSize")), 'OUTLINE');
+				--PetFrameHealthBarText:SetFont(STANDARD_TEXT_FONT, tonumber(GetCVar("ufiHPFontSize")), 'OUTLINE');
+				--PetFrameManaBarText:SetFont(STANDARD_TEXT_FONT, tonumber(GetCVar("ufiHPFontSize")), 'OUTLINE');
 			else
 				PlayerFrameHealthBarText:SetFont(STANDARD_TEXT_FONT, UnitFramesImprovedConfig.HPFontSize);
+				--PlayerFrameHealthBarText:SetFont(STANDARD_TEXT_FONT, tonumber(GetCVar("ufiHPFontSize")));
 				-- GREEN HP
 				--PlayerFrameHealthBarText:SetVertexColor(0, 1, 0);
+				
 				PlayerFrameManaBarText:SetFont(STANDARD_TEXT_FONT, UnitFramesImprovedConfig.HPFontSize);
-				PetFrameHealthBarText:SetFont(STANDARD_TEXT_FONT, UnitFramesImprovedConfig.HPFontSize);
-				PetFrameManaBarText:SetFont(STANDARD_TEXT_FONT, UnitFramesImprovedConfig.HPFontSize);
+				PetFrameHealthBarText:SetFont(STANDARD_TEXT_FONT, UnitFramesImprovedConfig.HPFontSize - 2);
+				PetFrameManaBarText:SetFont(STANDARD_TEXT_FONT, UnitFramesImprovedConfig.HPFontSize - 2);
+				--PlayerFrameManaBarText:SetFont(STANDARD_TEXT_FONT, tonumber(GetCVar("ufiHPFontSize")));
+				--PetFrameHealthBarText:SetFont(STANDARD_TEXT_FONT, tonumber(GetCVar("ufiHPFontSize")));
+				--PetFrameManaBarText:SetFont(STANDARD_TEXT_FONT, tonumber(GetCVar("ufiHPFontSize")));
 			end
 			PlayerFrameHealthBarText:SetJustifyV'MIDDLE'
 			PlayerFrameManaBarText:SetJustifyV'MIDDLE'
@@ -614,20 +812,7 @@ local menu = CreateFrame('Frame', 'ufi_options', UIParent)
 	button1 = "Yes and Reload UI",
 	button2 = "Ignore",
 	OnAccept = function()
-		UnitFramesImprovedConfig.ClassPortrait = true
-		UnitFramesImprovedConfig.DarkMode = true
-		UnitFramesImprovedConfig.NameTextX = 0		
-		UnitFramesImprovedConfig.NameTextY = 0
-		UnitFramesImprovedConfig.NameTextFontSize = 11
-		UnitFramesImprovedConfig.HPFontSize = 10
-		UnitFramesImprovedConfig.NameOutline = 1
-		UnitFramesImprovedConfig.NPCClassColor = 0
-		UnitFramesImprovedConfig.PlayerClassColor = 1
-		UnitFramesImprovedConfig.Percentage = 1
-		UnitFramesImprovedConfig.TrueFormat = 0
-		UnitFramesImprovedConfig.HidePetText = 0
-		UnitFramesImprovedConfig.HealthTexture = 0
-		UnitFramesImprovedConfig.StatusGlow = 1
+		UnitFramesImproved_Reset_Options();
 		ReloadUI();
 	end,
 	timeout = 0,

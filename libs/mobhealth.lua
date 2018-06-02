@@ -6,12 +6,16 @@
     local move = function()
 		if ufi_modui == true then return end;
         for _, v in pairs ({MobHealth3BlizzardHealthText, MobHealth3BlizzardPowerText}) do
-			if UnitFramesImprovedConfig.NameOutline == 1 then
+			--if UnitFramesImprovedConfig.NameOutline == 1 then
+			if (GetCVar("ufiNameOutline") == "1") then
 				v:SetFont(STANDARD_TEXT_FONT, UnitFramesImprovedConfig.HPFontSize, 'OUTLINE')
+				--v:SetFont(STANDARD_TEXT_FONT, GetCVar("ufiHPFontSize"), 'OUTLINE')
 			else
 				v:SetFont(STANDARD_TEXT_FONT, UnitFramesImprovedConfig.HPFontSize)
+				--v:SetFont(STANDARD_TEXT_FONT, GetCVar("ufiHPFontSize"))
 			end
             v:SetShadowOffset(0, 0)
+			
             v:SetJustifyV'MIDDLE'
             if uStatus  == 0 and uBoth == 0 then
                 v:ClearAllPoints()
@@ -20,6 +24,7 @@
                             v:GetName() == 'MobHealth3BlizzardPowerText' and -26 or -75,
                             -3)
             end
+			
         end
     end
 
@@ -38,13 +43,18 @@
             end
         end
 
+		-- FOR COLOR CHANGING HP 
         --string:SetTextColor(.05, 1, 0)
+		if (GetCVar("ufiColoredSbText") == "1") then
+			gradient(v, string, 0, max)
+		end
 
         if uBoth == 1 then
             if max == 100 then
                 string:SetText(percent..'%')
             else
-				if UnitFramesImprovedConfig.Percentage == 1 then
+				--if UnitFramesImprovedConfig.Percentage == 1 then
+				if (GetCVar("ufiPercentage") == "1") then
 					string:SetText(true_format(v)..'/'..true_format(max)..' — '..percent..'%')
 				else
 					string:SetText(true_format(v)..'/'..true_format(max))
@@ -61,8 +71,10 @@
     end
 
     function MH3Blizz:PowerUpdate()
+	
 		if ufi_modui == true then return end;
         local _, class = UnitClass'target'
+		local pp	   = UnitPowerType'target'
         local v, max   = UnitMana'target', UnitManaMax'target'
         local percent  = math.floor(v/max*100)
         local string   = MobHealth3BlizzardPowerText
@@ -71,13 +83,23 @@
         if max == 0 or cur == 0 or percent == 0 then string:SetText() return end
         if MH3BlizzConfig.powerAbs then v = math.floor(v) end
 
-        --string:SetTextColor(.6, .65, 1)
-
+		-- FOR COLOR CHANGING MP
+		if (GetCVar("ufiColoredSbText") == "1") then
+            if class == 'ROGUE' or (class == 'DRUID' and pp == 3) then
+                string:SetTextColor(250/255, 240/255, 200/255)
+            elseif class == 'WARRIOR' or (class == 'DRUID' and pp == 1) then
+                string:SetTextColor(250/255, 108/255, 108/255)
+            else
+                string:SetTextColor(.6, .65, 1)
+            end
+		end
+        
         if uBoth == 1 then
             if max == 100 then
                 string:SetText(percent..'%')
             else
-				if UnitFramesImprovedConfig.Percentage == 1 then
+				--if UnitFramesImprovedConfig.Percentage == 1 then
+				if (GetCVar("ufiPercentage") == "1") then
 					string:SetText(true_format(v)..'/'..true_format(max)..' — '..percent..'%')
 				else
 					string:SetText(true_format(v)..'/'..true_format(max))
@@ -92,7 +114,7 @@
             string:SetText(percent..'%')
         end
     end
-
+	
     local f = CreateFrame'Frame'
     f:RegisterEvent'CVAR_UPDATE' f:RegisterEvent'PLAYER_ENTERING_WORLD'
     f:SetScript('OnEvent', function()

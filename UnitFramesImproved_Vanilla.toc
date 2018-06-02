@@ -1,9 +1,10 @@
 ## Interface: 11200
 ## Title: UnitFramesImproved_Vanilla
-## Notes: UnitFramesImproved Backported from Legion with a few changes
-## Version: 1.0a
-## Author: Ko0z (Richard Bertilsson) for Vanilla Backport + Vanilla QoL improvements, Originally by: Althalla (Kim Forsberg)
-## SavedVariables: MobHealth3DB, MobHealth3Config, UnitFramesImprovedConfig
+## Notes: Aims to keep the beauty of the original unitframes but with QoL improvements. Based on UnitFramesImproved from Legion.
+## Version: 1.0b
+## Author: Ko0zi (Richard Bertilsson) for Vanilla Backport + Vanilla QoL improvements, Originally by: Althalla (Kim Forsberg)
+## SavedVariables: MobHealth3DB, MobHealth3Config, SimpleFeignHealth_Saved, UnitFramesImprovedConfig
+## SavedVariablesPerCharacter: ufiClassPortrait, ufiDarkMode, ufiNameTextX, ufiNameTextY, ufiNameTextFontSize, ufiHPFontSize, ufiNameOutline, ufiNPCClassColor, ufiPlayerClassColor, ufiPercentage, ufiTrueFormat, ufiHidePetText, ufiHealthTexture, ufiStatusGlow, ufiColoredSbText
 
 libs\AceLibrary\AceLibrary.lua
 libs\AceOO-2.0\AceOO-2.0.lua
@@ -24,3 +25,7 @@ energy.lua
 extramana.lua
 
 libs\mobhealth.lua
+
+SimpleFeignHealth.lua
+feigndeath.lua
+retarget.lua
