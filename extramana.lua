@@ -20,7 +20,7 @@
     PlayerFrame.ExtraManaBar:SetBackdropColor(0, 0, 0)
 
     PlayerFrame.ExtraManaBar.Text = PlayerFrame.ExtraManaBar:CreateFontString('ExtraManaBarText', 'OVERLAY', 'TextStatusBarText')
-    PlayerFrame.ExtraManaBar.Text:SetFont(STANDARD_TEXT_FONT, 12, 'OUTLINE')
+    --PlayerFrame.ExtraManaBar.Text:SetFont(STANDARD_TEXT_FONT, 12, 'OUTLINE')
     PlayerFrame.ExtraManaBar.Text:SetPoint('TOP', PlayerFrame.ExtraManaBar, 'BOTTOM', 0, 8)
     PlayerFrame.ExtraManaBar.Text:SetTextColor(.6, .65, 1)
 
@@ -29,19 +29,27 @@
     end)
 
     modSkin(PlayerFrame.ExtraManaBar, 1)
-    modSkinColor(PlayerFrame.ExtraManaBar, .7, .7, .7)
+    --modSkinColor(PlayerFrame.ExtraManaBar, .3, .3, .3)
 
     local OnUpdate = function()
         DruidManaLib:MaxManaScript()
         local v, max = DruidManaLib:GetMana()
+		local percent = math.floor(v/max*100)
 
 		--DruidManaLib:GetMaximumMana()
         --local v, max = DruidManaLib:GetMana()
+		
 
         PlayerFrame.ExtraManaBar:SetMinMaxValues(0, max)
         PlayerFrame.ExtraManaBar:SetValue(v)
         --PlayerFrame.ExtraManaBar.Text:SetText(true_format(v))
-		PlayerFrame.ExtraManaBar.Text:SetText(v)
+		--PlayerFrame.ExtraManaBar.Text:SetText(v)
+
+		if GetCVar'ufiPercentage' == '1' then
+			PlayerFrame.ExtraManaBar.Text:SetText(true_format(v)..'/'..true_format(max).. ' \226\128\148 ' ..percent..'%')
+		else
+			PlayerFrame.ExtraManaBar.Text:SetText(true_format(v)..'/'..true_format(max))
+		end
     end
 
     local OnEvent = function()
@@ -50,6 +58,17 @@
         end
         if  f.loaded and UnitPowerType'player' ~= 0 then
             PlayerFrame.ExtraManaBar:Show()
+
+			if (GetCVar("ufiDarkMode") == "1") then
+				modSkinColor(PlayerFrame.ExtraManaBar, .3, .3, .3)
+			else 
+				modSkinColor(PlayerFrame.ExtraManaBar, 1, 1, 1)
+			end
+			if (GetCVar("ufiNameOutline") == "1") then
+				PlayerFrame.ExtraManaBar.Text:SetFont(STANDARD_TEXT_FONT, UnitFramesImprovedConfig.HPFontSize, 'OUTLINE')
+			else 
+				PlayerFrame.ExtraManaBar.Text:SetFont(STANDARD_TEXT_FONT, UnitFramesImprovedConfig.HPFontSize)
+			end
         else
             PlayerFrame.ExtraManaBar:Hide()
             f.loaded = true
