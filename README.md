@@ -1,13 +1,15 @@
 # UnitFramesImproved_Vanilla
 <b>Dont forget to remove "-master" at the end of the filename when you add it to your interface folder.</b>
 
+<b>New Compact Mode for those who like a slim design.</b>
+<a href="https://imgur.com/fbAcAe2"><img src="https://i.imgur.com/fbAcAe2.gifv" title="source: imgur.com" /></a>
 <a href="https://imgur.com/KCIdJFr"><img src="https://i.imgur.com/KCIdJFr.png" title="source: imgur.com" /></a>
 
 <b>Beta of the official release version is now available. Druid and rogues can now see some QoL improvements such as ticking energy bar and separate mana bar. Hunters can now also see some improvements such as a mirrored pet frame</b>
 
 <b>Backport of UnitFramesImproved to Vanilla with some QoL changes like dark mode and class portraits.</b>
 
-<b>MobHealth3 is now embedded into this addon.</b>
+<b>MobHealth3 is now embedded into this addon. MAKE SURE TO DISABLE MobHealth2 etc to prevent doubled target HP/MP text!</b>
 
 This backport is in Beta State so please report any bugs you encounter to the issues section.
 If you have suggestions or ideas you're welcome to post them in the issues section as well.

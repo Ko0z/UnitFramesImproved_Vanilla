@@ -19,10 +19,9 @@
             v:SetJustifyV'MIDDLE'
             if uStatus  == 0 and uBoth == 0 then
                 v:ClearAllPoints()
-                v:SetPoint('CENTER',
-                            TargetFrame,
-                            v:GetName() == 'MobHealth3BlizzardPowerText' and -26 or -75,
-                            -3)
+                v:SetPoint('CENTER', TargetFrame, v:GetName() == 'MobHealth3BlizzardPowerText' and -26 or -75, -3)
+				--v:SetPoint('TOPRIGHT', TargetFrame, v:GetName() == 'MobHealth3BlizzardPowerText' and -260 or -75, -30)
+
             end
 			
         end
@@ -105,7 +104,8 @@
 					string:SetText(true_format(v)..'/'..true_format(max))
 				end
             end
-            string:SetPoint('RIGHT', -8, 0)
+			--string:ClearAllPoints();
+            string:SetPoint('RIGHT', -8, 0) -- -8
         elseif uValue  == 1 and uBoth == 0 then
             local logic = MH3BlizzConfig.powerPerc and v <= 100 and percent == v and class ~= 'ROGUE'
             local t = logic and true_format(v)..'%' or true_format(v)

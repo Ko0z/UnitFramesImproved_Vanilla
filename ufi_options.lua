@@ -52,7 +52,7 @@ local menu = CreateFrame('Frame', 'ufi_options', UIParent)
     --menu.intro:SetTextColor(colour.r, colour.g, colour.b)
     menu.intro:SetPoint('TOP', menu, 0, -30)
     menu.intro:SetWidth(280)
-    menu.intro:SetText'You are using |cffff6c6cUFI|r v1.0b. This is a beta version of the official release, please report issues to:'
+    menu.intro:SetText'You are using |cffff6c6cUFI|r v1.0c. This is a beta version of the official release, please report issues to:'
 	
 	menu.uilink = CreateFrame('EditBox', 'ufi_uilink', menu, 'InputBoxTemplate')
     menu.uilink:SetFont(STANDARD_TEXT_FONT, 12)
@@ -172,8 +172,17 @@ local menu = CreateFrame('Frame', 'ufi_options', UIParent)
     _G[menu.statusglow:GetName()..'Text']:SetPoint('LEFT', menu.statusglow, 'RIGHT', 4, 0)
     _G[menu.statusglow:GetName()..'Text']:SetText'Status Glow'
 	-----------------------------------------------------
+	--Compact mode checkbutton
+	menu.compactmode = CreateFrame('CheckButton', 'ufi_compactmode', menu, 'UICheckButtonTemplate')
+    menu.compactmode:SetHeight(20) menu.compactmode:SetWidth(20)
+    menu.compactmode:SetPoint('TOPLEFT', menu, 120, -160)
+	_G[menu.compactmode:GetName()..'Text']:SetJustifyH'LEFT'
+    _G[menu.compactmode:GetName()..'Text']:SetWidth(270)
+    _G[menu.compactmode:GetName()..'Text']:SetPoint('LEFT', menu.compactmode, 'RIGHT', 4, 0)
+    _G[menu.compactmode:GetName()..'Text']:SetText'Compact Mode'
+	-----------------------------------------------------
+
 	--BUTTON
-	
 	menu.unlock = CreateFrame('Button', 'ufi_lock', menu, 'UIPanelButtonTemplate')
     menu.unlock:SetWidth(100) 
 	menu.unlock:SetHeight(20)
@@ -194,7 +203,7 @@ local menu = CreateFrame('Frame', 'ufi_options', UIParent)
 	menu.nametextX = CreateFrame('Slider', 'ufi_optionsnametextX', menu, 'OptionsSliderTemplate')
     menu.nametextX:SetWidth(200) 
 	menu.nametextX:SetHeight(16)
-    menu.nametextX:SetPoint('TOP', menu, 0, -180)
+    menu.nametextX:SetPoint('TOP', menu, 0, -200)
     menu.nametextX:SetMinMaxValues(-40, 40)
     menu.nametextX:SetValue(0)
     menu.nametextX:SetValueStep(1)
@@ -213,7 +222,8 @@ local menu = CreateFrame('Frame', 'ufi_options', UIParent)
 	menu.nametextY = CreateFrame('Slider', 'ufi_optionsnametextY', menu, 'OptionsSliderTemplate')
     menu.nametextY:SetWidth(200) 
 	menu.nametextY:SetHeight(16)
-    menu.nametextY:SetPoint('TOP', menu, 0, -210)
+    --menu.nametextY:SetPoint('TOP', menu.nametextX, 0, -210)
+	menu.nametextY:SetPoint('TOP', menu.nametextX, 0, -30)
     menu.nametextY:SetMinMaxValues(-40, 40)
     menu.nametextY:SetValue(0)
     menu.nametextY:SetValueStep(1)
@@ -234,7 +244,7 @@ local menu = CreateFrame('Frame', 'ufi_options', UIParent)
 	menu.nametextfontsize = CreateFrame('Slider', 'ufi_optionsnametextfontsize', menu, 'OptionsSliderTemplate')
     menu.nametextfontsize:SetWidth(200) 
 	menu.nametextfontsize:SetHeight(16)
-    menu.nametextfontsize:SetPoint('TOP', menu, 0, -240)
+    menu.nametextfontsize:SetPoint('TOP', menu.nametextY, 0, -30)
     menu.nametextfontsize:SetMinMaxValues(7, 14)
     menu.nametextfontsize:SetValue(10)
     menu.nametextfontsize:SetValueStep(1)
@@ -263,7 +273,7 @@ local menu = CreateFrame('Frame', 'ufi_options', UIParent)
 	menu.hpfontsize = CreateFrame('Slider', 'ufi_optionshpfontsize', menu, 'OptionsSliderTemplate')
     menu.hpfontsize:SetWidth(200) 
 	menu.hpfontsize:SetHeight(16)
-    menu.hpfontsize:SetPoint('TOP', menu, 0, -270)
+    menu.hpfontsize:SetPoint('TOP', menu.nametextfontsize, 0, -30)
     menu.hpfontsize:SetMinMaxValues(7, 14)
     menu.hpfontsize:SetValue(10)
     menu.hpfontsize:SetValueStep(1)
@@ -271,7 +281,6 @@ local menu = CreateFrame('Frame', 'ufi_options', UIParent)
 
         UnitFramesImprovedConfig.HPFontSize = menu.hpfontsize:GetValue();
 
-		--if UnitFramesImprovedConfig.NameOutline == 1 then
 		if (GetCVar("ufiNameOutline") == "1") then
 			PlayerFrameHealthBarText:SetFont(STANDARD_TEXT_FONT, UnitFramesImprovedConfig.HPFontSize, 'OUTLINE');
 			PlayerFrameManaBarText:SetFont(STANDARD_TEXT_FONT, UnitFramesImprovedConfig.HPFontSize, 'OUTLINE');
@@ -303,11 +312,9 @@ local menu = CreateFrame('Frame', 'ufi_options', UIParent)
 	-- OnClick Button functions
 	menu.classportrait:SetScript('OnClick', function()
         if this:GetChecked() == 1 then 
-			--UnitFramesImprovedConfig.ClassPortrait = true;
 			SetCVar('ufiClassPortrait',		1, true)
 			reload_request();
 		else 
-			--UnitFramesImprovedConfig.ClassPortrait = false;
 			SetCVar('ufiClassPortrait',		0, false)
 			reload_request();
 		end
@@ -315,7 +322,6 @@ local menu = CreateFrame('Frame', 'ufi_options', UIParent)
 
 	menu.darkmode:SetScript('OnClick', function()
         if this:GetChecked() == 1 then 
-			--UnitFramesImprovedConfig.DarkMode = true;
 			SetCVar('ufiDarkMode',		1, true)
 			UNITFRAMESIMPROVED_UI_COLOR = {r = .3, g = .3, b = .3}
 			if class == 'DRUID' then
@@ -326,7 +332,6 @@ local menu = CreateFrame('Frame', 'ufi_options', UIParent)
 			UnitFramesImproved_DarkMode();
 			--reload_request();
 		else 
-			--UnitFramesImprovedConfig.DarkMode = false;
 			SetCVar('ufiDarkMode',		0, false)
 			UNITFRAMESIMPROVED_UI_COLOR = {r = 1, g = 1, b = 1}
 			if class == 'DRUID' then
@@ -377,21 +382,17 @@ local menu = CreateFrame('Frame', 'ufi_options', UIParent)
 
 	menu.npcclasscolor:SetScript('OnClick', function()
         if this:GetChecked() == 1 then 
-			--UnitFramesImprovedConfig.NPCClassColor = 1;
 			SetCVar('ufiNPCClassColor', 1, true)
 		else 
-			--UnitFramesImprovedConfig.NPCClassColor = 0;
 			SetCVar('ufiNPCClassColor', 0, false)
 		end
     end)
 
 	menu.playerclasscolor:SetScript('OnClick', function()
         if this:GetChecked() == 1 then 
-			--UnitFramesImprovedConfig.PlayerClassColor = 1;
 			SetCVar('ufiPlayerClassColor', 1, true)
 			PlayerFrameHealthBar:SetStatusBarColor(UnitColor("player"));
 		else 
-			--UnitFramesImprovedConfig.PlayerClassColor = 0;
 			SetCVar('ufiPlayerClassColor', 0, false)
 			PlayerFrameHealthBar:SetStatusBarColor(0,1,0);
 		end
@@ -399,7 +400,6 @@ local menu = CreateFrame('Frame', 'ufi_options', UIParent)
 
 	menu.percentage:SetScript('OnClick', function()
         if this:GetChecked() == 1 then 
-			--UnitFramesImprovedConfig.Percentage = 1;
 			SetCVar('ufiPercentage', 1, true)
 			TextStatusBar_UpdateTextString(PlayerFrame.healthbar);
 			TextStatusBar_UpdateTextString(PlayerFrame.manabar);
@@ -408,7 +408,6 @@ local menu = CreateFrame('Frame', 'ufi_options', UIParent)
 			MH3Blizz:HealthUpdate();
 			MH3Blizz:PowerUpdate();
 		else 
-			--UnitFramesImprovedConfig.Percentage = 0;
 			SetCVar('ufiPercentage', 0, false)
 			TextStatusBar_UpdateTextString(PlayerFrame.healthbar);
 			TextStatusBar_UpdateTextString(PlayerFrame.manabar);
@@ -421,7 +420,6 @@ local menu = CreateFrame('Frame', 'ufi_options', UIParent)
 
 	menu.colorsbtext:SetScript('OnClick', function()
         if this:GetChecked() == 1 then 
-			--UnitFramesImprovedConfig.Percentage = 1;
 			SetCVar('ufiColoredSbText', 1, true)
 			TextStatusBar_UpdateTextString(PlayerFrame.healthbar);
 			TextStatusBar_UpdateTextString(PlayerFrame.manabar);
@@ -430,7 +428,6 @@ local menu = CreateFrame('Frame', 'ufi_options', UIParent)
 			MH3Blizz:HealthUpdate();
 			MH3Blizz:PowerUpdate();
 		else 
-			--UnitFramesImprovedConfig.Percentage = 0;
 			SetCVar('ufiColoredSbText', 0, false)
 			PlayerFrameHealthBarText:SetTextColor(1, 1, 1)
 			PlayerFrameManaBarText:SetTextColor(1, 1, 1)
@@ -447,7 +444,6 @@ local menu = CreateFrame('Frame', 'ufi_options', UIParent)
 
 	menu.trueformat:SetScript('OnClick', function()
         if this:GetChecked() == 1 then 
-			--UnitFramesImprovedConfig.TrueFormat = 1;
 			SetCVar('ufiTrueFormat', 1, true)
 			TextStatusBar_UpdateTextString(PlayerFrame.healthbar);
 			TextStatusBar_UpdateTextString(PlayerFrame.manabar);
@@ -456,7 +452,6 @@ local menu = CreateFrame('Frame', 'ufi_options', UIParent)
 			MH3Blizz:HealthUpdate();
 			MH3Blizz:PowerUpdate();
 		else 
-			--UnitFramesImprovedConfig.TrueFormat = 0;
 			SetCVar('ufiTrueFormat', 0, false)
 			TextStatusBar_UpdateTextString(PlayerFrame.healthbar);
 			TextStatusBar_UpdateTextString(PlayerFrame.manabar);
@@ -469,12 +464,10 @@ local menu = CreateFrame('Frame', 'ufi_options', UIParent)
 
 	menu.hidepettext:SetScript('OnClick', function()
         if this:GetChecked() == 1 then 
-			--UnitFramesImprovedConfig.HidePetText = 1;
 			SetCVar('ufiHidePetText', 1, true)
 			TextStatusBar_UpdateTextString(PetFrame.healthbar);
 			TextStatusBar_UpdateTextString(PetFrame.manabar);
 		else 
-			--UnitFramesImprovedConfig.HidePetText = 0;
 			SetCVar('ufiHidePetText', 0, false)
 			TextStatusBar_UpdateTextString(PetFrame.healthbar);
 			TextStatusBar_UpdateTextString(PetFrame.manabar);
@@ -483,11 +476,9 @@ local menu = CreateFrame('Frame', 'ufi_options', UIParent)
 
 	menu.healthtexture:SetScript('OnClick', function()
         if this:GetChecked() == 1 then 
-			--UnitFramesImprovedConfig.HealthTexture = 1;
 			SetCVar('ufiHealthTexture', 1, true)
 			UnitFramesImproved_HealthBarTexture(FLAT_TEXTURE);
 		else 
-			--UnitFramesImprovedConfig.HealthTexture = 0;
 			SetCVar('ufiHealthTexture', 0, false)
 			UnitFramesImproved_HealthBarTexture(ORIG_TEXTURE);
 		end
@@ -495,11 +486,9 @@ local menu = CreateFrame('Frame', 'ufi_options', UIParent)
 
 	menu.improvedpet:SetScript('OnClick', function()
         if this:GetChecked() == 1 then 
-			--UnitFramesImprovedConfig.HealthTexture = 1;
 			SetCVar('ufiImprovedPet', 1, true)
 			reload_request();
 		else 
-			--UnitFramesImprovedConfig.HealthTexture = 0;
 			SetCVar('ufiImprovedPet', 0, false)
 			reload_request();
 		end
@@ -509,13 +498,45 @@ local menu = CreateFrame('Frame', 'ufi_options', UIParent)
         if this:GetChecked() == 1 then 
 			--UnitFramesImprovedConfig.StatusGlow = 1;
 			SetCVar('ufiStatusGlow', 1, true)
+
 			PlayerStatusTexture:SetTexture("Interface\\Addons\\UnitFramesImproved_Vanilla\\Textures\\UI-Player-Status");
 			PetAttackModeTexture:SetTexture("Interface\\TargetingFrame\\UI-Player-AttackStatus");
 		else 
-			--UnitFramesImprovedConfig.StatusGlow = 0;
 			SetCVar('ufiStatusGlow', 0, false)
 			PetAttackModeTexture:SetTexture(nil);
 			PlayerStatusTexture:SetTexture(nil);
+		end
+    end)
+
+	menu.compactmode:SetScript('OnClick', function()
+        if this:GetChecked() == 1 then 
+			SetCVar('ufiCompactMode', 1, true)
+			UnitFramesImproved_Style_PlayerFrame();
+			UnitFramesImproved_TargetFrame_CheckClassification();
+			UnitFramesImproved_Style_TargetFrame(TargetFrame);
+			UnitFramesImprovedConfig.NameTextX = 0;
+			UnitFramesImprovedConfig.NameTextY = 5;
+			PlayerName:SetPoint("CENTER", PlayerFrameHealthBar, "Center", UnitFramesImprovedConfig.NameTextX, UnitFramesImprovedConfig.NameTextY+5); 
+			TargetName:SetPoint("CENTER", TargetFrameHealthBar, "Center", -UnitFramesImprovedConfig.NameTextX, UnitFramesImprovedConfig.NameTextY+5);  
+			MH3Blizz_Update_TextPos();
+
+			if class == 'DRUID' then 
+				PlayerFrame.ExtraManaBar:SetPoint('TOP', PlayerFrame, 'BOTTOM', 50, 47)
+			end
+		else 
+			SetCVar('ufiCompactMode', 0, false)
+			UnitFramesImproved_Style_PlayerFrame();
+			UnitFramesImproved_TargetFrame_CheckClassification();
+			UnitFramesImproved_Style_TargetFrame(TargetFrame);
+			UnitFramesImprovedConfig.NameTextX = 0;
+			UnitFramesImprovedConfig.NameTextY = 0;
+			PlayerName:SetPoint("CENTER", PlayerFrameHealthBar, "Center", UnitFramesImprovedConfig.NameTextX, UnitFramesImprovedConfig.NameTextY+5); 
+			TargetName:SetPoint("CENTER", TargetFrameHealthBar, "Center", -UnitFramesImprovedConfig.NameTextX, UnitFramesImprovedConfig.NameTextY+5);  
+			MH3Blizz_Update_TextPos();
+
+			if class == 'DRUID' then 
+				PlayerFrame.ExtraManaBar:SetPoint('TOP', PlayerFrame, 'BOTTOM', 50, 37)
+			end
 		end
     end)
 
@@ -663,6 +684,12 @@ local menu = CreateFrame('Frame', 'ufi_options', UIParent)
 		else 
 			menu.statusglow:SetChecked(false) 
 			PetAttackModeTexture:SetTexture(nil);
+		end
+
+		if (GetCVar("ufiCompactMode") == "1") then
+			menu.compactmode:SetChecked(true) 
+		else 
+			menu.compactmode:SetChecked(false) 
 		end
 
 		if UnitFramesImprovedConfig.NameTextX then

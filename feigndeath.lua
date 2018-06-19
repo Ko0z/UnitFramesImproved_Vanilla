@@ -1,6 +1,6 @@
-
+-- Thanks to Shagu/pfUI
 local cache = { }
-local healthscan = CreateFrame("GameTooltip", "pfHpScanner", UIParent, "GameTooltipTemplate")
+local healthscan = CreateFrame("GameTooltip", "ufiHpScanner", UIParent, "GameTooltipTemplate")
 healthscan:SetOwner(healthscan,"ANCHOR_NONE")
 local healthbar = healthscan:GetChildren()
 

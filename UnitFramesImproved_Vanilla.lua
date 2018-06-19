@@ -6,7 +6,10 @@ _G = getfenv(0)
 UNITFRAMESIMPROVED_UI_COLOR = {r = .3, g = .3, b = .3}
 local UnitFramesImproved = CreateFrame('Button', 'UnitFramesImproved');
 local ADDON_NAME = "UnitFramesImproved_Vanilla";
+
 ufi_modui = false;
+ufi_KTM = false;
+
 FLAT_TEXTURE   = [[Interface\AddOns\UnitFramesImproved_Vanilla\Textures\name.tga]]
 ORIG_TEXTURE   = [[Interface\TargetingFrame\UI-StatusBar.blp]]
 
@@ -24,13 +27,14 @@ function UnitFramesImproved_Default_Options()
     RegisterCVar('ufiStatusGlow',		0, false)
     RegisterCVar('ufiColoredSbText',	1, true)
 	RegisterCVar('ufiImprovedPet',		1, true)
+	RegisterCVar('ufiCompactMode',		1, true)
 	
 	if not UnitFramesImprovedConfig then
 		UnitFramesImprovedConfig = { }
 	end
 
 	if not UnitFramesImprovedConfig.NameTextX			then	UnitFramesImprovedConfig.NameTextX			= 0		end
-	if not UnitFramesImprovedConfig.NameTextY			then	UnitFramesImprovedConfig.NameTextY			= 0		end
+	if not UnitFramesImprovedConfig.NameTextY			then	UnitFramesImprovedConfig.NameTextY			= 5		end
 	if not UnitFramesImprovedConfig.NameTextFontSize	then	UnitFramesImprovedConfig.NameTextFontSize	= 11	end
 	if not UnitFramesImprovedConfig.HPFontSize			then	UnitFramesImprovedConfig.HPFontSize			= 10	end
 end
@@ -48,9 +52,10 @@ function UnitFramesImproved_Reset_Options()
     SetCVar('ufiStatusGlow',		0, false)
     SetCVar('ufiColoredSbText',		1, true)
 	SetCVar('ufiImprovedPet',		1, true)
+	SetCVar('ufiCompactMode',		1, true)
 
 	UnitFramesImprovedConfig.NameTextX			= 0		
-	UnitFramesImprovedConfig.NameTextY			= 0		
+	UnitFramesImprovedConfig.NameTextY			= 5		
 	UnitFramesImprovedConfig.NameTextFontSize	= 11	
 	UnitFramesImprovedConfig.HPFontSize			= 10
 end
@@ -65,7 +70,7 @@ function UnitFramesImproved_Vanilla_OnLoad()
 	TargetFrame_OnUpdate = UnitFramesImproved_TargetFrame_Update;
 	TargetFrame_CheckClassification = UnitFramesImproved_TargetFrame_CheckClassification;
 	PetFrame_OnUpdate = UnitFramesImproved_PetFrame_OnUpdate;
-
+	
 	ufi_chattext( fontLightGreen..'UnitFramesImproved_Vanilla Loaded. ' .. fontLightRed .. 'Type ' ..fontOrange.. '/ufi ' ..fontLightRed.. 'for options.' );
 	if MobHealth3Config.saveData == true then
 		ufi_chattext( fontLightGreen..'MobHealth3 Loaded. -' .. fontWhite .. ' Saving mob health between sessions =' .. fontGreen..' ON ' .. fontWhite .. 'Type '..fontOrange.. '/mh3 ' ..fontLightGreen.. 'for options.' );
@@ -90,7 +95,7 @@ function UnitFramesImproved_Vanilla_OnLoad()
 	UnitFramesImproved_Style_PlayerFrame();
 	UnitFramesImproved_TargetFrame_CheckClassification();
 	UnitFramesImproved_Style_TargetFrame(TargetFrame);
-	UnitFramesImproved_Style_TargetFrame(FocusFrame);
+	--UnitFramesImproved_Style_TargetFrame(FocusFrame);
 	UnitFramesImproved_Style_TargetOfTargetFrame();
 	UnitFramesImproved_Style_PetFrame();
 
@@ -104,7 +109,18 @@ function UnitFramesImproved_Vanilla_OnLoad()
 	if GetCVar'ufiDarkMode' == '1' then
 		UnitFramesImproved_DarkMode();
 	end
+	--[[
+	if GetCVar'ufiCompactMode' == '1' then
+		htext:SetPoint("TOP", TargetFrameHealthBar, "BOTTOM", MH3BlizzConfig.healthX-2, MH3BlizzConfig.healthY+13)
+		ptext:SetPoint("TOP", TargetFrameManaBar, "BOTTOM", MH3BlizzConfig.powerX-2, MH3BlizzConfig.powerY+12)
+	else
+		htext:SetPoint("TOP", TargetFrameHealthBar, "BOTTOM", MH3BlizzConfig.healthX, MH3BlizzConfig.healthY+11)
+		ptext:SetPoint("TOP", TargetFrameManaBar, "BOTTOM", MH3BlizzConfig.powerX, MH3BlizzConfig.powerY+10)
+	end
+	-- Skin TargetFrame buffs and debuffs
+	--
 	
+	--]]
 	-- Update some values
 	TextStatusBar_UpdateTextString(PlayerFrame.healthbar);
 	TextStatusBar_UpdateTextString(PlayerFrame.manabar);
@@ -132,6 +148,17 @@ function UnitFramesImproved_Style_TargetOfTargetFrame()
 	-- May use this at some point
 	TargetofTargetPortrait:ClearAllPoints()
 	TargetofTargetPortrait:SetPoint("BOTTOMRIGHT", TargetofTargetFrame, "BOTTOMRIGHT", -53, 5)
+
+	--MainMenuBarTexture3:Hide()
+	--MainMenuBarTexture2:Hide()
+	--MainMenuBarTexture1:Hide()
+	--MainMenuMaxLevelBar0:Hide()
+	--ActionBarUpButton:Hide()
+	--ActionBarDownButton:Hide()
+	--MainMenuBarPerformanceBarFrame:Hide()
+	--KeyRingButton:Hide();
+
+	--ShowBonusActionBar();
 end
 
 function UnitFramesImproved_Style_PetFrame()
@@ -141,47 +168,90 @@ function UnitFramesImproved_Style_PetFrame()
 	if (GetCVar("ufiImprovedPet") == "1") then
 		PetFrameTexture:SetTexCoord(1, 0, 0, 1)
 		PetFrameTexture:ClearAllPoints()
-		PetFrameTexture:SetPoint("BOTTOMRIGHT", PlayerFrame, "BOTTOMRIGHT", -102, -29)
+		PetFrameTexture:SetPoint("BOTTOMRIGHT", PlayerFrame, "BOTTOMRIGHT", -104, -28)--HERE -102, -29 -- -2, +1
+
+		--PetFrame:SetPoint("BOTTOMRIGHT",0,0);
 
 		PetPortrait:ClearAllPoints() 
-		PetPortrait:SetPoint("BOTTOMRIGHT", PetFrame, "BOTTOMRIGHT", -84, 7)
+		PetPortrait:SetPoint("BOTTOMRIGHT", PetFrame, "BOTTOMRIGHT", -86, 8)
 
 		PetAttackModeTexture:ClearAllPoints() 
-		PetAttackModeTexture:SetPoint("BOTTOMRIGHT", PetFrame, "BOTTOMRIGHT", -43, -23)
+		PetAttackModeTexture:SetPoint("BOTTOMRIGHT", PetFrame, "BOTTOMRIGHT", -46, -22)
 
 		PetFrameHealthBar:ClearAllPoints()
 		PetFrameHealthBar:SetWidth(45)
-		PetFrameHealthBar:SetPoint("BOTTOMRIGHT", PetFrame, "BOTTOMRIGHT", -123, 26)
+		PetFrameHealthBar:SetPoint("BOTTOMRIGHT", PetFrame, "BOTTOMRIGHT", -125, 27)
 
 		PetFrameHealthBarText:ClearAllPoints()
-		PetFrameHealthBarText:SetPoint("BOTTOMRIGHT", PetFrame, "BOTTOMRIGHT", -123, 26)
+		PetFrameHealthBarText:SetPoint("BOTTOMRIGHT", PetFrame, "BOTTOMRIGHT", -125, 27)
 
 		PetFrameManaBar:ClearAllPoints()
 		PetFrameManaBar:SetWidth(45)
-		PetFrameManaBar:SetPoint("BOTTOMRIGHT", PetFrame, "BOTTOMRIGHT", -123, 16)
+		PetFrameManaBar:SetPoint("BOTTOMRIGHT", PetFrame, "BOTTOMRIGHT", -125, 18)
 
 		PetFrameManaBarText:ClearAllPoints()
-		PetFrameManaBarText:SetPoint("BOTTOMRIGHT", PetFrame, "BOTTOMRIGHT", -123, 16)
+		PetFrameManaBarText:SetPoint("BOTTOMRIGHT", PetFrame, "BOTTOMRIGHT", -125, 17)
 
 		PetName:ClearAllPoints()
-		PetName:SetPoint("BOTTOMRIGHT", PetFrame, "BOTTOMRIGHT", -123, 5)
+		PetName:SetPoint("BOTTOMRIGHT", PetFrame, "BOTTOMRIGHT", -125, 6)
 	end
 end
 
 function UnitFramesImproved_Style_PlayerFrame()
 	PlayerFrameHealthBar.lockColor = true;
 	PlayerFrameHealthBar.capNumericDisplay = true;
-	PlayerFrameHealthBar:SetWidth(119);
-	PlayerFrameHealthBar:SetHeight(29);
-	PlayerFrameHealthBar:SetPoint("TOPLEFT",106,-22);
-	PlayerFrameHealthBarText:SetPoint("CENTER",50,5);
-	--RBHERE
+	
+
+	--PlayerFrame:SetScale(1.3);
+	--TargetFrame:SetScale(1.3);
+
 	--PlayerFrameManaBarText:SetTextColor(.6, .65, 1)
 
-	if (GetCVar("ufiDarkMode") == "1") then
-		PlayerFrameTexture:SetTexture("Interface\\Addons\\UnitFramesImproved_Vanilla\\Textures\\newUI-TargetingFrame");
+	if (GetCVar("ufiCompactMode") == "0") then
+		if (GetCVar("ufiDarkMode") == "0") then
+			PlayerFrameTexture:SetTexture("Interface\\Addons\\UnitFramesImproved_Vanilla\\Textures\\UI-TargetingFrame");
+		else
+			PlayerFrameTexture:SetTexture("Interface\\Addons\\UnitFramesImproved_Vanilla\\Textures\\darkUI-TargetingFrame");
+		end
+
+		PlayerFrameHealthBar:SetWidth(119);
+		PlayerFrameHealthBar:SetHeight(29);
+		PlayerFrameHealthBar:SetPoint("TOPLEFT",106,-22);
+		PlayerFrameHealthBarText:SetPoint("CENTER",50,5);
+
+		PlayerFrameManaBar:SetPoint("TOPLEFT",106,-51);
+		PlayerFrameManaBarText:SetPoint("CENTER",50,-8);
 	else
-		PlayerFrameTexture:SetTexture("Interface\\Addons\\UnitFramesImproved_Vanilla\\Textures\\UI-TargetingFrame");
+		--PlayerFrameTexture:SetTexture("Interface\\Addons\\UnitFramesImproved_Vanilla\\Textures\\UI-TargetingFrame");
+		--PlayerFrameTexture:SetTexture("Interface\\TargetingFrame\\UI-TargetingFrame-NoMana");
+		--PlayerFrameTexture:SetTexture("Interface\\Addons\\UnitFramesImproved_Vanilla\\Textures\\UI-TargetingFrame-NoMana");
+		if (GetCVar("ufiDarkMode") == "0") then
+			PlayerFrameTexture:SetTexture("Interface\\Addons\\UnitFramesImproved_Vanilla\\Textures\\compactUI-TargetingFrame");
+		else
+			PlayerFrameTexture:SetTexture("Interface\\Addons\\UnitFramesImproved_Vanilla\\Textures\\DarkCompactUI-TargetingFrame");
+		end
+		--PlayerFrameTexture:SetTexture("");
+		--PlayerFrameTexture:SetTexCoord(1, 0, 0, 1)
+		--PlayerFrameTexture:ClearAllPoints()
+		--PlayerFrameTexture:SetPoint("CENTER", PlayerFrame, "CENTER", 49, -22)
+
+		PlayerFrameBackground:SetPoint("TOPLEFT",106,-24);
+		PlayerFrameBackground:SetHeight(30);
+
+		PlayerFrameHealthBar:SetHeight(20);
+		PlayerFrameHealthBar:SetPoint("TOPLEFT",106,-22);
+		PlayerFrameHealthBarText:SetPoint("CENTER",50,16);
+
+		PlayerFrameManaBar:SetPoint("TOPLEFT",106,-42);
+		PlayerFrameManaBarText:SetPoint("CENTER",50,3);
+
+		--[[
+		if (GetCVar("ufiDarkMode") == "1") then
+			PlayerFrameTexture:SetVertexColor(.3,.3,.3)
+			TargetofTargetTexture:SetVertexColor(.3,.3,.3)
+			PetFrameTexture:SetVertexColor(.3,.3,.3)
+		end --]]
+
 	end
 
 	--if UnitFramesImprovedConfig.StatusGlow == 1 then
@@ -235,21 +305,30 @@ end
 
 function UnitFramesImproved_Style_TargetFrame(unit)
 		local classification = UnitClassification("target");
-		if (classification == "minus") then
-			TargetFrameHealthBar:SetHeight(12);
-			TargetFrameHealthBar:SetPoint("TOPLEFT",6,-41);
-			TargetFrameManaBar:SetPoint("TOPLEFT",6,-51);
-			TargetDeadText:SetPoint("CENTER",-50,4);
-			TargetFrameNameBackground:Hide()
-		else
-			TargetFrameHealthBar:SetHeight(29);
+		if (GetCVar("ufiCompactMode") == "1") then
+			TargetFrameBackground:SetHeight(30);
+			TargetFrameHealthBar:SetHeight(20);
 			TargetFrameHealthBar:SetPoint("TOPLEFT",6,-22);
-			TargetFrameManaBar:SetPoint("TOPLEFT",6,-51);
-			TargetDeadText:SetPoint("CENTER",-50,6);
+			TargetFrameManaBar:ClearAllPoints()
+			TargetFrameManaBar:SetPoint("TOPRIGHT",-106,-42);
 			TargetFrameNameBackground:Hide();
+		else
+			if (classification == "minus") then
+				TargetFrameHealthBar:SetHeight(12);
+				TargetFrameHealthBar:SetPoint("TOPLEFT",6,-41);
+				TargetFrameManaBar:SetPoint("TOPLEFT",6,-51);
+				TargetDeadText:SetPoint("CENTER",-50,4);
+				TargetFrameNameBackground:Hide()
+			else
+				TargetFrameHealthBar:SetHeight(29);
+				TargetFrameHealthBar:SetPoint("TOPLEFT",6,-22);
+				TargetFrameManaBar:SetPoint("TOPLEFT",6,-51);
+				TargetDeadText:SetPoint("CENTER",-50,6);
+				TargetFrameNameBackground:Hide();
+			end
+			TargetFrameHealthBar:SetWidth(119);
+			TargetFrameHealthBar.lockColor = true;
 		end
-		TargetFrameHealthBar:SetWidth(119);
-		TargetFrameHealthBar.lockColor = true;
 end
 
 function true_format(v)            -- STATUS TEXT FORMATTING ie 1.5k, 2.3m
@@ -319,6 +398,32 @@ function UnitFramesImproved_TextStatusBar_UpdateTextString(textStatusBar)
 end
 
 function UnitFramesImproved_TargetFrame_Update()
+
+	for i = 1, 5 do
+        local bu = _G['TargetFrameBuff'..i]
+        modSkin(bu, 1)
+        modSkinColor(bu, .3, .3, .3)
+		--bu:Show()
+    end
+
+    for i = 1, 16 do
+        local bu = _G['TargetFrameDebuff'..i]
+        --modSkin(bu, 1)
+        --modSkinColor(bu, 1, 0, 0)
+		--bu:Show()
+    end
+
+    for i = 1, 4 do
+        local bu = _G['TargetofTargetFrameDebuff'..i]
+        modSkin(bu, -1)
+        modSkinColor(bu, 1, 0, 0)
+		--bu:Show()
+    end
+
+	--ShowBonusActionBar();
+	--BONUSACTIONBAR_XPOS = 512
+
+
 	MH3Blizz:PowerUpdate();
 	-- Set back color of health bar
 	TargetofTarget_Update();
@@ -387,33 +492,52 @@ end
 
 function UnitFramesImproved_TargetFrame_CheckClassification()
 	local classification = UnitClassification("target");
+
 	if (GetCVar("ufiDarkMode") == "1") then
-		if ( classification == "worldboss" ) then
-			TargetFrameTexture:SetTexture("Interface\\Addons\\UnitFramesImproved_Vanilla\\Textures\\newUI-TargetingFrame-Elite");
-		elseif ( classification == "rareelite"  ) then
-			TargetFrameTexture:SetTexture("Interface\\Addons\\UnitFramesImproved_Vanilla\\Textures\\newUI-TargetingFrame-Rare-Elite");
-		elseif ( classification == "elite"  ) then
-			TargetFrameTexture:SetTexture("Interface\\Addons\\UnitFramesImproved_Vanilla\\Textures\\newUI-TargetingFrame-Elite");
-		elseif ( classification == "rare"  ) then
-			TargetFrameTexture:SetTexture("Interface\\Addons\\UnitFramesImproved_Vanilla\\Textures\\newUI-TargetingFrame-Rare");
+
+		if (GetCVar("ufiCompactMode") == "1") then
+			-- DARK COMPACT FRAMES
+			UnitFramesImproved_SetTexture(TargetFrameTexture, "DarkCompactUI");
+
 		else
-			TargetFrameTexture:SetTexture("Interface\\Addons\\UnitFramesImproved_Vanilla\\Textures\\newUI-TargetingFrame");
+			-- DARK EXTENDED FRAMES
+			UnitFramesImproved_SetTexture(TargetFrameTexture, "darkUI");
 		end
 	else
-		if ( classification == "worldboss" ) then
-			TargetFrameTexture:SetTexture("Interface\\Addons\\UnitFramesImproved_Vanilla\\Textures\\UI-TargetingFrame-Elite");
-		elseif ( classification == "rareelite"  ) then
-			TargetFrameTexture:SetTexture("Interface\\Addons\\UnitFramesImproved_Vanilla\\Textures\\UI-TargetingFrame-Rare-Elite");
-		elseif ( classification == "elite"  ) then
-			TargetFrameTexture:SetTexture("Interface\\Addons\\UnitFramesImproved_Vanilla\\Textures\\UI-TargetingFrame-Elite");
-		elseif ( classification == "rare"  ) then
-			TargetFrameTexture:SetTexture("Interface\\Addons\\UnitFramesImproved_Vanilla\\Textures\\UI-TargetingFrame-Rare");
+		if (GetCVar("ufiCompactMode") == "1") then
+			-- LIGHT COMPACT FRAMES
+			UnitFramesImproved_SetTexture(TargetFrameTexture, "compactUI");
 		else
-			TargetFrameTexture:SetTexture("Interface\\Addons\\UnitFramesImproved_Vanilla\\Textures\\UI-TargetingFrame");
+			-- LIGHT EXTENDED FRAMES
+			UnitFramesImproved_SetTexture(TargetFrameTexture, "UI");
 		end
 	end
+end
+
+function UnitFramesImproved_SetTexture(frame, type)
+	local classification = UnitClassification("target");
+
+	if ( classification == "worldboss" ) then
+		frame:SetTexture("Interface\\Addons\\UnitFramesImproved_Vanilla\\Textures\\" .. type .. "-TargetingFrame-Elite");
+	elseif ( classification == "rareelite"  ) then
+		frame:SetTexture("Interface\\Addons\\UnitFramesImproved_Vanilla\\Textures\\" .. type .. "-TargetingFrame-Rare-Elite");
+	elseif ( classification == "elite"  ) then
+		frame:SetTexture("Interface\\Addons\\UnitFramesImproved_Vanilla\\Textures\\" .. type .. "-TargetingFrame-Elite");
+	elseif ( classification == "rare"  ) then
+		frame:SetTexture("Interface\\Addons\\UnitFramesImproved_Vanilla\\Textures\\" .. type .. "-TargetingFrame-Rare");
+	else
+		frame:SetTexture("Interface\\Addons\\UnitFramesImproved_Vanilla\\Textures\\" .. type .. "-TargetingFrame");
+	end
+end
+
+function UnitFramesImproved_Settings_Compact()
+	--TargetFrameTexture:SetTexture("Interface\\Addons\\UnitFramesImproved_Vanilla\\Textures\\UI-TargetingFrame-NoMana");
 	
-	
+	TargetFrameBackground:SetHeight(30);
+	TargetFrameHealthBar:SetHeight(20);
+	TargetFrameManaBar:ClearAllPoints()
+	TargetFrameManaBar:SetPoint("TOPRIGHT",-106,-42);
+
 end
 
 function UnitFramesImproved_TargetFrame_CheckFaction()
@@ -681,6 +805,10 @@ end
 function UnitFramesImproved_OnEvent() 	
 	if IsAddOnLoaded'modui' then                   -- modUI
     	ufi_modui = true;
+    end
+
+	if IsAddOnLoaded'KLHThreatMeter' then                   -- modUI
+    	ufi_KTM = true;
     end
 
 	if (event == "ADDON_LOADED") then	--makes sure it doesnt fire more than once.
