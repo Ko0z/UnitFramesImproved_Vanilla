@@ -3,7 +3,7 @@
 
 <b>New Compact Mode for those who like a slim design.</b>
 <a href="https://imgur.com/fbAcAe2"><img src="https://i.imgur.com/fbAcAe2.gif" title="source: imgur.com" /></a>
-![](https://i.imgur.com/fbAcAe2.gif)
+
 <a href="https://imgur.com/KCIdJFr"><img src="https://i.imgur.com/KCIdJFr.png" title="source: imgur.com" /></a>
 
 <b>Beta of the official release version is now available. Druid and rogues can now see some QoL improvements such as ticking energy bar and separate mana bar. Hunters can now also see some improvements such as a mirrored pet frame</b>
