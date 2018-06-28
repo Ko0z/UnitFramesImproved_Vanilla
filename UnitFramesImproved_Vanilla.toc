@@ -15,8 +15,6 @@ libs\DruidManaLib-1.0\DruidManaLib-1.0.lua
 
 skin\method.lua
 
-
-
 UnitFramesImproved_Vanilla.lua
 
 libs\MobHealth3.lua

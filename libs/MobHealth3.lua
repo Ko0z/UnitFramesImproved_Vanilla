@@ -21,7 +21,7 @@
 --]]
 
 MobHealth3 = AceLibrary("AceAddon-2.0"):new("AceEvent-2.0", "AceConsole-2.0")
-
+--local ADDON_NAME = MobHealth3;
 --[[
 	File-scope local vars
 --]]
@@ -55,7 +55,6 @@ local compatMT ={
 -- Debug function. Not for Joe Average
 function GetMH3Cache() return MH3Cache end
 
-
 --[[
 	Init/Enable methods
 --]]
@@ -67,7 +66,13 @@ function MobHealth3:OnInitialize()
 	-- If the user is saving data, then load it into the cache
 	if MobHealth3DB and MobHealth3Config.saveData then
 		MH3Cache = MobHealth3DB
+		DEFAULT_CHAT_FRAME:AddMessage( fontLightBlue.."<UFI> "..fontLightGreen..'MobHealth3 Loaded. -' .. fontWhite .. ' Saving mob health between sessions =' .. fontGreen..' ON ' .. fontWhite .. 'Type '..fontOrange.. '/mh3 ' ..fontLightGreen.. 'for options.' );
+	else 
+		--DEFAULT_CHAT_FRAME:AddMessage("<MH3> TESTING OFF");
+		DEFAULT_CHAT_FRAME:AddMessage( fontLightBlue.."<UFI> "..fontLightGreen..'MobHealth3 Loaded. -' .. fontWhite .. ' Saving mob health between sessions =' .. fontRed..' OFF ' .. fontWhite .. 'Type '..fontOrange.. '/mh3 ' ..fontLightGreen.. 'for options.' );
 	end
+	
+	
 
 	self:RegisterChatCommand({"/mobhealth3", "/mh3"}, {
 		type = "group",
@@ -139,10 +144,22 @@ function MobHealth3:OnInitialize()
     setmetatable(MobHealthDB, compatMT) -- Metamethod proxy ENGAGE!! </cheesiness>
 end
 
+--[[
+function MobHealth3:ADDON_LOADED()
+	if arg1==ADDON_NAME then
+		if MobHealth3Config.saveData == true then
+			DEFAULT_CHAT_FRAME:AddMessage( fontLightBlue.."<UFI> "..fontLightGreen..'MobHealth3 Loaded. -' .. fontWhite .. ' Saving mob health between sessions =' .. fontGreen..' ON ' .. fontWhite .. 'Type '..fontOrange.. '/mh3 ' ..fontLightGreen.. 'for options.' );
+		else
+			DEFAULT_CHAT_FRAME:AddMessage( fontLightBlue.."<UFI> "..fontLightGreen..'MobHealth3 Loaded. -' .. fontWhite .. ' Saving mob health between sessions =' .. fontRed..' OFF ' .. fontWhite .. 'Type '..fontOrange.. '/mh3 ' ..fontLightGreen.. 'for options.' );
+		end
+	end
+end --]]
+
 function MobHealth3:OnEnable()
 	self:RegisterEvent("UNIT_COMBAT")
 	self:RegisterEvent("PLAYER_TARGET_CHANGED")
 	self:RegisterEvent("UNIT_HEALTH")
+	--self:RegisterEvent("ADDON_LOADED")
 end
 
 --[[

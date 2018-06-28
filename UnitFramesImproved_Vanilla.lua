@@ -72,11 +72,7 @@ function UnitFramesImproved_Vanilla_OnLoad()
 	PetFrame_OnUpdate = UnitFramesImproved_PetFrame_OnUpdate;
 	
 	ufi_chattext( fontLightGreen..'UnitFramesImproved_Vanilla Loaded. ' .. fontLightRed .. 'Type ' ..fontOrange.. '/ufi ' ..fontLightRed.. 'for options.' );
-	if MobHealth3Config.saveData == true then
-		ufi_chattext( fontLightGreen..'MobHealth3 Loaded. -' .. fontWhite .. ' Saving mob health between sessions =' .. fontGreen..' ON ' .. fontWhite .. 'Type '..fontOrange.. '/mh3 ' ..fontLightGreen.. 'for options.' );
-	else
-		ufi_chattext( fontLightGreen..'MobHealth3 Loaded. -' .. fontWhite .. ' Saving mob health between sessions =' .. fontRed..' OFF ' .. fontWhite .. 'Type '..fontOrange.. '/mh3 ' ..fontLightGreen.. 'for options.' );
-	end
+
 	-------------------------------------------------------------------------------------
 	-- FOR MODUI COMPATIBILITY
 	if (ufi_modui == false or ufi_modui == nil) then
@@ -800,6 +796,7 @@ function UnitFramesImproved_OnLoad()
 	UnitFramesImproved:SetScript("OnEvent", UnitFramesImproved_OnEvent)
 	UnitFramesImproved:RegisterEvent('ADDON_LOADED');
 	UnitFramesImproved:RegisterEvent('PLAYER_ENTERING_WORLD');
+	--UnitFramesImproved:RegisterEvent('VARIABLES_LOADED');
 end
 
 function UnitFramesImproved_OnEvent() 	

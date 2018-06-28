@@ -287,7 +287,8 @@ local menu = CreateFrame('Frame', 'ufi_options', UIParent)
 			MobHealth3BlizzardHealthText:SetFont(STANDARD_TEXT_FONT, UnitFramesImprovedConfig.HPFontSize, 'OUTLINE')
 			MobHealth3BlizzardPowerText:SetFont(STANDARD_TEXT_FONT, UnitFramesImprovedConfig.HPFontSize, 'OUTLINE')
 			if class == 'DRUID' then
-				PlayerFrame.ExtraManaBar.Text:SetFont(STANDARD_TEXT_FONT, UnitFramesImprovedConfig.HPFontSize, 'OUTLINE')
+				--PlayerFrame.ExtraManaBar.Text:SetFont(STANDARD_TEXT_FONT, UnitFramesImprovedConfig.HPFontSize, 'OUTLINE')
+				emtext:SetFont(STANDARD_TEXT_FONT, UnitFramesImprovedConfig.HPFontSize, 'OUTLINE') --added
 			end
 			PetFrameHealthBarText:SetFont(STANDARD_TEXT_FONT, UnitFramesImprovedConfig.HPFontSize - 2, 'OUTLINE');
 			PetFrameManaBarText:SetFont(STANDARD_TEXT_FONT, UnitFramesImprovedConfig.HPFontSize - 2, 'OUTLINE');
@@ -297,7 +298,8 @@ local menu = CreateFrame('Frame', 'ufi_options', UIParent)
 			MobHealth3BlizzardHealthText:SetFont(STANDARD_TEXT_FONT, UnitFramesImprovedConfig.HPFontSize)
 			MobHealth3BlizzardPowerText:SetFont(STANDARD_TEXT_FONT, UnitFramesImprovedConfig.HPFontSize)
 			if class == 'DRUID' then
-				PlayerFrame.ExtraManaBar.Text:SetFont(STANDARD_TEXT_FONT, UnitFramesImprovedConfig.HPFontSize)
+				--PlayerFrame.ExtraManaBar.Text:SetFont(STANDARD_TEXT_FONT, UnitFramesImprovedConfig.HPFontSize)
+				emtext:SetFont(STANDARD_TEXT_FONT, UnitFramesImprovedConfig.HPFontSize) --added
 			end
 			PetFrameHealthBarText:SetFont(STANDARD_TEXT_FONT, UnitFramesImprovedConfig.HPFontSize - 2);
 			PetFrameManaBarText:SetFont(STANDARD_TEXT_FONT, UnitFramesImprovedConfig.HPFontSize - 2);
@@ -359,7 +361,7 @@ local menu = CreateFrame('Frame', 'ufi_options', UIParent)
 			MobHealth3BlizzardHealthText:SetFont(STANDARD_TEXT_FONT, UnitFramesImprovedConfig.HPFontSize, 'OUTLINE')
 			MobHealth3BlizzardPowerText:SetFont(STANDARD_TEXT_FONT, UnitFramesImprovedConfig.HPFontSize, 'OUTLINE')
 			if class == 'DRUID' then
-				PlayerFrame.ExtraManaBar.Text:SetFont(STANDARD_TEXT_FONT, UnitFramesImprovedConfig.HPFontSize, 'OUTLINE')
+				emtext:SetFont(STANDARD_TEXT_FONT, UnitFramesImprovedConfig.HPFontSize, 'OUTLINE')
 			end
 			
 		else 
@@ -375,7 +377,7 @@ local menu = CreateFrame('Frame', 'ufi_options', UIParent)
 			MobHealth3BlizzardHealthText:SetFont(STANDARD_TEXT_FONT, UnitFramesImprovedConfig.HPFontSize)
 			MobHealth3BlizzardPowerText:SetFont(STANDARD_TEXT_FONT, UnitFramesImprovedConfig.HPFontSize) 
 			if class == 'DRUID' then
-				PlayerFrame.ExtraManaBar.Text:SetFont(STANDARD_TEXT_FONT, UnitFramesImprovedConfig.HPFontSize)
+				emtext:SetFont(STANDARD_TEXT_FONT, UnitFramesImprovedConfig.HPFontSize)
 			end
 		end
     end)
@@ -520,9 +522,13 @@ local menu = CreateFrame('Frame', 'ufi_options', UIParent)
 			TargetName:SetPoint("CENTER", TargetFrameHealthBar, "Center", -UnitFramesImprovedConfig.NameTextX, UnitFramesImprovedConfig.NameTextY+5);  
 			MH3Blizz_Update_TextPos();
 
+			--reload_request();
 			if class == 'DRUID' then 
-				PlayerFrame.ExtraManaBar:SetPoint('TOP', PlayerFrame, 'BOTTOM', 50, 47)
-			end
+				--PlayerFrame.ExtraManaBar:SetPoint('TOP', PlayerFrame, 'BOTTOM', 50, 47)
+				--ufi_chattext("Compact 1");
+				ExtraManaInitialize()
+				ExtraManaStyle();
+			end--]]
 		else 
 			SetCVar('ufiCompactMode', 0, false)
 			UnitFramesImproved_Style_PlayerFrame();
@@ -534,9 +540,13 @@ local menu = CreateFrame('Frame', 'ufi_options', UIParent)
 			TargetName:SetPoint("CENTER", TargetFrameHealthBar, "Center", -UnitFramesImprovedConfig.NameTextX, UnitFramesImprovedConfig.NameTextY+5);  
 			MH3Blizz_Update_TextPos();
 
+			--reload_request();
 			if class == 'DRUID' then 
-				PlayerFrame.ExtraManaBar:SetPoint('TOP', PlayerFrame, 'BOTTOM', 50, 37)
-			end
+				--PlayerFrame.ExtraManaBar:SetPoint('TOP', PlayerFrame, 'BOTTOM', 50, 37)
+				--ufi_chattext("Compact 0");
+				ExtraManaInitialize()
+				ExtraManaStyle();
+			end--]]
 		end
     end)
 
@@ -752,7 +762,7 @@ local menu = CreateFrame('Frame', 'ufi_options', UIParent)
 				PlayerFrameHealthBarText:SetFont(STANDARD_TEXT_FONT, UnitFramesImprovedConfig.HPFontSize, 'OUTLINE');
 				PlayerFrameManaBarText:SetFont(STANDARD_TEXT_FONT, UnitFramesImprovedConfig.HPFontSize, 'OUTLINE');
 				if class == 'DRUID' then
-					PlayerFrame.ExtraManaBar.Text:SetFont(STANDARD_TEXT_FONT, UnitFramesImprovedConfig.HPFontSize, 'OUTLINE')
+					emtext:SetFont(STANDARD_TEXT_FONT, UnitFramesImprovedConfig.HPFontSize, 'OUTLINE')
 				end
 				PetFrameHealthBarText:SetFont(STANDARD_TEXT_FONT, UnitFramesImprovedConfig.HPFontSize - 2, 'OUTLINE');
 				PetFrameManaBarText:SetFont(STANDARD_TEXT_FONT, UnitFramesImprovedConfig.HPFontSize - 2, 'OUTLINE');
@@ -760,7 +770,7 @@ local menu = CreateFrame('Frame', 'ufi_options', UIParent)
 				PlayerFrameHealthBarText:SetFont(STANDARD_TEXT_FONT, UnitFramesImprovedConfig.HPFontSize);
 				PlayerFrameManaBarText:SetFont(STANDARD_TEXT_FONT, UnitFramesImprovedConfig.HPFontSize);
 				if class == 'DRUID' then
-					PlayerFrame.ExtraManaBar.Text:SetFont(STANDARD_TEXT_FONT, UnitFramesImprovedConfig.HPFontSize);
+					emtext:SetFont(STANDARD_TEXT_FONT, UnitFramesImprovedConfig.HPFontSize);
 				end
 				PetFrameHealthBarText:SetFont(STANDARD_TEXT_FONT, UnitFramesImprovedConfig.HPFontSize - 2);
 				PetFrameManaBarText:SetFont(STANDARD_TEXT_FONT, UnitFramesImprovedConfig.HPFontSize - 2);

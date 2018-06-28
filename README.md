@@ -1,5 +1,5 @@
 # UnitFramesImproved_Vanilla
-<b>Dont forget to remove "-master" at the end of the filename when you add it to your interface folder.</b>
+<b>Dont forget to remove "-master" at the end of the folder name when you add it to your wow/interface/addons folder.</b>
 
 <b>New Compact Mode for those who like a slim design.</b>
 <a href="https://imgur.com/fbAcAe2"><img src="https://i.imgur.com/fbAcAe2.gif" title="source: imgur.com" /></a>
