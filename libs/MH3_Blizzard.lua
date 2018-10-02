@@ -40,28 +40,12 @@ function MH3Blizz:OnInitialize()
 
     htext = frame:CreateFontString("MobHealth3BlizzardHealthText", "ARTWORK")
     htext:SetFontObject(GameFontNormalSmall)
-    --htext:SetHeight(32)
-	--htext:SetHeight(16)
-    --htext:SetPoint("TOP", TargetFrameHealthBar, "BOTTOM", MH3BlizzConfig.healthX-2, MH3BlizzConfig.healthY+22)
     htext:SetTextColor(1, 1, 1, 1)
 
     ptext = frame:CreateFontString("MobHealth3BlizzardPowerText", "ARTWORK")
     ptext:SetFontObject(GameFontNormalSmall)
-    --ptext:SetHeight(32)
-	--ptext:SetHeight(16)
-    --ptext:SetPoint("TOP", TargetFrameManaBar, "BOTTOM", MH3BlizzConfig.powerX-2, MH3BlizzConfig.powerY+21)
     ptext:SetTextColor(1, 1, 1, 1)
-
-	if GetCVar'ufiCompactMode' == '1' then
-		-- COMPACT SETTINGS
-		htext:SetPoint("TOP", TargetFrameHealthBar, "BOTTOM", MH3BlizzConfig.healthX-2, MH3BlizzConfig.healthY+13)
-		ptext:SetPoint("TOP", TargetFrameManaBar, "BOTTOM", MH3BlizzConfig.powerX-2, MH3BlizzConfig.powerY+12)
-	else 
-		-- EXTENDED SETTINGS
-		htext:SetPoint("TOP", TargetFrameHealthBar, "BOTTOM", MH3BlizzConfig.healthX, MH3BlizzConfig.healthY+11)
-		ptext:SetPoint("TOP", TargetFrameManaBar, "BOTTOM", MH3BlizzConfig.powerX, MH3BlizzConfig.powerY+10)
-	end
-
+	
     self:RegisterChatCommand({"/mh3b", "/mh3blizz"}, {
         type = "group",
 		args = {
@@ -252,3 +236,13 @@ function MH3Blizz:PowerUpdate()
     ptext:SetText(absText.." "..percText)
 end
 
+local f = CreateFrame'Frame'
+    --f:RegisterEvent'PLAYER_ENTERING_WORLD'
+	f:RegisterEvent'ADDON_LOADED'
+    f:SetScript('OnEvent', function()
+
+		if arg1 == "UnitFramesImproved_Vanilla" then
+			MH3Blizz_Update_TextPos();
+		end
+
+	end)

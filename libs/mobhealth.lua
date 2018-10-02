@@ -6,8 +6,8 @@
     local move = function()
 		if ufi_modui == true then return end;
         for _, v in pairs ({MobHealth3BlizzardHealthText, MobHealth3BlizzardPowerText}) do
-			--if UnitFramesImprovedConfig.NameOutline == 1 then
-			if (GetCVar("ufiNameOutline") == "1") then
+			if UnitFramesImprovedConfig.NameOutline == 1 then
+			--if (GetCVar("ufiNameOutline") == "1") then
 				v:SetFont(STANDARD_TEXT_FONT, UnitFramesImprovedConfig.HPFontSize, 'OUTLINE')
 				--v:SetFont(STANDARD_TEXT_FONT, GetCVar("ufiHPFontSize"), 'OUTLINE')
 			else
@@ -44,7 +44,8 @@
 
 		-- FOR COLOR CHANGING HP 
         --string:SetTextColor(.05, 1, 0)
-		if (GetCVar("ufiColoredSbText") == "1") then
+		--if (GetCVar("ufiColoredSbText") == "1") then
+		if UnitFramesImprovedConfig.ColoredSbText == 1 then
 			gradient(v, string, 0, max)
 		end
 
@@ -52,8 +53,8 @@
             if max == 100 then
                 string:SetText(percent..'%')
             else
-				--if UnitFramesImprovedConfig.Percentage == 1 then
-				if (GetCVar("ufiPercentage") == "1") then
+				if UnitFramesImprovedConfig.Percentage == 1 then
+				--if (GetCVar("ufiPercentage") == "1") then
 					string:SetText(true_format(v)..'/'..true_format(max)..' — '..percent..'%')
 				else
 					string:SetText(true_format(v)..'/'..true_format(max))
@@ -83,7 +84,8 @@
         if MH3BlizzConfig.powerAbs then v = math.floor(v) end
 
 		-- FOR COLOR CHANGING MP
-		if (GetCVar("ufiColoredSbText") == "1") then
+		--if (GetCVar("ufiColoredSbText") == "1") then
+		if UnitFramesImprovedConfig.ColoredSbText == 1 then
             if class == 'ROGUE' or (class == 'DRUID' and pp == 3) then
                 string:SetTextColor(250/255, 240/255, 200/255)
             elseif class == 'WARRIOR' or (class == 'DRUID' and pp == 1) then
@@ -97,8 +99,8 @@
             if max == 100 then
                 string:SetText(percent..'%')
             else
-				--if UnitFramesImprovedConfig.Percentage == 1 then
-				if (GetCVar("ufiPercentage") == "1") then
+				if UnitFramesImprovedConfig.Percentage == 1 then
+				--if (GetCVar("ufiPercentage") == "1") then
 					string:SetText(true_format(v)..'/'..true_format(max)..' — '..percent..'%')
 				else
 					string:SetText(true_format(v)..'/'..true_format(max))

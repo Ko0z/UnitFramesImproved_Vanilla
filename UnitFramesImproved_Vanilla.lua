@@ -8,31 +8,32 @@ local UnitFramesImproved = CreateFrame('Button', 'UnitFramesImproved');
 local ADDON_NAME = "UnitFramesImproved_Vanilla";
 
 ufi_modui = false;
-ufi_KTM = false;
+--ufi_KTM = false;
 
 FLAT_TEXTURE   = [[Interface\AddOns\UnitFramesImproved_Vanilla\Textures\name.tga]]
 ORIG_TEXTURE   = [[Interface\TargetingFrame\UI-StatusBar.blp]]
 
 function UnitFramesImproved_Default_Options()
 	
-	RegisterCVar('ufiClassPortrait',	1, true)
-    RegisterCVar('ufiDarkMode',			1, true)
-    RegisterCVar('ufiNameOutline',		1, true)
-    RegisterCVar('ufiNPCClassColor',	0, false)
-    RegisterCVar('ufiPlayerClassColor', 1, true)
-    RegisterCVar('ufiPercentage',		0, false)
-    RegisterCVar('ufiTrueFormat',		0, false)
-    RegisterCVar('ufiHidePetText',		1, true)
-	RegisterCVar('ufiHealthTexture',    0, false)
-    RegisterCVar('ufiStatusGlow',		0, false)
-    RegisterCVar('ufiColoredSbText',	1, true)
-	RegisterCVar('ufiImprovedPet',		1, true)
-	RegisterCVar('ufiCompactMode',		1, true)
+	RegisterCVar('ufiClassPortrait',	1, true)	-- must be CVar
+    RegisterCVar('ufiDarkMode',			1, true)	-- must be Cvar
+	RegisterCVar('ufiImprovedPet',		1, true)	-- must be Cvar
+	RegisterCVar('ufiCompactMode',		1, true)	-- CVar?
 	
 	if not UnitFramesImprovedConfig then
 		UnitFramesImprovedConfig = { }
 	end
 
+	if not UnitFramesImprovedConfig.NameOutline			then	UnitFramesImprovedConfig.NameOutline		= 1		end
+	if not UnitFramesImprovedConfig.NPCClassColor		then	UnitFramesImprovedConfig.NPCClassColor		= 0		end
+	if not UnitFramesImprovedConfig.PlayerClassColor	then	UnitFramesImprovedConfig.PlayerClassColor	= 1		end
+	if not UnitFramesImprovedConfig.Percentage			then	UnitFramesImprovedConfig.Percentage			= 0		end
+	if not UnitFramesImprovedConfig.TrueFormat			then	UnitFramesImprovedConfig.TrueFormat			= 0		end
+	if not UnitFramesImprovedConfig.HidePetText			then	UnitFramesImprovedConfig.HidePetText		= 1		end
+	if not UnitFramesImprovedConfig.HealthTexture		then	UnitFramesImprovedConfig.HealthTexture		= 0		end
+	if not UnitFramesImprovedConfig.StatusGlow			then	UnitFramesImprovedConfig.StatusGlow			= 0		end
+	if not UnitFramesImprovedConfig.ColoredSbText		then	UnitFramesImprovedConfig.ColoredSbText		= 1		end
+	--------
 	if not UnitFramesImprovedConfig.NameTextX			then	UnitFramesImprovedConfig.NameTextX			= 0		end
 	if not UnitFramesImprovedConfig.NameTextY			then	UnitFramesImprovedConfig.NameTextY			= 5		end
 	if not UnitFramesImprovedConfig.NameTextFontSize	then	UnitFramesImprovedConfig.NameTextFontSize	= 11	end
@@ -42,18 +43,19 @@ end
 function UnitFramesImproved_Reset_Options()
 	SetCVar('ufiClassPortrait',		1, true)
     SetCVar('ufiDarkMode',			1, true)
-    SetCVar('ufiNameOutline',		1, true)
-    SetCVar('ufiNPCClassColor',		0, false)
-    SetCVar('ufiPlayerClassColor',	1, true)
-    SetCVar('ufiPercentage',		0, false)
-    SetCVar('ufiTrueFormat',		0, false)
-    SetCVar('ufiHidePetText',		1, true)
-	SetCVar('ufiHealthTexture',		0, false)
-    SetCVar('ufiStatusGlow',		0, false)
-    SetCVar('ufiColoredSbText',		1, true)
 	SetCVar('ufiImprovedPet',		1, true)
 	SetCVar('ufiCompactMode',		1, true)
 
+	UnitFramesImprovedConfig.NameOutline		= 1
+	UnitFramesImprovedConfig.NPCClassColor		= 0
+	UnitFramesImprovedConfig.PlayerClassColor	= 1
+	UnitFramesImprovedConfig.Percentage			= 0
+	UnitFramesImprovedConfig.TrueFormat			= 0
+	UnitFramesImprovedConfig.HidePetText		= 1
+	UnitFramesImprovedConfig.HealthTexture		= 0
+	UnitFramesImprovedConfig.StatusGlow			= 0
+	UnitFramesImprovedConfig.ColoredSbText		= 1
+	-------
 	UnitFramesImprovedConfig.NameTextX			= 0		
 	UnitFramesImprovedConfig.NameTextY			= 5		
 	UnitFramesImprovedConfig.NameTextFontSize	= 11	
@@ -81,10 +83,14 @@ function UnitFramesImproved_Vanilla_OnLoad()
 		ufi_chattext( fontOrange.. 'modUI ' ..fontLightGreen.. 'detected.' );
 		PlayerFrameBackground.bg:Hide();
 		SetCVar('ufiDarkMode', 0, false)
-		SetCVar('ufiPlayerClassColor', 1, true)
-		SetCVar('ufiPercentage', 0, false)
-		SetCVar('ufiHealthTexture', 1, true)
-		SetCVar('ufiColoredSbText', 0, false)
+		--SetCVar('ufiPlayerClassColor', 1, true)
+		UnitFramesImprovedConfig.PlayerClassColor = 1;
+		--SetCVar('ufiPercentage', 0, false)
+		UnitFramesImprovedConfig.Percentage	= 0;
+		--SetCVar('ufiHealthTexture', 1, true)
+		UnitFramesImprovedConfig.HealthTexture = 1;
+		--SetCVar('ufiColoredSbText', 0, false)
+		UnitFramesImprovedConfig.ColoredSbText = 0;
 		SetCVar('ufiImprovedPet', 0, false)
 	end
 			-- Set up some stylings
@@ -96,7 +102,8 @@ function UnitFramesImproved_Vanilla_OnLoad()
 	UnitFramesImproved_Style_PetFrame();
 
 	--Flat Healthbar texture if set in config
-	if GetCVar"ufiHealthTexture" == "1" then
+	if UnitFramesImprovedConfig.HealthTexture == 1 then
+	--if GetCVar"ufiHealthTexture" == "1" then
 		UnitFramesImproved_HealthBarTexture(FLAT_TEXTURE);
 	end
 	if GetCVar'ufiClassPortrait' == '1' then
@@ -122,6 +129,9 @@ function UnitFramesImproved_Vanilla_OnLoad()
 	TextStatusBar_UpdateTextString(PlayerFrame.manabar);
 	TextStatusBar_UpdateTextString(PetFrame.healthbar);
 	TextStatusBar_UpdateTextString(PetFrame.manabar);
+
+	-- At this point we know variables have been loaded so calling MH3Blizz function now should be fine.
+	--MH3Blizz_Update_TextPos();
 end
 
 --Sets the texture for the StatusBars
@@ -250,8 +260,8 @@ function UnitFramesImproved_Style_PlayerFrame()
 
 	end
 
-	--if UnitFramesImprovedConfig.StatusGlow == 1 then
-	if (GetCVar("ufiStatusGlow") == "1") then
+	if UnitFramesImprovedConfig.StatusGlow == 1 then
+	--if (GetCVar("ufiStatusGlow") == "1") then
 		PlayerStatusTexture:SetTexture("Interface\\Addons\\UnitFramesImproved_Vanilla\\Textures\\UI-Player-Status");	
 	else
 		PlayerStatusTexture:SetTexture(nil);
@@ -260,10 +270,10 @@ end
 
 function UnitFramesImproved_ColorUpdate(value, smooth) --> HealthBar_OnValueChanged
 	if this == PlayerFrameHealthBar then
-		--if UnitFramesImprovedConfig.PlayerClassColor == 1 then
 		--cv = tonumber(GetCVar'ufiPlayerClassColor')
 		--if cv == 1 then
-		if GetCVar'ufiPlayerClassColor' == '1' then
+		--if GetCVar'ufiPlayerClassColor' == '1' then
+		if UnitFramesImprovedConfig.PlayerClassColor == 1 then
 			PlayerFrameHealthBar:SetStatusBarColor(UnitColor("player"));
 		else
 			PlayerFrameHealthBar:SetStatusBarColor(0,1,0);
@@ -331,8 +341,8 @@ function true_format(v)            -- STATUS TEXT FORMATTING ie 1.5k, 2.3m
          if v > 1E7 then return (math.floor(v/1E6))..'m'
          elseif v > 1E6 then return (math.floor((v/1E6)*10)/10)..'m'
          elseif v > 1E4 then return (math.floor(v/1E3))..'k'
-         --elseif v > 1E3 and UnitFramesImprovedConfig.TrueFormat == 1 then return (math.floor((v/1E3)*10)/10)..'k'
-		 elseif ( v > 1E3 and GetCVar("ufiTrueFormat") == "1" ) then return (math.floor((v/1E3)*10)/10)..'k'
+         elseif v > 1E3 and UnitFramesImprovedConfig.TrueFormat == 1 then return (math.floor((v/1E3)*10)/10)..'k'
+		 --elseif ( v > 1E3 and GetCVar("ufiTrueFormat") == "1" ) then return (math.floor((v/1E3)*10)/10)..'k'
          else return v 
 	end
 end
@@ -351,7 +361,8 @@ function UnitFramesImproved_TextStatusBar_UpdateTextString(textStatusBar)
     	local min, max = textStatusBar:GetMinMaxValues()
         local percent = math.floor(v/max*100)
 		local _, class = UnitClass("player")
-		if (GetCVar("ufiColoredSbText") == "1") then
+		--if (GetCVar("ufiColoredSbText") == "1") then
+		if UnitFramesImprovedConfig.ColoredSbText == 1 then
 			if  textStatusBar:GetName() == 'PlayerFrameManaBar' or textStatusBar:GetName() == 'TargetFrameManaBar' then
 				if class == 'ROGUE' or (class == 'DRUID' and pp == 3) then
 					string:SetTextColor(250/255, 240/255, 200/255)
@@ -374,7 +385,8 @@ function UnitFramesImproved_TextStatusBar_UpdateTextString(textStatusBar)
 				string:Show();
 			else
 				textStatusBar.isZero = nil;
-					if GetCVar'ufiPercentage' == '1' then
+					--if GetCVar'ufiPercentage' == '1' then
+					if UnitFramesImprovedConfig.Percentage	== 1 then
 						string:SetText(true_format(v)..'/'..true_format(max).. ' \226\128\148 ' ..percent..'%')
 					else
 						string:SetText(true_format(v)..'/'..true_format(max))
@@ -480,7 +492,8 @@ function UnitFramesImproved_PetFrame_OnUpdate(elapsed)
 	end
 	CombatFeedback_OnUpdate(elapsed);
 
-	if (GetCVar("ufiHidePetText") == "1") then
+	--if (GetCVar("ufiHidePetText") == "1") then
+	if UnitFramesImprovedConfig.HidePetText == 1 then
 		PetFrame.healthbar.TextString:Hide();
 		PetFrame.manabar.TextString:Hide();
 	end
@@ -563,10 +576,10 @@ function UnitColor(unit)
 		r, g, b = 0.5, 0.5, 0.5;
 	elseif ( UnitIsPlayer(unit) ) then
 		--Try to color it by class.
-		--if UnitFramesImprovedConfig.PlayerClassColor == 1 then
 		--cv = tonumber(GetCVar'ufiPlayerClassColor')
 		--if cv == 1 then
-		if GetCVar'ufiPlayerClassColor' == '1' then
+		--if GetCVar'ufiPlayerClassColor' == '1' then
+		if UnitFramesImprovedConfig.PlayerClassColor == 1 then
 			if ( classColor ) then
 				if ( UnitClass(unit) == "Shaman" ) then
 					r, g, b = 0, 0.44, 0.87;
@@ -586,9 +599,9 @@ function UnitColor(unit)
 
 	else
 		--cv = tonumber(GetCVar'ufiNPCClassColor')
-		--if UnitFramesImprovedConfig.NPCClassColor == 1 and classColor then
+		if UnitFramesImprovedConfig.NPCClassColor == 1 and classColor then
 		--if cv == 1 and classColor then
-		if (GetCVar'ufiNPCClassColor' == '1' and classColor) then
+		--if (GetCVar'ufiNPCClassColor' == '1' and classColor) then
 			r, g, b = classColor.r, classColor.g, classColor.b;
 		else
 			r, g, b = sr, sg, sb;
@@ -804,9 +817,9 @@ function UnitFramesImproved_OnEvent()
     	ufi_modui = true;
     end
 
-	if IsAddOnLoaded'KLHThreatMeter' then                   -- modUI
-    	ufi_KTM = true;
-    end
+	--if IsAddOnLoaded'KLHThreatMeter' then                   -- modUI
+    --	ufi_KTM = true;
+    --end
 
 	if (event == "ADDON_LOADED") then	--makes sure it doesnt fire more than once.
 		if (arg1 == ADDON_NAME) then 

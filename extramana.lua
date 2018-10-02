@@ -62,7 +62,8 @@ local OnUpdate = function()
     --PlayerFrame.ExtraManaBar.Text:SetText(true_format(v))
 	--PlayerFrame.ExtraManaBar.Text:SetText(v)
 
-	if GetCVar'ufiPercentage' == '1' then
+	--if GetCVar'ufiPercentage' == '1' then
+	if UnitFramesImprovedConfig.Percentage == 1 then 
 		--PlayerFrame.ExtraManaBar.Text:SetText(true_format(v)..'/'..true_format(max).. ' \226\128\148 ' ..percent..'%')
 		emtext:SetText(true_format(v)..'/'..true_format(max).. ' \226\128\148 ' ..percent..'%') --added
 	else
@@ -81,7 +82,8 @@ function ExtraManaStyle()
 		else 
 			modSkinColor(PlayerFrame.ExtraManaBar, 1, 1, 1)
 		end
-		if (GetCVar("ufiNameOutline") == "1") then
+		--if (GetCVar("ufiNameOutline") == "1") then
+		if UnitFramesImprovedConfig.NameOutline == 1 then
 			--PlayerFrame.ExtraManaBar.Text:SetFont(STANDARD_TEXT_FONT, UnitFramesImprovedConfig.HPFontSize, 'OUTLINE')
 			emtext:SetFont(STANDARD_TEXT_FONT, UnitFramesImprovedConfig.HPFontSize, 'OUTLINE') --added
 		else 
@@ -90,7 +92,8 @@ function ExtraManaStyle()
 		end
 
 		if (GetCVar("ufiCompactMode") == "1") then
-			PlayerFrameTexture:SetTexture("Interface\\TargetingFrame\\UI-TargetingFrame");
+			--PlayerFrameTexture:SetTexture("Interface\\TargetingFrame\\UI-TargetingFrame");
+			--PlayerFrameTexture:SetTexture("Interface\\Addons\\UnitFramesImproved_Vanilla\\Textures\\darkUI-TargetingFrame");
 			--PlayerFrameTexture:SetTexture("");
 			PlayerFrame.ExtraManaBar:SetPoint('TOP', PlayerFrame, 'BOTTOM', 50, 47)
 		else 
@@ -117,24 +120,29 @@ function ExtraManaStyle()
 end
 
 function ExtraManaInitialize()
-	if (GetCVar("ufiCompactMode") == "1") then
+	--[[if (GetCVar("ufiCompactMode") == "1") then
 		--PlayerFrame.ExtraManaBar:SetPoint('TOP', PlayerFrame, 'BOTTOM', 50, 47)
 		-- CHANGE
 		--PlayerFrameManaBar:SetPoint("TOPLEFT",106,-42);
-		PlayerFrameTexture:SetTexture("Interface\\TargetingFrame\\UI-TargetingFrame");
+		if (GetCVar("ufiDarkMode") == "1") then
+			PlayerFrameTexture:SetTexture("Interface\\Addons\\UnitFramesImproved_Vanilla\\Textures\\darkUI-TargetingFrame");
+		else
+			PlayerFrameTexture:SetTexture("Interface\\TargetingFrame\\UI-TargetingFrame");
+		end
 		PlayerFrame.ExtraManaBar:SetPoint('TOPLEFT', PlayerFrame, 'BOTTOM', -11, 46)
 		PlayerFrame.ExtraManaBar:SetWidth(120)
 		--PlayerFrame.ExtraManaBar.Text:SetPoint('TOP', PlayerFrame.ExtraManaBar, 'BOTTOM', 0, 11)
 		emtext:SetPoint('TOP', PlayerFrame.ExtraManaBar, 'BOTTOM', 0, 11) --added 11
 		modSkinHide(PlayerFrame.ExtraManaBar);
-	else 
+	else --]]
 		PlayerFrame.ExtraManaBar:SetPoint('TOP', PlayerFrame, 'BOTTOM', 50, 37)
 		PlayerFrame.ExtraManaBar:SetWidth(100)
 		--PlayerFrame.ExtraManaBar.Text:SetPoint('TOP', PlayerFrame.ExtraManaBar, 'BOTTOM', 0, 8)
 		emtext:SetPoint('TOP', PlayerFrame.ExtraManaBar, 'BOTTOM', 0, 8) --added
 		modSkin(PlayerFrame.ExtraManaBar, 1)
 		modSkinShow(PlayerFrame.ExtraManaBar);
-	end
+		
+	--end
 end
 
 local OnEvent = function()

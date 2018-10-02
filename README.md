@@ -6,13 +6,13 @@
 
 <a href="https://imgur.com/KCIdJFr"><img src="https://i.imgur.com/KCIdJFr.png" title="source: imgur.com" /></a>
 
-<b>Beta of the official release version is now available. Druid and rogues can now see some QoL improvements such as ticking energy bar and separate mana bar. Hunters can now also see some improvements such as a mirrored pet frame</b>
+<b>Official release version is now available. Druid and rogues can now see some QoL improvements such as ticking energy bar and separate mana bar. Hunters can now also see some improvements such as a mirrored pet frame</b>
 
 <b>Backport of UnitFramesImproved to Vanilla with some QoL changes like dark mode and class portraits.</b>
 
 <b>MobHealth3 is now embedded into this addon. MAKE SURE TO DISABLE MobHealth2 etc to prevent doubled target HP/MP text!</b>
 
-This backport is in Beta State so please report any bugs you encounter to the issues section.
+Please do report any bugs you might encounter to the issues section.
 If you have suggestions or ideas you're welcome to post them in the issues section as well.
 
 <b>COMMANDS: </b>
