@@ -1,4 +1,8 @@
 # UnitFramesImproved_Vanilla
+
+This addon is now put in rest mode. The addon is now part of my complete UI addon zUI https://github.com/Ko0z/zUI 
+and will continue getting updates there.
+
 <b>Dont forget to remove "-master" at the end of the folder name when you add it to your wow/interface/addons folder.</b>
 
 <b>New Compact Mode for those who like a slim design.</b>
